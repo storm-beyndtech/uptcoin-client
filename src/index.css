@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  width: 100%;
+  background: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+section {
+  width: 100%;
+}
+
+h1,
+h2 {
+  line-height: normal !important;
+}
+
+.pending {
+  color: #e9a52b;
+}
+.success {
+  color: #4ecb71;
+}
+.failed {
+  color: #d34053;
+}
+
+.slideLoad {
+  transition: all ease-in-out 0.5s;
+  animation: toNfro 4s linear 0s infinite;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+
+@keyframes toNfro {
+  0% {
+    width: 0%;
+    left: 0%;
+  }
+  50% {
+    width: 70%;
+    left: 100%;
+  }
+  100% {
+    width: 0%;
+    left: 0%;
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  font-size: 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@layer components {
+  .max-ctn {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .input {
+    @apply sm:flex-1 max-sm:w-full text-base leading-normal text-slate-900 pl-5 max-sm:p-4 outline-none sm:border-none border max-sm:border-slate-900 max-sm:rounded-full;
+  }
+
+  .tradePanelInput {
+    @apply w-full bg-transparent border rounded-md py-1.5 outline-none active:border-green-500 focus:border-green-500 border-white/20 pl-20;
+  }
+
+  .editUserInput {
+    @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+  }
+
+  .editUserLabel {
+    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+  }
+
+  .primaryBtn {
+    @apply text-white py-[18px] px-4 inline-block rounded-xl font-semibold text-sm bg-gray-900;
+  }
+}
+
+@layer base {
+  body {
+    @apply font-arial font-normal text-base relative z-1;
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .pad {
+    @apply sm:px-16 px-5 sm:py-24 py-12;
+  }
+
+  .pad-x {
+    @apply sm:px-16 px-5;
+  }
+
+  .pad-y {
+    @apply sm:py-24 py-12;
+  }
+
+  .pad-l {
+    @apply sm:pl-16 pl-5;
+  }
+
+  .pad-r {
+    @apply sm:pr-16 pr-5;
+  }
+
+  .pad-t {
+    @apply sm:pt-24 pt-12;
+  }
+
+  .pad-b {
+    @apply sm:pb-24 pb-12;
+  }
+
+  .info-text {
+    @apply font-montserrat text-slate-900 text-lg leading-7;
+  }
+
+  .hd-text {
+    @apply text-3xl font-semibold md:text-5xl;
+  }
+
+  .desc {
+    @apply mb-6 max-w-[528px] text-xl md:mb-10 lg:mb-12;
+  }
+
+  .avatar {
+    @apply inline-block h-12 w-12 rounded-full object-cover z-10;
+  }
+
+  .chat-height {
+    @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
+  }
+  .inbox-height {
+    @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
+  }
+}
+
+/* third-party libraries CSS */
+
+@media screen and (max-width: 1024px) {
+  #headlessui-portal-root .relative {
+    margin: 20px 0 !important;
+  }
+
+  #headlessui-portal-root .relative span {
+    font-size: 1.2rem !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #slide {
+    overflow: -moz-hidden-unscrollable;
+  }
+}
+
+.skiptranslate iframe {
+  display: none !important;
+}
