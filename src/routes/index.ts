@@ -2,19 +2,12 @@ import Bonus from "@/pages/Dashboard/Bonus";
 import Deposit from "@/pages/Dashboard/Deposit";
 import KYC from "@/pages/Dashboard/KYC";
 import LiveTrades from "@/pages/Dashboard/LiveTrades";
-import MFA from "@/pages/Dashboard/MFA";
 import Profile from "@/pages/Dashboard/UserOverview";
 import Settings from "@/pages/Dashboard/Settings";
-import Trades from "@/pages/Dashboard/Trades";
 import Transactions from "@/pages/Dashboard/Transactions";
 import Withdraw from "@/pages/Dashboard/Withdraw";
 
 const coreRoutes = [
-  {
-    path: '/dashboard/trades',
-    title: 'Trades',
-    component: Trades,
-  },
   {
     path: '/dashboard/liveTrades',
     title: 'LiveTrades',
@@ -44,11 +37,6 @@ const coreRoutes = [
     path: '/dashboard/bonus',
     title: 'Bonus',
     component: Bonus,
-  },
-  {
-    path: '/dashboard/2fa',
-    title: '2FA',
-    component: MFA,
   },
   {
     path: '/dashboard/kyc',
