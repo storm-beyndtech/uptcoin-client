@@ -18,7 +18,7 @@ export default function Login() {
   };
 
   return (
-    <div className='pt-20'>
+    <div className="pt-20">
       <Navbar />
       <div className="flex items-center justify-center  py-10 px-4">
         <div className="flex w-full max-w-4xl bg-white shadow-lg rounded-lg">
@@ -37,7 +37,7 @@ export default function Login() {
               <label className="block text-gray-600 mb-2">Email Address</label>
               <input
                 type="email"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="input"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -49,7 +49,7 @@ export default function Login() {
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="input"
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

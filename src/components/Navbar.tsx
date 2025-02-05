@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaTimes, FaCaretDown } from 'react-icons/fa'; // Import icons
 import logo from '../assets/logo.svg';
 import { Menu } from 'lucide-react';
+import DarkModeSwitcher from './DarkModeSwitcher';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -24,7 +25,6 @@ export default function Navbar() {
     { title: 'Rewards', link: '/rewards' },
     { title: 'Press', link: '/press' },
   ];
-
 
   return (
     <header
@@ -73,28 +73,33 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-3 text-xs font-semibold">
-          <Link
-            to="/login"
-            className="py-1.5 px-4 border-[1.2px] border-white text-white rounded-md"
-          >
-            Sign in
-          </Link>
+        <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3 text-xs font-semibold max-lg:hidden">
+            <Link
+              to="/login"
+              className="py-1.5 px-4 border-[1px] border-white/50 text-white rounded-md"
+            >
+              Sign in
+            </Link>
 
-          <Link
-            to="/register"
-            className="py-2 px-4 bg-green-600 text-white rounded-md"
+            <Link
+              to="/register"
+              className="py-2 px-4 bg-green-600 text-white rounded-md"
+            >
+              Sign up
+            </Link>
+          </div>
+
+          <DarkModeSwitcher />
+
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden text-white"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            Sign up
-          </Link>
+            {mobileMenuOpen ? <FaTimes size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden text-white"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <FaTimes size={24} /> : <Menu size={24} />}
-        </button>
 
         {/* Mobile Menu */}
         <div
@@ -137,23 +142,6 @@ export default function Navbar() {
                 )}
               </div>
             ))}
-            {/* Auth Links for Mobile */}
-
-            <div className="flex items-center gap-3 text-xs font-semibold">
-              <Link
-                to="/login"
-                className="py-1.5 px-4 border-[1.2px] border-white text-white rounded-md"
-              >
-                Sign in
-              </Link>
-
-              <Link
-                to="/register"
-                className="py-2 px-4 bg-green-600 text-white rounded-md"
-              >
-                Sign up
-              </Link>
-            </div>
           </div>
         </div>
       </nav>

@@ -36,12 +36,15 @@ import UserOverview from './pages/Dashboard/UserOverview';
 import UserWallet from './pages/Dashboard/UserWallet';
 import Conversion from './pages/Dashboard/Conversion';
 import WalletAddress from './pages/Dashboard/WalletAddress';
-import UserAuthentication from './pages/Dashboard/UserAuthentication';
 import ChangePassword from './pages/Dashboard/ChangePassword';
 import WithdrawalPassword from './pages/Dashboard/WithdrawalPassword';
 import Affiliate from './pages/Dashboard/Affiliate';
 import TradeRecords from './pages/Dashboard/TradeRecords';
 import QuickContract from './pages/Dashboard/QuickContract';
+import KYC from './pages/Dashboard/KYC';
+import Deposit from './pages/Dashboard/Deposit';
+import Withdraw from './pages/Dashboard/Withdraw';
+import Transfer from './pages/Dashboard/Transfer';
 
 function App() {
   const { fetching, user } = contextData();
@@ -77,9 +80,13 @@ function App() {
         <Route path="/dashboard/" element={<DefaultLayout />}>
           <Route index element={<UserOverview />} />
           <Route path="/dashboard/wallet" element={<UserWallet />} />
+          <Route path="/dashboard/deposit" element={<Deposit />} />
+          <Route path="/dashboard/withdraw" element={<Withdraw />} />
+          <Route path="/dashboard/withdraw/:symbol" element={<Withdraw />} />
+          <Route path="/dashboard/transfer" element={<Transfer />} />
           <Route path="/dashboard/conversion" element={<Conversion />} />
           <Route path="/dashboard/wallet-address" element={<WalletAddress />} />
-          <Route path="/dashboard/auth" element={<UserAuthentication />} />
+          <Route path="/dashboard/auth" element={<KYC />} />
           <Route
             path="/dashboard/change-password"
             element={<ChangePassword />}

@@ -32,14 +32,18 @@ module.exports = {
       gridColumn: {
         'span-2.5': 'span 2.5 / span 2.5',
       },
+      borderStyle: {
+        'custom-dashed': ['dashed', '4px', '10px'], // Custom dash pattern
+      },
       colors: {
         current: 'currentColor',
         transparent: 'transparent',
         white: '#FFFFFF',
         body: '#64748B',
-        bodydark: '#AEB7C0',
-        bodydark1: '#DEE4EE',
-        bodydark2: '#8A99AF',
+        customGreen: '#0CC770',
+        bodydark: '#151617',
+        bodydark1: '#151617',
+        bodydark2: '#1a1b1c',
         primary: '#3C50E0',
         secondary: '#80CAEE',
         stroke: '#E2E8F0',

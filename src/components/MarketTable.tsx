@@ -1,70 +1,13 @@
-import { symbols } from '@/context/DataContext';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FiSearch } from 'react-icons/fi';
-
-interface CryptoData {
-  id: string;
-  name: string;
-  symbol: string;
-  price: string;
-  change: string;
-  low: string;
-  high: string;
-  volume: string;
-  image: string;
-}
+import { useCrypto } from '@/context/CoinContext';
 
 const MarketTable: React.FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
-  const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
+  const { cryptoData } = useCrypto();
   const [searchQuery, setSearchQuery] = useState<string>(''); // Track search query
-
-  useEffect(() => {
-    const fetchCryptoData = async () => {
-      try {
-        const response = await fetch(
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false',
-        );
-        const data = await response.json();
-
-        if (!Array.isArray(data)) {
-          throw new Error('Invalid API response');
-        }
-
-        // Filter data to match symbols and adjust price
-        const updatedData: CryptoData[] = symbols
-          .map((item) => {
-            const coin = data.find(
-              (coin) => coin.symbol.toUpperCase() === item.symbol,
-            );
-            return coin
-              ? {
-                  id: coin.id,
-                  name: coin.name,
-                  symbol: coin.symbol.toUpperCase(),
-                  price: (coin.current_price * (1 + item.margin / 100)).toFixed(
-                    2,
-                  ),
-                  change: `${coin.price_change_percentage_24h.toFixed(2)}%`,
-                  low: coin.low_24h.toFixed(2),
-                  high: coin.high_24h.toFixed(2),
-                  volume: coin.total_volume.toLocaleString(),
-                  image: coin.image,
-                }
-              : null;
-          })
-          .filter(Boolean) as CryptoData[];
-
-        setCryptoData(updatedData);
-      } catch (error) {
-        console.error('Error fetching crypto data:', error);
-      }
-    };
-
-    fetchCryptoData();
-  }, []);
 
   const tableTitles = [
     'Market',
@@ -135,15 +78,33 @@ const MarketTable: React.FC = () => {
                   <img src={coin.image} alt={coin.name} width="24" />{' '}
                   <span>{`${coin.symbol}/ USDT`}</span>
                 </td>
-                <td className="p-3 py-4">${coin.price}</td>
-                <td className="p-3 py-4">{coin.change}</td>
+                <td
+                  className={`p-3 py-4 ${
+                    parseFloat(coin.change) < 0
+                      ? 'text-red-500'
+                      : 'text-green-500'
+                  }`}
+                >
+                  ${coin.price}
+                </td>
+                <td
+                  className={`p-3 py-4 ${
+                    parseFloat(coin.change) < 0
+                      ? 'text-red-500'
+                      : 'text-green-500'
+                  }`}
+                >
+                  {coin.change}
+                </td>
                 <td className="p-3 py-4">${coin.low}</td>
                 <td className="p-3 py-4">${coin.high}</td>
                 <td className="p-3 py-4">{coin.volume}</td>
                 <td className="p-3 py-4">
-                  <button className="py-2 px-4 bg-red-500 text-white rounded-md">
-                    Trade
-                  </button>
+                  <Link to={`/margin/${coin.symbol}`}>
+                    <button className="py-2 px-4 bg-red-500 text-white rounded-md">
+                      Trade
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}

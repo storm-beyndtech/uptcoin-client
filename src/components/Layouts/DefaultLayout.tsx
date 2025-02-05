@@ -24,7 +24,7 @@ export default function DefaultLayout() {
   // }
 
   return (
-    <div className="max-ctn max-w-[1400px] h-screen bg-[#fafafa] pt-20">
+    <div className="max-ctn max-w-[1400px] bg-[#fafafa] pt-18">
       {/* Fixed Header */}
       <Navbar />
 

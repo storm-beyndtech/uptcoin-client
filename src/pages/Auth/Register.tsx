@@ -53,7 +53,7 @@ export default function Register() {
               <label className="block text-gray-600 mb-2">Email Address</label>
               <input
                 type="email"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="input"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -63,7 +63,7 @@ export default function Register() {
             <div className="mb-4 flex items-center">
               <input
                 type="text"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="input"
                 placeholder="Enter confirmation code"
                 value={confirmationCode}
                 onChange={(e) => setConfirmationCode(e.target.value)}
@@ -81,7 +81,7 @@ export default function Register() {
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="input"
                   placeholder="Enter a secure password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -103,7 +103,7 @@ export default function Register() {
               <div className="relative">
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="input"
                   placeholder="Confirm your password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -128,7 +128,7 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="input"
                 placeholder="Enter referral code (if any)"
                 value={referralCode}
                 onChange={(e) => setReferralCode(e.target.value)}

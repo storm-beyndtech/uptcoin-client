@@ -1,43 +1,58 @@
-import heroBg from '../assets/home_head_bg.png';
+import { heroAvatarLinks } from '@/lib/utils';
+import { Link } from 'react-router-dom';
+import phone from '../assets/iphone.png';
 
-export default function Hero() {
+const Hero: React.FC = () => {
   return (
-    <div
-      className="max-ctn h-[70vh] flex items-center p-10"
-      style={{
-        backgroundImage: `url(${heroBg})`,
-        backgroundPositionY: 'center',
-        backgroundSize: '100%',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-      <div className="w-full max-w-[500px] text-gray-900">
-        <h1 className="text-5xl  font-bold">Join over 26 million</h1>
-        <p className="text-xl mt-2">
-          worldwide who have already chosen the{' '}
-          <span className="font-bold">Uptcoin Group</span>
-        </p>
+    <section className="relative bg-bodydark1 -mt-10">
+      <div className="max-ctn-y pad px-5 max-md:pt-40 flex items-center gap-12">
+        <div className="w-full max-w-[650px]">
+          <h1 className="text-6xl font-semibold max-md:!text-2xl text-white mb-4">
+            Join Over 26 Million{' '}
+            <span className="text-customGreen my-4 block">
+              Active Users Trading{' '}
+            </span>{' '}
+            Daily With Uptcoin
+          </h1>
 
-        <div className="grid gap-4 mt-5">
-          <p className="text-xl mt-2">
+          <p className="text-white/60 text-lg font-medium mb-10">
             Enjoy 24 hours trading with no limitation
           </p>
 
-          <form className="flex gap-4 items-center">
-            <input
-              type="email"
-              className="w-full max-w-70 px-4 py-3 border border-gray-800 rounded-lg bg-transparent"
-              placeholder="Enter email address"
-            />
-            <button
-              type="submit"
-              className="px-4 py-3 bg-green-500 text-white font-semibold rounded-lg"
-            >
-              Sign Up
+          <Link to="/login">
+            <button className="bg-white py-3 px-10 rounded-xl font-semibold">
+              Get Started <span className="ml-3">&rarr;</span>
             </button>
-          </form>
+          </Link>
+
+          <div>
+            <div className="relative mt-10 flex w-full max-w-xs items-center">
+              {heroAvatarLinks.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt="avatar"
+                  className={`relative avatar ${
+                    i > 0 ? '-ml-5' : ''
+                  } [box-shadow:#212121_0px_6px]`}
+                  style={{ top: 'auto', left: `0px` }}
+                />
+              ))}
+              <div className="relative left-[-40px] top-auto z-[1] rounded-[30px] bg-bodydark1 py-2 pl-12 pr-3 text-center text-white [box-shadow:#212121_0px_6px]">
+                <p className="text-[10px] leading-normal font-semibold">
+                  <span className="font-bold">26m+ </span>
+                  <br />
+                  Clients
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <img className="w-70 m-auto" src={phone} alt="trade" />
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default Hero;

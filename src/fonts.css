@@ -1,0 +1,43 @@
+/* src/fonts.css */
+
+@font-face {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/ARIAL.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./fonts/ARIALBD.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 900;
+  src: url('./fonts/ARIALBLK.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 600;
+  src: url('./fonts/ArialMdm.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./fonts/ArialN.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 800;
+  src: url('./fonts/ArialNB.TTF') format('truetype');
+}
