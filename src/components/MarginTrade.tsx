@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-const MarginTrade = () => {
+type MarketListProps = {
+  selectedMarket: string;
+};
+
+const MarginTrade: React.FC<MarketListProps> = ({ selectedMarket }) => {
   const [customAmount, setCustomAmount] = useState('');
 
   const selectionPeriods = [
@@ -14,7 +18,9 @@ const MarginTrade = () => {
 
   return (
     <div className="text-white rounded-sm w-full">
-      <h2 className="font-semibold text-green-500 mb-2">BTC/USDT</h2>
+      <h2 className="font-semibold text-green-500 mb-2">
+        {selectedMarket}/USDT
+      </h2>
       <p className="text-green-500 mb-5 text-sm">Quick Contract</p>
 
       {/* Selection Period */}

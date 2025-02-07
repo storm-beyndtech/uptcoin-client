@@ -60,6 +60,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/market" element={<Market />} />
         <Route path="/exchange" element={<Exchange />} />
+        <Route path="/exchange/:symbol" element={<Exchange />} />
         <Route path="/margin" element={<QuickMargin />} />
         <Route path="/margin/:symbol" element={<QuickMargin />} />
         <Route path="/press" element={<Press />} />

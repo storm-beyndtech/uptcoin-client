@@ -1,6 +1,6 @@
 import { heroAvatarLinks } from '@/lib/utils';
 import { Link } from 'react-router-dom';
-import phone from '../assets/iphone.png';
+import asset from '../assets/cryptoAsset.png';
 
 const Hero: React.FC = () => {
   return (
@@ -49,7 +49,7 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-        <img className="w-70 m-auto" src={phone} alt="trade" />
+        <img className="w-100 m-auto" src={asset} alt="trade" />
       </div>
     </section>
   );

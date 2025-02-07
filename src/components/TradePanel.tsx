@@ -14,7 +14,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
   return (
     <div className="flex flex-col bg-[#1a1b1c] p-4 rounded-sm w-full max-w-md text-[13px]">
       <div className='flex-1'>
-        <h4 className="flex justify-between font-semibold text-base text-white/40 mb-4">
+        <h4 className="flex justify-between font-semibold text-xs lg:text-base text-white/40 mb-4">
           {tradeType === 'buy' && (
             <>
               <span>Available</span> <span>{0} USDT</span>
@@ -31,16 +31,16 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
         </h4>
         <div className="flex text-xs pb-2">
           <button
-            className={`px-4 py-1 border-[1.5px] rounded border-green-500 bg-transparent ${
-              orderType === 'limit' ? 'text-green-500' : 'border-opacity-0'
+            className={`px-4 py-1 border-[1.5px] rounded border-customGreen bg-transparent ${
+              orderType === 'limit' ? 'text-customGreen' : 'border-opacity-0'
             }`}
             onClick={() => setOrderType('limit')}
           >
             Limit
           </button>
           <button
-            className={`px-4 py-1 border-[1.5px] rounded border-green-500 bg-transparent ${
-              orderType === 'market' ? 'text-green-500' : 'border-opacity-0'
+            className={`px-4 py-1 border-[1.5px] rounded border-customGreen bg-transparent ${
+              orderType === 'market' ? 'text-customGreen' : 'border-opacity-0'
             }`}
             onClick={() => setOrderType('market')}
           >

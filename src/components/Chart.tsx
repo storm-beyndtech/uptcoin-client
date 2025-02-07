@@ -21,6 +21,7 @@ const Chart = ({ symbol }: { symbol: string }) => {
         "interval": "D",
         "timezone": "Etc/UTC",
         "theme": "dark",
+        "backgroundColor": "#1a1b1c",
         "style": "1",
         "locale": "en",
         "allow_symbol_change": true,

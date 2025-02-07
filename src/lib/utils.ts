@@ -76,7 +76,7 @@ export const userAssets: Asset[] = [
 export const symbols: SymbolMargin[] = [
   {
     symbol: 'BTC',
-    margin: 1.5,
+    margin: 0,
     charges: 0.001,
     name: 'Bitcoin',
     address: '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy',
@@ -89,7 +89,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'ETH',
-    margin: 2.3,
+    margin: 0,
     charges: 0.005,
     name: 'Ethereum',
     address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
@@ -101,8 +101,34 @@ export const symbols: SymbolMargin[] = [
     minDeposit: 0.005,
   },
   {
+    symbol: 'SOL',
+    margin: 2.5,
+    charges: 0.0005,
+    name: 'Solana',
+    address: '4UUVXEKpz89zq4V9a8Q14c5461a3917321',
+    network: 'Solana',
+    transfer: true,
+    deposit: true,
+    withdraw: true,
+    minWithdraw: 0.1,
+    minDeposit: 0.05,
+  },
+  {
+    symbol: 'ATOM',
+    margin: 1.8,
+    charges: 0.0005,
+    name: 'Cosmos',
+    address: 'cosmos1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
+    network: 'Cosmos',
+    transfer: true,
+    deposit: true,
+    withdraw: true,
+    minWithdraw: 0.1,
+    minDeposit: 0.05,
+  },
+  {
     symbol: 'XRP',
-    margin: 1.7,
+    margin: 0,
     charges: 0.0001,
     name: 'Ripple',
     address: 'rPmPErU9wHkFXaZ9XuSnwNQhXvGdB1zFgk',
@@ -115,7 +141,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'BCH',
-    margin: 2.0,
+    margin: 0,
     charges: 0.0005,
     name: 'Bitcoin Cash',
     address: 'bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a',
@@ -127,8 +153,21 @@ export const symbols: SymbolMargin[] = [
     minDeposit: 0.005,
   },
   {
+    symbol: 'BNB',
+    margin: 0,
+    charges: 0.0001,
+    name: 'Binance Coin',
+    address: 'bnb1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
+    network: 'Binance Smart Chain',
+    transfer: true,
+    deposit: true,
+    withdraw: true,
+    minWithdraw: 0.1,
+    minDeposit: 0.05,
+  },
+  {
     symbol: 'LTC',
-    margin: 1.2,
+    margin: 0,
     charges: 0.001,
     name: 'Litecoin',
     address: 'LZ5V7W9ZRKj67A3Qga8Ziwm3gy9gY3S7nD',
@@ -154,7 +193,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'ONT',
-    margin: 1.8,
+    margin: 0,
     charges: 0.0003,
     name: 'Ontology',
     address: 'AdTEWj33T9o1i2mz4gKbQbC4911bQk7y4n',
@@ -167,7 +206,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'TRX',
-    margin: 1.6,
+    margin: 0,
     charges: 0.0001,
     name: 'Tron',
     address: 'TQYy8M8739Q54v9a8Q14c5461a3917321',
@@ -180,7 +219,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'WBTC',
-    margin: 2.5,
+    margin: 0,
     charges: 0.0005,
     name: 'Wrapped Bitcoin',
     address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
@@ -193,7 +232,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'LINK',
-    margin: 2.4,
+    margin: 0,
     charges: 0.0002,
     name: 'Chainlink',
     address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
@@ -206,7 +245,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'BAT',
-    margin: 2.1,
+    margin: 0,
     charges: 0.0001,
     name: 'Basic Attention Token',
     address: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
@@ -219,7 +258,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'HOT',
-    margin: 1.9,
+    margin: 0,
     charges: 0.0001,
     name: 'Holochain',
     address: '0x492EB03010632Db66B2C438C7934338479B2162E',
@@ -232,7 +271,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'DOGE',
-    margin: 4.2,
+    margin: 0,
     charges: 0.001,
     name: 'Dogecoin',
     address: 'DFsn839shn9sdn839nsdf98nsd98fn98nsdf98nsdf',
@@ -244,21 +283,8 @@ export const symbols: SymbolMargin[] = [
     minDeposit: 25,
   },
   {
-    symbol: 'ATOM',
-    margin: 1.8,
-    charges: 0.0005,
-    name: 'Cosmos',
-    address: 'cosmos1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
-    network: 'Cosmos',
-    transfer: true,
-    deposit: true,
-    withdraw: true,
-    minWithdraw: 0.1,
-    minDeposit: 0.05,
-  },
-  {
     symbol: 'FTM',
-    margin: 2.7,
+    margin: 0,
     charges: 0.0002,
     name: 'Fantom',
     address: '0x4e15361fd6b4bb609fa61880b90f6cd30c38d352',
@@ -271,7 +297,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'MATIC',
-    margin: 2.5,
+    margin: 0,
     charges: 0.0001,
     name: 'Polygon',
     address: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
@@ -284,7 +310,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'GALA',
-    margin: 2.2,
+    margin: 0,
     charges: 0.0001,
     name: 'Gala',
     address: '0x07e5Ff063C48Cd80939D70b1F4331d145793C2F5',
@@ -297,7 +323,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'SHIB',
-    margin: 3.5,
+    margin: 0,
     charges: 0.0001,
     name: 'Shiba Inu',
     address: '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE',
@@ -310,7 +336,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'ROSE',
-    margin: 1.7,
+    margin: 0,
     charges: 0.0002,
     name: 'Oasis Network',
     address: 'oasis1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
@@ -323,7 +349,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'CAKE',
-    margin: 2.3,
+    margin: 0,
     charges: 0.0003,
     name: 'PancakeSwap',
     address: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
@@ -336,7 +362,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'YFI',
-    margin: 3.0,
+    margin: 0,
     charges: 0.0005,
     name: 'Yearn.finance',
     address: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
@@ -349,7 +375,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'SUSHI',
-    margin: 2.6,
+    margin: 0,
     charges: 0.0002,
     name: 'SushiSwap',
     address: '0x6B3595068778DD592e39A122f4f5a5cF09C90fE2',
@@ -362,7 +388,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'DYDX',
-    margin: 2.8,
+    margin: 0,
     charges: 0.0003,
     name: 'dYdX',
     address: '0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e',
@@ -375,7 +401,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'LUNA',
-    margin: 2.0,
+    margin: 0,
     charges: 0.0005,
     name: 'Terra',
     address: 'terra1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
@@ -388,7 +414,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: '1INCH',
-    margin: 1.8,
+    margin: 0,
     charges: 0.0002,
     name: '1inch',
     address: '0x111111111117dC0aa78b770fA6A738034120C302',
@@ -401,7 +427,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'COMP',
-    margin: 2.1,
+    margin: 0,
     charges: 0.0003,
     name: 'Compound',
     address: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
@@ -414,7 +440,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'QNT',
-    margin: 2.3,
+    margin: 0,
     charges: 0.0005,
     name: 'Quant',
     address: '0x4Aba47a7f84C6F552443548c8Da81EE551146551',
@@ -427,7 +453,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'PAXG',
-    margin: 2.2,
+    margin: 0,
     charges: 0.0004,
     name: 'Pax Gold',
     address: '0x45804880De22913dAFE09f4980848ECE6EcbAf78',
@@ -440,7 +466,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'UNI',
-    margin: 2.4,
+    margin: 0,
     charges: 0.0002,
     name: 'Uniswap',
     address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
@@ -453,7 +479,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'MKR',
-    margin: 2.7,
+    margin: 0,
     charges: 0.0005,
     name: 'Maker',
     address: '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2',
@@ -466,7 +492,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'ONE',
-    margin: 2.1,
+    margin: 0,
     charges: 0.0001,
     name: 'Harmony',
     address: 'one1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
@@ -479,7 +505,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'FLOW',
-    margin: 2.2,
+    margin: 0,
     charges: 0.0002,
     name: 'Flow',
     address: '0xe4475019c83df4050c7f956c5a12eb3ae1d840dd',
@@ -492,7 +518,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'CELO',
-    margin: 2.5,
+    margin: 0,
     charges: 0.0003,
     name: 'Celo',
     address: '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9',
@@ -505,7 +531,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'ADA',
-    margin: 2.1,
+    margin: 0,
     charges: 0.0001,
     name: 'Cardano',
     address:
@@ -519,7 +545,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'RDNT',
-    margin: 1.9,
+    margin: 0,
     charges: 0.0001,
     name: 'Radiant',
     address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
@@ -532,7 +558,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'VET',
-    margin: 1.5,
+    margin: 0,
     charges: 0.0001,
     name: 'VeChain',
     address: '0x471ece3750da237f93b8e339c536989b8979a4ce',
@@ -545,7 +571,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'EGLD',
-    margin: 2.6,
+    margin: 0,
     charges: 0.0005,
     name: 'Elrond',
     address: 'erd1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
@@ -554,11 +580,11 @@ export const symbols: SymbolMargin[] = [
     deposit: true,
     withdraw: true,
     minWithdraw: 0.1,
-    minDeposit: 0.05,
+    minDeposit: 50,
   },
   {
     symbol: 'ALGO',
-    margin: 2.0,
+    margin: 0,
     charges: 0.0002,
     name: 'Algorand',
     address: 'algo1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
@@ -584,7 +610,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'XLM',
-    margin: 1.8,
+    margin: 0,
     charges: 0.00001,
     name: 'Stellar',
     address: 'GDRXE2BQUC3AZJXQJNRXJ5ZLSRLYKVO2GQ53FQ2K4DKF6UWDJCVJFP7J',
@@ -596,34 +622,8 @@ export const symbols: SymbolMargin[] = [
     minDeposit: 5,
   },
   {
-    symbol: 'SOL',
-    margin: 2.5,
-    charges: 0.0005,
-    name: 'Solana',
-    address: '4UUVXEKpz89zq4V9a8Q14c5461a3917321',
-    network: 'Solana',
-    transfer: true,
-    deposit: true,
-    withdraw: true,
-    minWithdraw: 0.1,
-    minDeposit: 0.05,
-  },
-  {
-    symbol: 'BNB',
-    margin: 2.3,
-    charges: 0.0001,
-    name: 'Binance Coin',
-    address: 'bnb1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
-    network: 'Binance Smart Chain',
-    transfer: true,
-    deposit: true,
-    withdraw: true,
-    minWithdraw: 0.1,
-    minDeposit: 0.05,
-  },
-  {
     symbol: 'WAVES',
-    margin: 1.9,
+    margin: 0,
     charges: 0.0002,
     name: 'Waves',
     address: '3P93JTi7mNz7wE1b4mNHhNuykN21Qy7ru4v',
@@ -636,7 +636,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'FLM',
-    margin: 2.2,
+    margin: 0,
     charges: 0.0001,
     name: 'Flamingo',
     address: '0x2D5d83EC756D7Bea79E05e3f198b4000FEc3FC53',
@@ -649,7 +649,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'ONDO',
-    margin: 2.1,
+    margin: 0,
     charges: 0.0002,
     name: 'Ondo',
     address: '0x814eb9504f58B63A924F7D50fA95dB5fE1B1bB20',
@@ -662,7 +662,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'ZEN',
-    margin: 2.5,
+    margin: 0,
     charges: 0.0003,
     name: 'Horizen',
     address: 'znUi9F34jJ6NdZ9R8eZDP3Qfj3S5E9yEotJ',
@@ -675,7 +675,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'SAND',
-    margin: 2.4,
+    margin: 0,
     charges: 0.0001,
     name: 'The Sandbox',
     address: '0x3845badAde8e6dFF049820680d1F14bEEd3673d1',
@@ -701,7 +701,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'ARB',
-    margin: 2.6,
+    margin: 0,
     charges: 0.0002,
     name: 'Arbitrum',
     address: '0xB50721BCf8d664c30412Cfbc6cf7a15145234ad1',
@@ -714,7 +714,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'SNX',
-    margin: 2.3,
+    margin: 0,
     charges: 0.0003,
     name: 'Synthetix',
     address: '0xC011A72400E58ecD99Ee497CF89E3775d4bd732F',
@@ -740,7 +740,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'NEO',
-    margin: 2.4,
+    margin: 0,
     charges: 0.0001,
     name: 'Neo',
     address: 'ARrXDE55K7gqBnu9tZ93iNjfFz5o6QLjoD',
@@ -753,7 +753,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'APT',
-    margin: 2.5,
+    margin: 0,
     charges: 0.0003,
     name: 'Aptos',
     address: '0x1A3f337D85F1CFCd7B10D3eD1D42cFaAFc5fCdd1',
@@ -766,7 +766,7 @@ export const symbols: SymbolMargin[] = [
   },
   {
     symbol: 'FIL',
-    margin: 2.6,
+    margin: 0,
     charges: 0.0005,
     name: 'Filecoin',
     address: 'f1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',

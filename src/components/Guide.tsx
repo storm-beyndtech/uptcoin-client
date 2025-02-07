@@ -1,56 +1,63 @@
-import { FaUserPlus, FaUserShield, FaWallet } from 'react-icons/fa';
-import { RiTokenSwapFill } from 'react-icons/ri';
+import { Coins, Shield, User, Wallet } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Guide() {
+  const steps = [
+    {
+      icon: <User />,
+      title: 'Create Account',
+      desc: 'Sign up with your email and get started instantly.',
+    },
+    {
+      icon: <Shield />,
+      title: 'Verify Identity',
+      desc: 'Secure your account with quick identity verification.',
+    },
+    {
+      icon: <Wallet />,
+      title: 'Fund Wallets',
+      desc: 'Deposit funds and access 50+ cryptocurrencies.',
+    },
+    {
+      icon: <Coins />,
+      title: 'Start Trading',
+      desc: 'Buy, sell, and swap crypto anytime, anywhere.',
+    },
+  ];
+
   return (
-    <div className="flex flex-col items-center gap-4">
-      <h3 className="">BEGINNER'S GUIDE</h3>
-      <h2 className="text-xl font-medium">Get started in a few minutes!</h2>
-      <p>Bitpapy supports a variety of the most popular digital currencies.</p>
-      <div className="w-full flex justify-center gap-8 py-5">
-        <div className="w-full max-w-[250px] text-center grid gap-4">
-          <div className="rounded-full w-20 h-20 grid place-content-center mx-auto bg-blue-500 text-white">
-            <FaUserPlus className="text-xl" />
-          </div>
-          <h3 className="font-semibold">Create account</h3>
-          <p>Create your Bitpapy account using a valid email address</p>
+    <section className="w-full py-20 px-6 bg-bodydark1">
+      <div className="max-ctn mx-auto flex flex-col items-center">
+        <h3 className="text-2xl font-bold text-white/90 mb-4">
+          Beginner's Guide 🚀
+        </h3>
+        <p className="text-white/60 text-sm">
+          Start your crypto journey in a few simple steps.
+        </p>
+
+        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {steps.map((step, i) => (
+            <div
+              key={i}
+              className="p-6 bg-bodydark2 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
+            >
+              <div className="w-full relative text-blue-500 text-3xl">
+                <h4 className="text-xl font-semibold tracking-wide text-white/90 mt-4">
+                  {step.title}
+                </h4>
+                <div className="absolute  inset-y-0 right-3 "> {step.icon}</div>
+              </div>
+              <p className="text-white/50 text-sm mt-2">{step.desc}</p>
+            </div>
+          ))}
         </div>
 
-        <div className="w-full max-w-[250px] text-center grid gap-4">
-          <div className="rounded-full w-20 h-20 grid place-content-center mx-auto bg-blue-500 text-white">
-            <FaUserShield className="text-xl" />
-          </div>
-          <h3 className="font-semibold">Verification</h3>
-          <p>
-            Use the verification code sent to your email address to verify your
-            account
-          </p>
-        </div>
-
-        <div className="w-full max-w-[250px] text-center grid gap-4">
-          <div className="rounded-full w-20 h-20 grid place-content-center mx-auto bg-blue-500  text-white">
-            <FaWallet className="text-xl" />
-          </div>
-          <h3 className="font-semibold">Fund wallets</h3>
-          <p>
-            Fund your Bitpapy wallet and start trading 50+ cryptocurrencies with
-            ease
-          </p>
-        </div>
-
-        <div className="w-full max-w-[250px] text-center grid gap-4">
-          <div className="rounded-full w-20 h-20 grid place-content-center mx-auto bg-blue-500 text-white">
-            <RiTokenSwapFill className="text-xl" />
-          </div>
-          <h3 className="font-semibold">Exchange</h3>
-          <p>
-            You can instantly buy, sell, store, or swap your digital assets 24/7
-          </p>
-        </div>
+        <Link to="/exchange">
+          <button className="mt-14 px-6 py-1.5 bg-blue-500 hover:bg-blue-600 text-white/90 font-semibold text-sm rounded-sm">
+            Start Trading
+          </button>
+        </Link>
       </div>
-      <button className="max-w-[200px] px-10 py-3 bg-blue-500 text-white font-medium">
-        Start Trading
-      </button>
-    </div>
+    </section>
   );
 }

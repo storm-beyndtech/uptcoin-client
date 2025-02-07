@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaTimes, FaCaretDown } from 'react-icons/fa'; // Import icons
+import { FaCaretDown } from 'react-icons/fa'; // Import icons
 import logo from '../assets/logo.svg';
-import { Menu } from 'lucide-react';
-import DarkModeSwitcher from './DarkModeSwitcher';
+import { Menu, X } from 'lucide-react';
+// import DarkModeSwitcher from './DarkModeSwitcher';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -35,7 +35,7 @@ export default function Navbar() {
         {/* Logo */}
         <div>
           <Link to="/" className="-m-1.5 p-1.5">
-            <img className="h-6 w-auto" src={logo} alt="Logo" />
+            <img className="h-6 w-auto max-lg:h-5" src={logo} alt="Logo" />
           </Link>
         </div>
 
@@ -90,43 +90,41 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <DarkModeSwitcher />
+          {/* <DarkModeSwitcher /> */}
 
           {/* Mobile Menu Button */}
           <button
             className="lg:hidden text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <FaTimes size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         <div
-          className={`fixed top-0 right-0 z-50 w-3/4 h-full bg-gray-900 bg-opacity-95 p-5 transform transition-transform ${
+          className={`fixed top-0 right-0 z-50 w-3/4 h-full bg-bodydark2/90 customBlur p-10 transform transition-transform ${
             mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           onClick={() => setMobileMenuOpen(false)}
         >
-          <div className="flex justify-between items-center mb-5">
-            <Link to="/">
-              <img className="h-8 w-auto" src={logo} alt="Logo" />
-            </Link>
-            <button className="text-white">
-              <FaTimes size={24} />
-            </button>
-          </div>
-          <div className="space-y-4">
+          <button className="text-white absolute top-10 right-10">
+            <X size={24} />
+          </button>
+
+          <div className="space-y-6">
             {navLinks.map((link, index) => (
               <div key={index}>
                 {link.submenu ? (
                   <>
-                    <span className="text-white block mb-2">{link.title}</span>
+                    <span className="text-white/90 block mb-3 text-lg">
+                      {link.title}
+                    </span>
                     {link.submenu.map((subLink, subIndex) => (
                       <Link
                         key={subIndex}
                         to={subLink.link}
-                        className="block px-4 py-2 text-white hover:bg-gray-600 rounded-md"
+                        className="block px-4 py-3 text-lg text-white/70 font-light hover:bg-bodydark1 rounded-md"
                       >
                         {subLink.title}
                       </Link>
@@ -135,7 +133,7 @@ export default function Navbar() {
                 ) : (
                   <Link
                     to={link.link}
-                    className="block text-white text-sm font-medium hover:text-green-600"
+                    className="block text-white/70 text-lg font-light hover:text-green-600"
                   >
                     {link.title}
                   </Link>

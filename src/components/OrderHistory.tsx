@@ -55,7 +55,7 @@ const OrderHistory: React.FC = () => {
               <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Symbol</th>
               <th className="px-4 py-2">Direction</th>
-              <th className="px-4 py-2">Market Price</th>
+              <th className="px-4 py-2 whitespace-nowrap">Market Price</th>
               <th className="px-4 py-2">Quantity</th>
               <th className="px-4 py-2">Amount</th>
               <th className="px-4 py-2">Time</th>

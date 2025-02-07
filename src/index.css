@@ -109,7 +109,7 @@ h2 {
 
 @layer base {
   body {
-    @apply font-arial font-normal text-base relative z-1;
+    @apply font-arial font-normal text-base relative z-1 bg-white dark:bg-bodydark1;
   }
 }
 
