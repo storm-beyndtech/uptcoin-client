@@ -27,7 +27,7 @@ const MarketList: React.FC<MarketListProps> = ({
       if (window.innerWidth < 720) navigate(`/exchange/${symbol}`);
     }
 
-    if (setMarginModal) setMarginModal(true);
+    if (setMarginModal && window.innerWidth < 720) setMarginModal(true);
     setSelectedMarket(symbol);
   };
 

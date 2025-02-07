@@ -5,7 +5,7 @@ import asset from '../assets/cryptoAsset.png';
 const Hero: React.FC = () => {
   return (
     <section className="relative bg-bodydark1 -mt-10">
-      <div className="max-ctn-y pad px-5 max-md:pt-40 flex items-center gap-12">
+      <div className="max-ctn pad px-5 max-md:pt-40 flex items-center gap-12">
         <div className="w-full max-w-[650px]">
           <h1 className="text-6xl font-semibold max-md:!text-2xl text-white mb-4">
             Join Over 26 Million{' '}
