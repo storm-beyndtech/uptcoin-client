@@ -8,10 +8,10 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({
   firstName,
-  profileImageUrl = "", // Default to an empty string if not provided
+  profileImageUrl = '', // Default to an empty string if not provided
   height,
   width,
-  borderRadius = "9999px", // Default to fully rounded (circular)
+  borderRadius = '9999px', // Default to fully rounded (circular)
 }) => {
   // Extract the first letter of the user's first name as the initial
   const avatarInitial = firstName.charAt(0).toUpperCase();
@@ -28,8 +28,8 @@ const Avatar: React.FC<AvatarProps> = ({
         />
       ) : (
         <span
-          className="grid place-content-center font-bold text-white bg-brandBlue3"
-          style={{ height, width, borderRadius, fontSize: 'calc(60% + 6px)' }}
+          className="border border-green-300/30 grid place-content-center font-medium text-green-400 bg-white/5"
+          style={{ height, width, borderRadius, fontSize: 'calc(50% + 6px)' }}
         >
           {avatarInitial}
         </span>

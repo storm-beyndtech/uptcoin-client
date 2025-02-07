@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaCaretDown } from 'react-icons/fa'; // Import icons
 import logo from '../assets/logo.svg';
-import { Menu, X } from 'lucide-react';
+import logoMobile from '../assets/fav.svg';
+import { X } from 'lucide-react';
+import DropdownUser from './UI/DropdownUser';
 // import DarkModeSwitcher from './DarkModeSwitcher';
 
 export default function Navbar() {
@@ -31,13 +33,12 @@ export default function Navbar() {
       id="navBar"
       className="w-full top-0 left-0 z-40 bg-[#151617] font-inter transition-all fixed"
     >
-      <nav className="max-ctn flex items-center justify-between px-5">
+      <nav className="max-ctn flex items-center justify-between px-5 py-4">
         {/* Logo */}
-        <div>
-          <Link to="/" className="-m-1.5 p-1.5">
-            <img className="h-6 w-auto max-lg:h-5" src={logo} alt="Logo" />
-          </Link>
-        </div>
+        <Link to="/">
+          <img className="h-6 w-auto hidden lg:block" src={logo} alt="Logo" />
+          <img className="h-7 w-auto lg:hidden" src={logoMobile} alt="Logo" />
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex lg:items-center lg:gap-8">
@@ -73,7 +74,9 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-5">
+        <DropdownUser />
+
+        <div className="hidden items-center gap-5">
           <div className="flex items-center gap-3 text-xs font-semibold max-lg:hidden">
             <Link
               to="/login"
@@ -90,15 +93,12 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* <DarkModeSwitcher /> */}
-
-          {/* Mobile Menu Button */}
-          <button
+          {/* <button
             className="lg:hidden text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          </button> */}
         </div>
 
         {/* Mobile Menu */}
