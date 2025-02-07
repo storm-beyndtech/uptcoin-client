@@ -1,4 +1,3 @@
-import Bonus from "@/pages/Dashboard/Bonus";
 import Deposit from "@/pages/Dashboard/Deposit";
 import KYC from "@/pages/Dashboard/KYC";
 import LiveTrades from "@/pages/Dashboard/LiveTrades";
@@ -36,7 +35,6 @@ const coreRoutes = [
   {
     path: '/dashboard/bonus',
     title: 'Bonus',
-    component: Bonus,
   },
   {
     path: '/dashboard/kyc',
