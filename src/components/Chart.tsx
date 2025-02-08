@@ -25,7 +25,7 @@ const Chart = ({ symbol }: { symbol: string }) => {
         "style": "1",
         "locale": "en",
         "allow_symbol_change": true,
-        "hide_side_toolbar": false,
+        "hide_side_toolbar": true,
         "calendar": false,
         "support_host": "https://www.tradingview.com"
       }`;

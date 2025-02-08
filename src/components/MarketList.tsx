@@ -36,7 +36,7 @@ const MarketList: React.FC<MarketListProps> = ({
       <h2 className="text-sm font-semibold text-white/60 mb-2 max-lg:hidden">
         Market
       </h2>
-      <div className="text-xs grid grid-cols-3 gap-2 max-lg:gap-3 border-b border-white/10 p-2 text-white/30">
+      <div className="text-xs grid grid-cols-3 gap-2 max-lg:gap-3 border-b border-white/10 p-2 text-white/40">
         <span className="col-span-1">Pair</span>
         <span className="col-span-1 ml-auto">Price</span>
         <span className="col-span-1 ml-auto">24h%</span>
@@ -55,12 +55,12 @@ const MarketList: React.FC<MarketListProps> = ({
             <div className="grid gap-[1px] col-span-1">
               <span className=" text-xs">
                 {market.symbol}{' '}
-                <span className="lg:hidden font-inter font-thin text-white/20 ">
+                <span className="lg:hidden font-inter font-light text-white/40 ">
                   / USDT
                 </span>
               </span>
 
-              <span className=" text-[8px] lg:hidden font-inter font-thin text-white/30">
+              <span className=" text-[8px] lg:hidden font-inter font-light text-white/40">
                 {market.symbol} <span> = USDT</span>
               </span>
             </div>
@@ -74,7 +74,7 @@ const MarketList: React.FC<MarketListProps> = ({
                 {market.price.toFixed(2)}
               </span>
 
-              <span className="lg:hidden font-inter ml-auto font-thin text-white/30 text-[8px]">
+              <span className="lg:hidden font-inter ml-auto font-light text-white/40 text-[8px]">
                 {market.price.toFixed(2)} USDT
               </span>
             </div>

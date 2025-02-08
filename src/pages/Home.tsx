@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { MarketData } from './Exchange';
 import CryptoNews from '@/components/CryptoNews';
 import HotPairs, { TradingPair } from '@/components/HotPairs';
+import Staking from '@/components/Staking';
 
 export default function Home() {
   const { cryptoData } = useCrypto();
@@ -54,6 +55,7 @@ export default function Home() {
 
       <div className="lg:hidden space-y-5 pb-20">
         <MobileLinks />
+        <Staking />
         <HotPairs hotList={hotList} />
         <BannerSlides />
         <MarketList
