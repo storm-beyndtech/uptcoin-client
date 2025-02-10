@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Alert from './UI/Alert';
 import { Asset, SymbolMargin } from '@/lib/utils';
 import CompleteTransactionModal from './CompleteTransactionModal';
+import Btn from './UI/Btn';
 
 type WithdrawAsset = Asset &
   Pick<SymbolMargin, 'minWithdraw' | 'charges' | 'withdraw'>;
@@ -44,11 +45,13 @@ export default function WithdrawForm({
 
   return (
     <>
-      <div className="max-w-md p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md space-y-7">
-        <h2 className="text-xl font-medium">Withdraw Funds</h2>
+      <div className="max-w-md p-6 px-4 bg-white max-lg:bg-bodydark1 rounded-lg space-y-7">
+        <h2 className="text-xl font-medium max-md:text-white/90">
+          Withdraw Funds
+        </h2>
 
         <div>
-          <label className="text-sm font-medium mb-2.5 text-gray-500">
+          <label className="text-sm font-medium mb-2.5 text-gray-500 max-lg:text-white/30">
             Select Asset
           </label>
           <select
@@ -68,7 +71,7 @@ export default function WithdrawForm({
         </div>
 
         <div>
-          <label className="text-sm font-medium mb-2.5 text-gray-500">
+          <label className="text-sm font-medium mb-2.5 text-gray-500 max-lg:text-white/30">
             Network
           </label>
           <input
@@ -80,7 +83,7 @@ export default function WithdrawForm({
         </div>
 
         <div>
-          <div className="flex justify-between text-sm font-medium mb-2 text-gray-500">
+          <div className="flex justify-between text-sm font-medium mb-2 text-gray-500 max-lg:text-white/30">
             <label>Address</label>
             <button
               onClick={() => setIsAddressModalOpen(true)}
@@ -98,7 +101,7 @@ export default function WithdrawForm({
         </div>
 
         <div>
-          <div className="flex justify-between text-sm font-medium mb-2 text-gray-500">
+          <div className="flex justify-between text-sm font-medium mb-2 text-gray-500 max-lg:text-white/30">
             <label>Amount ({selectedAsset.symbol})</label>
             <p className="text-blue-500">
               Balance: {selectedAsset.funding} {selectedAsset.symbol}
@@ -118,21 +121,21 @@ export default function WithdrawForm({
           message={`Minimum withdrawal amount is ${selectedAsset.minWithdraw} ${selectedAsset.symbol}. Withdrawals below this amount will not be processed.`}
         />
 
-        <button
-          className="w-full bg-blue-600 text-white p-2 rounded"
+        <Btn
+          label="Submit"
+          type="primary"
+          className="w-full"
           onClick={() => setIsSubmitModalOpen(true)}
-        >
-          Submit
-        </button>
+        />
       </div>
 
-      {submitModalOpen &&
+      {submitModalOpen && (
         <CompleteTransactionModal
           setIsModalOpen={setIsSubmitModalOpen}
           onSubmit={handleSubmit}
           title="Withdrawal"
         />
-      }
+      )}
     </>
   );
 }

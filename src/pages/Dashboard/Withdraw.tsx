@@ -1,5 +1,6 @@
 import AddAddressModal from '@/components/AddAddressModal';
 import { Address } from '@/components/ManageAddress';
+import MobileNav from '@/components/MobileNav';
 import WithdrawForm from '@/components/WithdrawForm';
 import { symbols, userAssets } from '@/lib/utils';
 import { useState } from 'react';
@@ -32,7 +33,7 @@ export default function Withdraw() {
   };
 
   return (
-    <div>
+    <div className="max-lg:min-h-screen max-lg:bg-bodydark1 py-20 px-2">
       {addressModalOpen && (
         <AddAddressModal
           addresses={addresses}
@@ -47,6 +48,10 @@ export default function Withdraw() {
         withdrawAssets={withdrawAssets}
         setIsAddressModalOpen={setIsAddressModalOpen}
       />
+
+      <div className="lg:hidden">
+        <MobileNav />
+      </div>
     </div>
   );
 }

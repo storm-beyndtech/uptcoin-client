@@ -1,4 +1,5 @@
 import DepositComp from '@/components/DepositComp';
+import MobileNav from '@/components/MobileNav';
 import { symbols } from '@/lib/utils';
 
 export default function Deposit() {
@@ -15,8 +16,12 @@ export default function Deposit() {
   );
 
   return (
-    <div>
+    <div className=''>
       <DepositComp coins={availableCoins} />
+
+      <div className="lg:hidden">
+        <MobileNav />
+      </div>
     </div>
   );
 }

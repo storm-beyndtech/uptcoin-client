@@ -18,9 +18,11 @@ const ManageAddress: React.FC<ManageAddressProps> = ({
   onEdit,
 }) => {
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 bg-white max-lg:bg-bodydark2 max-lg:text-white/80 max-lg:text-sm rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Manage Address</h2>
+        <h2 className="text-xl font-semibold max-lg:font-medium">
+          Manage Address
+        </h2>
         <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center bg-gray-800 text-white px-3 py-1 rounded-sm hover:opacity-80"
@@ -31,7 +33,7 @@ const ManageAddress: React.FC<ManageAddressProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-100 text-left">
+            <tr className="bg-gray-100 max-lg:bg-bodydark1 text-left">
               <th className="p-2">Currency</th>
               <th className="p-2">Address</th>
               <th className="p-2">Network</th>
@@ -40,11 +42,14 @@ const ManageAddress: React.FC<ManageAddressProps> = ({
           </thead>
           <tbody>
             {addresses.map(({ id, symbol, address, network, name }) => (
-              <tr key={id} className="border-t">
-                <td className="p-2">{symbol}</td>
-                <td className="p-2 truncate max-w-xs">{address}</td>
-                <td className="p-2">{network}</td>
-                <td className="p-2 flex gap-2">
+              <tr
+                key={id}
+                className="border-t max-lg:border-white/10 max-lg:text-white/60"
+              >
+                <td className="p-3">{symbol}</td>
+                <td className="p-3 truncate max-w-xs">{address}</td>
+                <td className="p-3">{network}</td>
+                <td className="p-3 flex gap-2">
                   <button
                     className="p-2 text-blue-500 hover:text-blue-700"
                     onClick={() =>

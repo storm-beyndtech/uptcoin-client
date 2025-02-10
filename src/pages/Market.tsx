@@ -23,13 +23,13 @@ export default function Market() {
   );
 
   return (
-    <div className="pt-20 max-lg:pb-30 max-lg:bg-bodydark1">
+    <div className="py-20 max-lg:pb-30 max-lg:bg-bodydark1">
       <Navbar />
       <MobileNav />
 
       <div className="w-full grid grid-cols-10 gap-4 lg:hidden">
         {/* Market List */}
-        <div className="col-span-2 max-lg:col-span-10 bg-[#1a1b1c] p-3 rounded-sm">
+        <div className="col-span-2 max-lg:col-span-10 bg-[#1a1b1c] rounded-sm">
           <MarketList
             markets={marketData}
             selectedMarket={selectedMarket}

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Copy, OctagonAlert } from 'lucide-react';
-import Alert from './UI/Alert';
 
 interface Coin {
   symbol: string;
@@ -33,16 +32,18 @@ export default function DepositComp({ coins }: DepositProps) {
   };
 
   return (
-    <div className="flex gap-5">
-      <div className="p-6 max-w-lg bg-white dark:bg-gray-900 shadow-md rounded-lg">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+    <div className="flex gap-5 max-lg:flex-col py-10 px-4">
+      <div className="p-6 max-lg:px-0 max-w-lg bg-white max-lg:bg-bodydark1 shadow-md rounded-lg">
+        <h2 className="text-xl font-semibold max-lg:font-medium text-gray-800 max-lg:text-white/90 mb-4">
           Deposit
         </h2>
 
         {/* Select a coin */}
-        <label className="block mb-2 text-sm font-medium">Select Coin</label>
+        <label className="block mb-2 text-sm font-medium max-lg:text-white/30">
+          Select Coin
+        </label>
         <select
-          className="w-full p-2 border rounded mb-4"
+          className="input"
           value={selectedCoin.symbol}
           onChange={handleCoinChange}
         >
@@ -56,27 +57,25 @@ export default function DepositComp({ coins }: DepositProps) {
 
         {/* Choose a network */}
         <div className="mt-4">
-          <label className="text-gray-700 dark:text-gray-300">
+          <label className="text-gray-700 dark:text-gray-300 max-lg:text-white/30">
             Choose a network
           </label>
-          <div className="mt-2 p-3 border rounded-lg dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-            {selectedCoin.network}
-          </div>
+          <div className="input">{selectedCoin.network}</div>
         </div>
 
         {/* Deposit Address */}
         <div className="mt-4">
-          <label className="text-gray-700 dark:text-gray-300">
+          <label className="text-gray-700 dark:text-gray-300 max-lg:text-white/30">
             Deposit address
           </label>
-          <div className="mt-2 p-4 border rounded-lg dark:border-gray-700 flex items-center bg-gray-50 dark:bg-gray-800">
+          <div className="mt-2 p-4 lg:border rounded-lg flex items-center bg-gray-50 max-lg:bg-bodydark2">
             <img src={qrCodeUrl} alt="QR Code" className="w-16 h-16 mr-4" />
             <div className="flex-1">
               <input
                 type="text"
                 readOnly
                 value={selectedCoin.address}
-                className="w-full bg-transparent text-gray-800 dark:text-white"
+                className="input max-lg:border-none"
               />
             </div>
             <button
@@ -87,16 +86,10 @@ export default function DepositComp({ coins }: DepositProps) {
             </button>
           </div>
         </div>
-
-        <Alert
-          type="warning"
-          message={`Minimum deposit amount: ${selectedCoin.minDeposit} ${selectedCoin.symbol}. Any deposits less than the
-          minimum will not be credited or refunded.`}
-        />
       </div>
 
-      <div className="max-w-100 space-y-6 shadow-1 p-5 rounded-md bg-white text-sm ">
-        <h2 className="text-xl text-yellow-700 flex gap-2">
+      <div className="max-w-100 space-y-6 shadow-1 p-5 rounded-md max-lg:text-white/60 bg-white max-lg:bg-bodydark2 text-sm ">
+        <h2 className="text-xl text-yellow-500 flex gap-2">
           <OctagonAlert /> Notice{' '}
         </h2>
         <p>

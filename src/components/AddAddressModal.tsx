@@ -36,9 +36,9 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 customBlur">
-      <div className="bg-white p-6 rounded-lg w-96 shadow-lg">
-        <div className="relative mb-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 customBlur px-2">
+      <div className="bg-white max-lg:bg-bodydark2 p-6 max-lg:px-4 rounded-lg w-96">
+        <div className="relative mb-4 max-lg:text-white/90">
           <h2 className="text-lg font-semibold">
             {editing ? 'Update' : 'Add'} Address
           </h2>
@@ -54,21 +54,23 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
         {/* Select Coin */}
         {editing ? (
           <>
-            <label className="block mb-2 text-sm font-medium">Currency</label>
+            <label className="block mb-2 text-sm font-medium max-lg:text-white/30">
+              Currency
+            </label>
             <input
               type="text"
               value={address.name + `(${address.symbol})`}
-              className="w-full border p-2 rounded-lg mb-4"
+              className="input mb-4"
               disabled
             />
           </>
         ) : (
           <>
-            <label className="block mb-2 text-sm font-medium">
+            <label className="block mb-2 text-sm font-medium max-lg:text-white/30">
               Select Currency
             </label>
             <select
-              className="w-full p-2 border rounded mb-4"
+              className="input mb-4"
               value={selectedAddress.symbol}
               onChange={handleAddressChange}
             >
@@ -83,33 +85,33 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
         )}
 
         {/* Coin Network */}
-        <label className="block mb-2 text-sm font-medium">
+        <label className="block mb-2 text-sm font-medium max-lg:text-white/30">
           Withdrawal Network
         </label>
         <input
           type="text"
           value={selectedAddress.network}
-          className="w-full border p-2 rounded-lg mb-4"
+          className="input mb-4"
           placeholder="Fixed Withdrawal Network"
           disabled
         />
 
         {/* Coin Address */}
-        <label className="block mb-2 text-sm font-medium">
+        <label className="block mb-2 text-sm font-medium max-lg:text-white/30">
           Withdrawal Address
         </label>
         <input
           type="text"
           value={newAddress}
           onChange={(e) => setNewAddress(e.target.value)}
-          className="w-full border p-2 rounded-lg mb-4"
+          className="input mb-4"
           placeholder="Set Withdrawal Address"
         />
 
         {/* Buttons */}
         <div className="flex space-x-5 text-sm">
           <button
-            className="px-5 py-1 bg-gray-600 text-white rounded-sm"
+            className="px-5 py-1.5 bg-bodydark1 text-white rounded-sm"
             onClick={() => {
               setIsModalOpen(false);
               setEditing(false);
@@ -118,7 +120,7 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
             Cancel
           </button>
           <button
-            className="px-5 py-1 bg-green-600 text-white rounded-sm"
+            className="px-5 py-1.5 bg-blue-600 text-white rounded-sm"
             onClick={() => {
               if (selectedAddress) {
                 onAdd({

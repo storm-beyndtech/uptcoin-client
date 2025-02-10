@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { FaCaretDown } from 'react-icons/fa'; // Import icons
 import logo from '../assets/logo.svg';
 import logoMobile from '../assets/fav.svg';
-import { X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import DropdownUser from './UI/DropdownUser';
-// import DarkModeSwitcher from './DarkModeSwitcher';
+import { contextData } from '@/context/AuthContext';
 
 export default function Navbar() {
+  const { user } = contextData();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Navigation links array
@@ -37,7 +38,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/">
           <img className="h-6 w-auto hidden lg:block" src={logo} alt="Logo" />
-          <img className="h-7 w-auto lg:hidden" src={logoMobile} alt="Logo" />
+          <img className="h-8 w-auto lg:hidden" src={logoMobile} alt="Logo" />
         </Link>
 
         {/* Desktop Menu */}
@@ -74,31 +75,32 @@ export default function Navbar() {
           ))}
         </div>
 
-        <DropdownUser />
+        <div className="flex items-center gap-5">
+          {user && <DropdownUser />}
+          {!user && (
+            <div className="flex items-center gap-3 text-xs font-semibold max-lg:hidden">
+              <Link
+                to="/login"
+                className="py-1.5 px-4 border-[1px] border-white/50 text-white rounded-md"
+              >
+                Sign in
+              </Link>
 
-        <div className="hidden items-center gap-5">
-          <div className="flex items-center gap-3 text-xs font-semibold max-lg:hidden">
-            <Link
-              to="/login"
-              className="py-1.5 px-4 border-[1px] border-white/50 text-white rounded-md"
-            >
-              Sign in
-            </Link>
+              <Link
+                to="/register"
+                className="py-2 px-4 bg-green-600 text-white rounded-md"
+              >
+                Sign up
+              </Link>
+            </div>
+          )}
 
-            <Link
-              to="/register"
-              className="py-2 px-4 bg-green-600 text-white rounded-md"
-            >
-              Sign up
-            </Link>
-          </div>
-
-          {/* <button
+          <button
             className="lg:hidden text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button> */}
+          </button>
         </div>
 
         {/* Mobile Menu */}
@@ -140,6 +142,25 @@ export default function Navbar() {
                 )}
               </div>
             ))}
+
+            {/* auth mobile */}
+            {!user && (
+              <div className="flex items-center gap-3 text-xs font-semibold">
+                <Link
+                  to="/login"
+                  className="py-1.5 px-4 border-[1px] border-white/50 text-white rounded-md"
+                >
+                  Sign in
+                </Link>
+
+                <Link
+                  to="/register"
+                  className="py-2 px-4 bg-green-600 text-white rounded-md"
+                >
+                  Sign up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>

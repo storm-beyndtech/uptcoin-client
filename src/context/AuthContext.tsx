@@ -1,15 +1,16 @@
+import { User } from '@/types/types';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const AuthContext = createContext<any>(null);
 
 export const AuthProvider = ({ children }:any) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [fetching, setFetching] = useState(true);
   const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
   const location = useLocation();
 
-  const login = (userData:any) => {
+  const login = (userData:User) => {
     setUser(userData);
   };
 
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }:any) => {
     const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     try {
-      const res = await fetch(`${url}/users/${userId}`, {
+      const res = await fetch(`${url}/auth/users/${userId}`, {
         signal: controller.signal,
       });
       const data = await res.json();

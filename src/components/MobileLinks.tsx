@@ -22,7 +22,7 @@ const links = [
 
 export default function MobileLinks() {
   return (
-    <div className="grid grid-cols-4 gap-4 p-4">
+    <div className="grid grid-cols-4 gap-4 p-2">
       {links.map(({ icon: Icon, label }, index) => (
         <div key={index} className="flex flex-col items-center text-white">
           <div className="bg-bodydark2 p-3 rounded-xl flex items-center justify-center">

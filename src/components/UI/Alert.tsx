@@ -21,7 +21,7 @@ export default function Alert({
     case 'simple':
       return (
         showAlert && (
-          <div className="flex p-4 my-5 text-blue-800 rounded-md bg-blue-50">
+          <div className="flex p-4 my-5 text-blue-800 rounded-md bg-blue-50 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-medium">{message}</div>
             {showToggle && (
@@ -42,13 +42,13 @@ export default function Alert({
     case 'danger':
       return (
         showAlert && (
-          <div className="flex p-4 my-5 text-red-800 rounded-md bg-red-50 dark:text-red-400 dark:bg-black">
+          <div className="flex p-4 my-5 text-red-800 rounded-md bg-red-50 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-medium">{message}</div>
             {showToggle && (
               <button
                 type="button"
-                className="bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex justify-center h-8 w-8 dark:bg-black dark:text-red-400 dark:hover:bg-gray-700"
+                className="bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex justify-center h-8 w-8"
                 data-dismiss-target="#alert-border-2"
                 onClick={() => setShowAlert(false)}
               >
@@ -64,7 +64,7 @@ export default function Alert({
     case 'success':
       return (
         showAlert && (
-          <div className="flex p-4 my-5 text-green-800 rounded-md bg-green-50 dark:text-green-400 dark:bg-black">
+          <div className="flex p-4 my-5 text-green-800 rounded-md bg-green-50 dark:text-green-400 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-medium">{message}</div>
             {showToggle && (
@@ -86,7 +86,7 @@ export default function Alert({
     case 'warning':
       return (
         showAlert && (
-          <div className="flex p-4 my-5 text-yellow-800 rounded-md bg-yellow-100/20 dark:bg-black">
+          <div className="flex p-4 my-5 text-yellow-500 rounded-md bg-yellow-100/20 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-medium">{message}</div>
             {showToggle && (

@@ -32,7 +32,7 @@ const MarketList: React.FC<MarketListProps> = ({
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto no-scrollbar ">
+    <div className="w-full h-full overflow-y-auto no-scrollbar max-lg:px-4">
       <h2 className="text-sm font-semibold text-white/60 mb-2 max-lg:hidden">
         Market
       </h2>

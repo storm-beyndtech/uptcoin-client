@@ -17,9 +17,9 @@ export default function CompleteTransactionModal({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 customBlur">
-      <div className="bg-white p-6 rounded-lg w-96 shadow-lg space-y-5">
-        <div className="relative mb-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 customBlur px-2">
+      <div className="bg-white max-lg:bg-bodydark2 p-6 rounded-lg w-96 shadow-lg space-y-5">
+        <div className="relative mb-4 max-lg:text-white/90">
           <h2 className="text-xl font-medium">Enter {title} Password</h2>
           <CgClose
             className="absolute right-2 top-[50%] translate-y-[-50%] text-xl cursor-pointer"
@@ -49,13 +49,13 @@ export default function CompleteTransactionModal({
         {/* Buttons */}
         <div className="flex space-x-5 text-sm">
           <button
-            className="px-5 py-1 bg-gray-600 text-white rounded-sm"
+            className="px-5 py-1.5 bg-bodydark1 text-white rounded-sm"
             onClick={() => setIsModalOpen(false)}
           >
             Cancel
           </button>
           <button
-            className="px-5 py-1 bg-green-600 text-white rounded-sm"
+            className="px-5 py-1.5 bg-blue-600 text-white rounded-sm"
             onClick={() => {
               onSubmit(password);
             }}

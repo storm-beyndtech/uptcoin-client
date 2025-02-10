@@ -1,6 +1,9 @@
 import AddAssetModal from '@/components/AddAssetModal';
 import AssetList from '@/components/AssetList';
+import MobileNav from '@/components/MobileNav';
+import { contextData } from '@/context/AuthContext';
 import { useCrypto } from '@/context/CoinContext';
+import { Asset } from '@/types/types';
 import { useState } from 'react';
 
 const TotalConversion = ({ total }: { total: number }) => {
@@ -16,16 +19,11 @@ const TotalConversion = ({ total }: { total: number }) => {
 
 export default function UserWallet() {
   const { cryptoData } = useCrypto();
+  const { user } = contextData();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const userAssets = [
-    { symbol: 'BTC', funding: 0.2, spot: 0.19698 },
-    { symbol: 'ETH', funding: 0.5, spot: 1.7 },
-    { symbol: 'LTC', funding: 3, spot: 0.5 },
-    { symbol: 'USDT', funding: 4000, spot: 0 },
-  ];
 
   // Get user's coins with USD equivalent
-  const parsedAssets = userAssets.map((asset) => {
+  const parsedAssets = user.assets.map((asset: Asset) => {
     const coinInfo = cryptoData.find((coin) => coin.symbol === asset.symbol);
 
     if (!coinInfo) return { ...asset, equivalent: 0, image: '', price: 0 };
@@ -39,13 +37,15 @@ export default function UserWallet() {
 
   //handle total conversion
   const totalConversion = parsedAssets.reduce(
-    (acc, asset) => acc + (asset.funding + asset.spot) * asset.price,
+    (acc: number, asset: any) =>
+      acc + (asset.funding + asset.spot) * asset.price,
     0,
   );
 
   // Get available coins (excluding ones in wallet)
   const availableCoins = cryptoData.filter(
-    (coin) => !userAssets.some((wallet) => wallet.symbol === coin.symbol),
+    (coin) =>
+      !user.assets.some((wallet: Asset) => wallet.symbol === coin.symbol),
   );
 
   //handle adding new asset
@@ -56,10 +56,12 @@ export default function UserWallet() {
   };
 
   return (
-    <div className="pr-4 space-y-4">
-      <h2 className="py-5 text-4xl font-medium">Wallet</h2>
-      <TotalConversion total={totalConversion} />
-      <AssetList assets={parsedAssets} setIsModalOpen={setIsModalOpen} />
+    <>
+      <div className="pr-4 space-y-4 max-lg:hidden">
+        <h2 className="py-5 text-4xl font-medium">Wallet</h2>
+        <TotalConversion total={totalConversion} />
+        <AssetList assets={parsedAssets} setIsModalOpen={setIsModalOpen} />
+      </div>
 
       {isModalOpen && (
         <AddAssetModal
@@ -68,6 +70,11 @@ export default function UserWallet() {
           onAdd={handleAddAsset}
         />
       )}
-    </div>
+
+      <div className="lg:hidden">
+        <AssetList assets={parsedAssets} setIsModalOpen={setIsModalOpen} />
+        <MobileNav />
+      </div>
+    </>
   );
 }

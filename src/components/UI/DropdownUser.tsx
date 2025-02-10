@@ -38,20 +38,22 @@ export default function DropdownUser() {
       <button
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-3 border border-green-400/60 p-1 max-lg:pl-3 rounded-full"
+        className="flex items-center gap-3 border border-green-400/50 p-1 rounded-full"
       >
-        <span className="hidden max-lg:block font-medium text-sm text-white/90 whitespace-nowrap">
-          {user?.firstName} {user?.lastName?.charAt(0)} Victor N.
-        </span>
+        {user.firstName && (
+          <span className="hidden max-lg:block font-medium text-sm max-lg:ml-3 text-white/90 whitespace-nowrap">
+            {user?.firstName} {user?.lastName?.charAt(0)}
+          </span>
+        )}
 
         {/* Use Avatar Component */}
-        <Avatar firstName={user?.firstName || 'V'} height="30px" width="30px" />
+        <Avatar firstName={user?.firstName || 'U'} height="30px" width="30px" />
       </button>
 
       {/* Dropdown Menu */}
       <div
         ref={dropdown}
-        className={`absolute right-0 mt-4 w-fit flex flex-col rounded-sm bg-bodydark1/90 customBlur text-white/80 ${
+        className={`absolute right-0 mt-4 w-fit flex flex-col rounded-sm bg-bodydark2/80 customBlur text-white/80 ${
           dropdownOpen ? 'block' : 'hidden'
         }`}
       >

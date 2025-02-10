@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import './fonts.css';
 
 @tailwind base;
 @tailwind components;
@@ -87,7 +86,7 @@ h2 {
   }
 
   .input {
-    @apply w-full p-3 border rounded-lg bg-transparent sm:border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply w-full p-3 border rounded-lg bg-transparent max-lg:border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 max-lg:placeholder:text-white/10 max-lg:text-white/60;
   }
 
   .tradePanelInput {
@@ -191,6 +190,11 @@ h2 {
 @media screen and (max-width: 500px) {
   #slide {
     overflow: -moz-hidden-unscrollable;
+  }
+
+  select option{
+    background: inherit;
+    color: gray;
   }
 }
 

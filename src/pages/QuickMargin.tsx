@@ -51,7 +51,7 @@ const QuickMargin: React.FC = () => {
       <div className="max-ctn !max-w-[1300px] text-white">
         <div className="w-full grid grid-cols-10 gap-4 py-5">
           {/* Market List */}
-          <div className="col-span-2 max-lg:col-span-10 bg-bodydark2 p-4 rounded-sm">
+          <div className="col-span-2 max-lg:col-span-10 bg-bodydark2 rounded-sm">
             <MarketList
               markets={marketData}
               selectedMarket={selectedMarket}
