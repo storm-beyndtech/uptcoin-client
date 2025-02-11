@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import Header from '../Header';
 import { Outlet } from 'react-router-dom';
-import AdminSidebar from '../AdminSidebar';
+import Navbar from '../Navbar';
+import Sidebar from './Sidebar';
+import { navItems } from '@/lib/dashboardUtils';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -15,21 +16,26 @@ const AdminLayout = () => {
     };
   }, []);
 
-
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
-      <div className="flex h-screen overflow-hidden">
-        <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+    <div className="max-ctn max-w-[1400px] bg-[#fafafa] max-lg:bg-bodydark1 py-20">
+      {/* Fixed Header */}
+      <Navbar />
 
-        <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-
-          <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-              <Outlet />
-            </div>
-          </main>
+      {/* Layout container */}
+      <div className="grid grid-cols-9 gap-5 relative">
+        {/* Fixed Sidebar */}
+        <div className="col-span-2 max-lg:hidden">
+          <Sidebar
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            navItems={navItems}
+          />
         </div>
+
+        {/* Scrollable Main content */}
+        <main className="col-span-9 lg:col-span-7 overflow-y-auto no-scrollbar">
+          <Outlet />
+        </main>
       </div>
     </div>
   );
