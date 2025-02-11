@@ -45,7 +45,7 @@ export default function Login() {
         localStorage.setItem('user', JSON.stringify(user));
         login(user);
         navigate('/dashboard');
-      }, 3000);
+      }, 1000);
     } catch (error: any) {
       setError(error.message);
     } finally {

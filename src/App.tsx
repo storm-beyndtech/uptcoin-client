@@ -45,6 +45,7 @@ import KYC from './pages/Dashboard/KYC';
 import Deposit from './pages/Dashboard/Deposit';
 import Withdraw from './pages/Dashboard/Withdraw';
 import Transfer from './pages/Dashboard/Transfer';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   const { fetching, user } = contextData();
@@ -78,7 +79,14 @@ function App() {
         {/*    --    --   --   --  */}
         {/* Dashboard routes */}
         {/*    --    --   --   --  */}
-        <Route path="/dashboard/" element={<DefaultLayout />}>
+        <Route
+          path="/dashboard/"
+          element={
+            <PrivateRoute>
+              <DefaultLayout />
+            </PrivateRoute>
+          }
+        >
           <Route index element={<UserOverview />} />
           <Route path="/dashboard/wallet" element={<UserWallet />} />
           <Route path="/dashboard/deposit" element={<Deposit />} />

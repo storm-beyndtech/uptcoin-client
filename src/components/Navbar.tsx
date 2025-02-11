@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import logoMobile from '../assets/fav.svg';
-import { X } from 'lucide-react';
+import { LogOut, X } from 'lucide-react';
 import DropdownUser from './UI/DropdownUser';
 import { contextData } from '@/context/AuthContext';
 import { navItems } from '@/lib/dashboardUtils';
@@ -10,7 +10,7 @@ import { FaCaretDown } from 'react-icons/fa';
 import { UserProfile } from './OverviewComps';
 
 export default function Navbar() {
-  const { user } = contextData();
+  const { user, logout } = contextData();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Navigation links array
@@ -107,6 +107,7 @@ export default function Navbar() {
           className={`fixed top-0 right-0 z-999999 w-[95%] h-[90%] overflow-y-scroll customBlur bg-bodydark1/90 p-10 transform transition-transform ${
             mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
+          onClick={() => setMobileMenuOpen(false)}
         >
           <button
             className="text-white absolute top-5 right-5"
@@ -136,6 +137,14 @@ export default function Navbar() {
                 <Icon /> {label}
               </Link>
             ))}
+
+            <button
+              className="flex items-center gap-3 text-lg text-white/70 hover:text-green-600 space-x-2"
+              onClick={logout}
+            >
+              <LogOut className="text-xl text-red-500" />
+              Logout
+            </button>
           </div>
         </div>
       </nav>

@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import Chart from '@/components/Chart';
 import MarketLabel from '@/components/MarketLabel';
 import MarketList from '@/components/MarketList';
-import MobileNav from '@/components/MobileNav';
 import Navbar from '@/components/Navbar';
 import OrderBook from '@/components/OrderBook';
 import OrderHistory from '@/components/OrderHistory';
 import TradePanel from '@/components/TradePanel';
 import { useCrypto } from '@/context/CoinContext';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 export interface MarketData {
   symbol: string;
@@ -27,6 +27,11 @@ const Exchange: React.FC = () => {
   );
   const [activeTab, setActiveTab] = useState<'trade' | 'chart'>('trade');
   const [tradeTab, setTradeTab] = useState<'buy' | 'sell'>('buy');
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
   useEffect(() => {
     if (symbol) setSelectedMarket(symbol as string);
@@ -44,11 +49,40 @@ const Exchange: React.FC = () => {
   );
 
   return (
-    <section className="w-full bg-bodydark1 py-20">
+    <section className="w-full bg-bodydark1 pb-36 pt-20">
       <Navbar />
-      <MobileNav />
       <div className="max-ctn !max-w-[1300px] text-white">
         {/* Mobile Tabs */}
+        <div className="flex items-center justify-between p-4 pt-0 lg:hidden">
+          <ArrowLeft onClick={handleGoBack} />
+          <Link to="/market">{selectedMarket} / USDT</Link>
+          <p>Spot</p>
+        </div>
+
+        <div className="w-full lg:hidden grid grid-cols-2 p-2 gap-2 text-sm fixed bottom-0 z-99999 bg-bodydark1/90 customBlur">
+          <Link
+            to="/dashboard/conversion"
+            className="w-full bg-[#202020] py-2 rounded text-white col-span-2 text-center"
+          >
+            Convert
+          </Link>
+
+          <button className="w-full bg-green-600 py-2 rounded text-white col-span-1">
+            Buy {selectedMarket}
+          </button>
+
+          <button className="w-full bg-red-600 py-2 rounded text-white col-span-1">
+            Sell {selectedMarket}
+          </button>
+
+          <Link
+            to="/dashboard/transfer"
+            className="w-full bg-[#202020] py-2 rounded text-white col-span-2 text-center"
+          >
+            Transfer
+          </Link>
+        </div>
+
         <div className="lg:hidden grid grid-cols-2 p-3 w-full text-sm text-white/70">
           <button
             className={`px-4 py-1 rounded-l-sm col-span-1 ${
@@ -101,6 +135,22 @@ const Exchange: React.FC = () => {
           </div>
 
           {/* Mobile View: Toggle Between Trade & Chart */}
+          <div className="lg:hidden col-span-10">
+            <MarketLabel
+              market={
+                marketData.find(
+                  (market) => market.symbol === selectedMarket,
+                ) || {
+                  price: 0,
+                  symbol: selectedMarket,
+                  high: '---',
+                  low: '---',
+                  volume: '---',
+                }
+              }
+            />
+          </div>
+
           {activeTab === 'trade' ? (
             <div className="lg:hidden w-full flex gap-1 col-span-10 p-3">
               <div className="w-[65%] bg-bodydark2">
