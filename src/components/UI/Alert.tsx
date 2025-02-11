@@ -64,7 +64,7 @@ export default function Alert({
     case 'success':
       return (
         showAlert && (
-          <div className="flex p-4 my-5 text-green-800 rounded-md bg-green-50 dark:text-green-400 max-lg:bg-bodydark2">
+          <div className="flex p-4 my-5 text-green-600 rounded-md bg-green-50 dark:text-green-400 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-medium">{message}</div>
             {showToggle && (

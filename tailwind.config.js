@@ -14,6 +14,7 @@ module.exports = {
       satoshi: ['Satoshi', 'sans-serif'],
       inter: ['inter', 'sans-serif'],
       arial: ['Arial', 'sans-serif'],
+      poppins: ['Poppins', 'sans-serif'],
     },
     container: {
       center: true,

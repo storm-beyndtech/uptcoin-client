@@ -22,10 +22,12 @@ const Chart = ({ symbol }: { symbol: string }) => {
         "timezone": "Etc/UTC",
         "theme": "dark",
         "backgroundColor": "#1a1b1c",
+        "theme": "dark",
         "style": "1",
         "locale": "en",
-        "allow_symbol_change": true,
-        "hide_side_toolbar": true,
+        "hide_legend": true,
+        "allow_symbol_change": false,
+        "save_image": false,
         "calendar": false,
         "support_host": "https://www.tradingview.com"
       }`;

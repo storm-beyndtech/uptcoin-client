@@ -41,18 +41,20 @@ const UserProfile = ({
   tradingLimit: string;
 }) => {
   return (
-    <div className="flex flex-col bg-white p-4 rounded-lg shadow-sm space-y-4">
+    <div className="flex flex-col bg-white max-lg:bg-bodydark1 max-lg:my-5 p-4 rounded-lg shadow-sm space-y-4 flex-shrink-0">
       {/* Top Section - User Info */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center lg:space-x-4">
         {/* Abbreviation */}
-        <div className="w-14 h-14 text-xl flex items-center justify-center bg-gray-200 text-black font-bold rounded-full">
+        <div className="w-14 h-14 text-xl flex items-center justify-center bg-gray-200 text-black font-bold rounded-full max-lg:hidden">
           {getAbbreviation(email)}
         </div>
 
         {/* User Info */}
-        <div className="grid gap-1">
-          <p className="text-sm font-semibold">{formatEmail(email)}</p>
-          <div className="flex items-center space-x-2 text-xs text-gray-500">
+        <div className="grid lg:gap-1 gap-3">
+          <p className="text-sm font-medium max-lg:text-white/60">
+            {formatEmail(email)}
+          </p>
+          <div className="flex items-center space-x-2 text-xs text-gray-500 max-lg:text-white/90">
             <span>UID: {uid}</span>
             <VerificationBadge verified={verified} />
           </div>
@@ -63,20 +65,32 @@ const UserProfile = ({
       <div className="grid grid-cols-3 gap-4 text-xs">
         {/* Trading Status */}
         <div className="flex flex-col">
-          <span className="text-gray-500">Trading Status</span>
-          <span className="font-medium pl-[2px]">{tradingStatus}</span>
+          <span className="text-gray-500 max-lg:text-white/40">
+            Trading Status
+          </span>
+          <span className="font-medium max-lg:text-white/90">
+            {tradingStatus}
+          </span>
         </div>
 
         {/* Trading Level */}
         <div className="flex flex-col">
-          <span className="text-gray-500">Trading Level</span>
-          <span className="font-medium pl-[2px]">{tradingLevel}</span>
+          <span className="text-gray-500 max-lg:text-white/40">
+            Trading Level
+          </span>
+          <span className="font-medium max-lg:text-white/90">
+            {tradingLevel}
+          </span>
         </div>
 
         {/* Trading Limit */}
         <div className="flex flex-col">
-          <span className="text-gray-500">Trading Limit</span>
-          <span className="font-medium pl-[2px]">{tradingLimit}</span>
+          <span className="text-gray-500 max-lg:text-white/40">
+            Trading Limit
+          </span>
+          <span className="font-medium max-lg:text-white/90">
+            {tradingLimit}
+          </span>
         </div>
       </div>
     </div>
@@ -120,7 +134,7 @@ const AssetTransactions: React.FC = () => {
   return (
     <div className="mt-2 border rounded-sm overflow-hidden">
       <table className="w-full text-left">
-      <thead className="bg-gray-200 text-left text-sm">
+        <thead className="bg-gray-200 text-left text-sm">
           <tr>
             <th className="p-2">#</th>
             <th className="p-2">Symbol</th>

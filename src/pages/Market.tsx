@@ -23,7 +23,7 @@ export default function Market() {
   );
 
   return (
-    <div className="py-20 max-lg:pb-30 max-lg:bg-bodydark1">
+    <div className="py-20 max-lg:pb-30 max-lg:bg-bodydark1 max-lg:min-h-screen">
       <Navbar />
       <MobileNav />
 
