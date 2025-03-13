@@ -135,11 +135,11 @@ const AssetList = ({ assets, setIsModalOpen }: AssetListProps) => {
           <div
             key={i}
             className="grid grid-cols-3 p-4 bg-bodydark2 rounded-lg 
-            cursor-pointer text-white/30 text-xs"
+            cursor-pointer text-white/50 text-xs"
           >
             <div className="space-y-1 col-span-1">
               <p>Funding</p>
-              <p className="text-white/70">
+              <p className="text-white">
                 {' '}
                 {asset.symbol === 'USDT'
                   ? asset.funding.toFixed(2)
@@ -149,7 +149,7 @@ const AssetList = ({ assets, setIsModalOpen }: AssetListProps) => {
 
             <div className="space-y-1 col-span-1">
               <p>Spot</p>
-              <p className="text-white/70">
+              <p className="text-white">
                 {' '}
                 {asset.symbol === 'USDT'
                   ? asset.spot.toFixed(2)
@@ -159,7 +159,7 @@ const AssetList = ({ assets, setIsModalOpen }: AssetListProps) => {
 
             <div className="space-y-1 col-span-1 text-right">
               <p>{asset.name}</p>
-              <p className="text-white/70">
+              <p className="text-white">
                 {asset.equivalent.toFixed(2)}{' '}
                 <span className="text-green-300/80">USDT</span>
               </p>

@@ -8,7 +8,7 @@ export default function DefaultLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="max-ctn max-w-[1400px] bg-[#fafafa] max-lg:bg-bodydark1 py-20">
+    <div className="max-ctn max-w-[1400px] min-h-screen bg-[#fafafa] max-lg:bg-bodydark1 py-20">
       {/* Fixed Header */}
       <Navbar />
 

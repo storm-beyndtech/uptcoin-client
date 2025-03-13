@@ -7,6 +7,7 @@ import { sendRequest } from '@/lib/sendRequest';
 import Btn from '@/components/UI/Btn';
 import Alert from '@/components/UI/Alert';
 import { contextData } from '@/context/AuthContext';
+import SEO from '@/components/SEO';
 
 export default function Login() {
   const { login } = contextData();
@@ -54,76 +55,83 @@ export default function Login() {
   };
 
   return (
-    <div className="py-20 max-lg:bg-bodydark1 max-lg:min-h-screen">
-      <Navbar />
-      <div className="flex items-center justify-center  py-10 px-4">
-        <div className="flex w-full max-w-4xl bg-white max-lg:bg-bodydark1 shadow-lg rounded-lg">
-          {/* Left Image Section */}
-          <div className="hidden md:block w-1/2 bg-gray-100 p-6">
-            <img src={authBg} alt="Login" className="w-full" />
-          </div>
-
-          {/* Right Form Section */}
-          <div className="w-full md:w-1/2 p-4 lg:p-8 text-sm">
-            <h2 className="text-2xl font-semibold text-gray-800 max-lg:text-white/90 mb-6">
-              Sign In
-            </h2>
-
-            <div className="mb-4">
-              <label className="block text-gray-600 max-lg:text-white/30 mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                className="input"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+    <>
+      <SEO
+        title="Uptcoin Login - Secure Crypto Access"
+        description=""
+        url="https://www.uptcoin.com/login"
+      />
+      <div className="py-20 max-lg:bg-bodydark1 max-lg:min-h-screen">
+        <Navbar />
+        <div className="flex items-center justify-center  py-10 px-4">
+          <div className="flex w-full max-w-4xl bg-white max-lg:bg-bodydark1 shadow-lg rounded-lg">
+            {/* Left Image Section */}
+            <div className="hidden md:block w-1/2 bg-gray-100 p-6">
+              <img src={authBg} alt="Login" className="w-full" />
             </div>
 
-            <div className="mb-6 relative">
-              <label className="flex justify-between text-gray-600 max-lg:text-white/30 mb-2">
-                <span>Password</span>
-                <Link to="/password-reset">Forgot Password?</Link>
-              </label>
-              <div className="relative">
+            {/* Right Form Section */}
+            <div className="w-full md:w-1/2 p-4 lg:p-8 text-sm">
+              <h2 className="text-2xl font-semibold text-gray-800 max-lg:text-white/90 mb-6">
+                Sign In
+              </h2>
+
+              <div className="mb-4">
+                <label className="block text-gray-600 max-lg:text-white/30 mb-2">
+                  Email Address
+                </label>
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type="email"
                   className="input"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-3 flex items-center text-gray-600"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
               </div>
+
+              <div className="mb-6 relative">
+                <label className="flex justify-between text-gray-600 max-lg:text-white/30 mb-2">
+                  <span>Password</span>
+                  <Link to="/password-reset">Forgot Password?</Link>
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className="input"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-600"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
+
+              {error && <Alert message={error} type="danger" />}
+              {success && <Alert message={success} type="success" />}
+              <Btn
+                className="w-full"
+                onClick={handleLogin}
+                label="Sign in"
+                disabled={loading}
+                type="auth"
+              />
+
+              <p className="text-gray-600 max-lg:text-white/30 mt-4 text-center">
+                Don’t have an account?{' '}
+                <Link to="/register" className="text-blue-600 font-semibold">
+                  Sign Up
+                </Link>
+              </p>
             </div>
-
-            {error && <Alert message={error} type="danger" />}
-            {success && <Alert message={success} type="success" />}
-            <Btn
-              className="w-full"
-              onClick={handleLogin}
-              label="Sign in"
-              disabled={loading}
-              type="auth"
-            />
-
-            <p className="text-gray-600 max-lg:text-white/30 mt-4 text-center">
-              Don’t have an account?{' '}
-              <Link to="/register" className="text-blue-600 font-semibold">
-                Sign Up
-              </Link>
-            </p>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

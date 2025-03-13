@@ -9,7 +9,7 @@ const Hero: React.FC = () => {
         <div className="w-full max-w-[650px]">
           <h1 className="text-6xl font-semibold max-md:!text-2xl text-white mb-4">
             Join Over 26 Million{' '}
-            <span className="text-customGreen my-4 block">
+            <span className="text-customGreen block">
               Active Users Trading{' '}
             </span>{' '}
             Daily With Uptcoin

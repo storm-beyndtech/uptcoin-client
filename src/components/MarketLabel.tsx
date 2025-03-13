@@ -1,3 +1,4 @@
+import { formatNumber } from '@/lib/utils';
 import React from 'react';
 
 type marketData = {
@@ -16,26 +17,40 @@ const MarketLabel: React.FC<MarketLabelProps> = ({ market }) => {
   const { symbol, low, high, volume, price } = market;
 
   return (
-    <div className="market-label lg:flex items-center justify-between bg-[#1a1b1c] px-4 py-3 rounded-sm w-full">
-      <div className="flex lg:flex-col max-lg:justify-between max-lg:items-center max-lg:mb-2 max-lg:hidden">
-        <span className="font-semibold mb-1">{symbol} / USDT</span>
-        <span className="text-white">SPOT </span>
-        <span className="lg:text-xs font text-green-500">
-          {price.toFixed(2)} USDT
+    <div className="flex items-center justify-between bg-[#1a1b1c] px-4 py-3 rounded-sm w-full">
+      <div className="flex lg:flex-col">
+        <span className="font-semibold mb-1 max-lg:hidden">
+          {symbol} / USDT
         </span>
+        <div className="flex justify-center max-lg:flex-col lg:gap-2">
+          <span className="text-white max-lg:hidden">SPOT </span>
+
+          <span className="font-semibold text-green-400 max-lg:text-2xl">
+            {price.toFixed(2)}
+          </span>
+
+          <span className="lg:hidden text-xs">
+            Last Traded: {price.toFixed(2)}
+          </span>
+        </div>
       </div>
-      <div className="flex max-lg:justify-between space-x-6 lg:text-right text-white/60 font-medium">
+
+      <div className="flex max-lg:justify-between space-x-6 max-lg:space-x-3 text-xs text-right text-white/60 font-medium">
         <div>
-          <span className="block text-xs mb-1">Low</span>
-          <span className="text-sm">{low}</span>
+          <span className="block lg:mb-1 mb-3">Low</span>
+          <span className="lg:text-sm text-white">{Number(low).toFixed()}</span>
         </div>
         <div>
-          <span className="block text-xs mb-1">High</span>
-          <span className="text-sm">{high}</span>
+          <span className="block lg:mb-1 mb-3">High</span>
+          <span className="lg:text-sm text-white">
+            {Number(high).toFixed()}
+          </span>
         </div>
         <div>
-          <span className="block text-xs mb-1">24H Vol.</span>
-          <span className="text-sm">{volume}</span>
+          <span className="block lg:mb-1 mb-3">24H Vol.</span>
+          <span className="lg:text-sm text-white">
+            {formatNumber(parseFloat(volume.replace(/,/g, '')))}
+          </span>
         </div>
       </div>
     </div>

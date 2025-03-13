@@ -48,12 +48,12 @@ export default function UserOverview() {
     <>
       <div className="grid gap-5 pr-5 max-lg:hidden">
         <UserProfile
-          email="beyndtech@gmail.com"
-          verified={true}
+          email={user.email}
+          verified={false}
           uid="7154949378"
-          tradingStatus="Non Trader"
-          tradingLevel="None"
-          tradingLimit="None"
+          tradingStatus={user.tradingStatus}
+          tradingLevel={user.tradingLevel}
+          tradingLimit={user.tradingLimit}
         />
 
         <div className="grid grid-cols-3 gap-4">

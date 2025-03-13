@@ -22,6 +22,18 @@ export interface Asset {
   network: string;
 }
 
+export function formatNumber(num:number) {
+  if (num >= 1000000000) {
+    return `${Math.round((num / 1000000000) * 10) / 10}b`; // Billions
+  } else if (num >= 1000000) {
+    return `${Math.round((num / 1000000) * 10) / 10}m`; // Millions
+  } else if (num >= 1000) {
+    return `${Math.round((num / 1000) * 10) / 10}k`; // Thousands
+  } else {
+    return num.toString(); // Less than 1000
+  }
+}
+
 
 export const imgRootLink =
   'https://assets.website-files.com/63904f663019b0d8edf8d57c';

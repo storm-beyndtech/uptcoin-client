@@ -13,7 +13,7 @@ import { useCrypto } from '@/context/CoinContext';
 import { useState } from 'react';
 import { MarketData } from './Exchange';
 import HotPairs, { TradingPair } from '@/components/HotPairs';
-import Staking from '@/components/Staking';
+import SEO from '@/components/SEO';
 
 export default function Home() {
   const { cryptoData } = useCrypto();
@@ -40,30 +40,37 @@ export default function Home() {
     }));
 
   return (
-    <div className="relative pt-20 max-lg:bg-bodydark1">
-      <Navbar />
-      <div className="max-lg:hidden">
-        <Hero />
-        <BannerSlides />
-        <MarketTable />
-        <Journey />
-        <Guide />
-        <Join />
-        <Footer />
-      </div>
+    <>
+      <SEO
+        title="Uptcoin - The Future of Crypto Trading"
+        description="Trade seamlessly with Uptcoin. Buy, sell, and exchange cryptocurrencies with top security and real-time market insights."
+        url="https://www.uptcoin.com"
+      />
 
-      <div className="lg:hidden space-y-5 pb-20">
-        <MobileLinks />
-        <BannerSlides />
-        <HotPairs hotList={hotList} />
-        <MarketList
-          markets={marketData.slice(0, 5)}
-          selectedMarket={selectedMarket}
-          setSelectedMarket={setSelectedMarket}
-        />
-        <Staking />
-        <MobileNav />
+      <div className="relative pt-20 max-lg:bg-bodydark1">
+        <Navbar />
+        <div className="max-lg:hidden">
+          <Hero />
+          <BannerSlides />
+          <MarketTable />
+          <Journey />
+          <Guide />
+          <Join />
+          <Footer />
+        </div>
+
+        <div className="lg:hidden space-y-5 pb-20">
+          <MobileLinks />
+          <BannerSlides />
+          <HotPairs hotList={hotList} />
+          <MarketList
+            markets={marketData.slice(0, 5)}
+            selectedMarket={selectedMarket}
+            setSelectedMarket={setSelectedMarket}
+          />
+          <MobileNav />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

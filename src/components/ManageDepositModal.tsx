@@ -64,15 +64,15 @@ export default function ManageDepositModal({
     deposit && (
       <div className="w-screen h-screen fixed left-0 top-0 z-9999 flex items-center justify-center backdrop-blur px-2">
         {!edit && (
-          <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 max-lg:bg-gray-800 max-lg:border-gray-700">
             <form className="space-y-6">
-              <div className="flex items-center justify-between mb-10 pb-4 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-base font-medium text-gray-900 dark:text-white">
+              <div className="flex items-center justify-between mb-10 pb-4 border-b rounded-t max-lg:border-gray-600">
+                <h3 className="text-base font-medium text-gray-900 max-lg:text-white">
                   Deposit Via {deposit.walletData.coinName}
                 </h3>
                 <button
                   onClick={() => toggleModal(false)}
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center max-lg:hover:bg-gray-600 max-lg:hover:text-white"
                 >
                   <GrClose />
                   <span className="sr-only">Close modal</span>
@@ -80,52 +80,52 @@ export default function ManageDepositModal({
               </div>
 
               <div className="flex justify-between">
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                <p className="text-sm text-gray-500 truncate max-lg:text-gray-400">
                   Date
                 </p>
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <p className="text-sm font-medium text-gray-900 truncate max-lg:text-white">
                   {convertDate(deposit.date)}
                 </p>
               </div>
 
               <div className="flex justify-between">
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                <p className="text-sm text-gray-500 truncate max-lg:text-gray-400">
                   Name
                 </p>
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <p className="text-sm font-medium text-gray-900 truncate max-lg:text-white">
                   {deposit.user.name}
                 </p>
               </div>
 
               <div className="flex justify-between">
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                <p className="text-sm text-gray-500 truncate max-lg:text-gray-400">
                   Method
                 </p>
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <p className="text-sm font-medium text-gray-900 truncate max-lg:text-white">
                   {deposit.walletData.coinName}
                 </p>
               </div>
 
               <div className="flex justify-between">
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                <p className="text-sm text-gray-500 truncate max-lg:text-gray-400">
                   Amount
                 </p>
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <p className="text-sm font-medium text-gray-900 truncate max-lg:text-white">
                   {deposit.amount} usd
                 </p>
               </div>
 
               <div className="flex justify-between">
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                <p className="text-sm text-gray-500 truncate max-lg:text-gray-400">
                   In {deposit.walletData.coinName}
                 </p>
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <p className="text-sm font-medium text-gray-900 truncate max-lg:text-white">
                   {deposit.walletData.convertedAmount}
                 </p>
               </div>
 
               <div className="flex justify-between">
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                <p className="text-sm text-gray-500 truncate max-lg:text-gray-400">
                   Status
                 </p>
                 <p className={`text-sm font-medium ${deposit.status} truncate`}>

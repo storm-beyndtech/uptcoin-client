@@ -56,10 +56,14 @@ const NavItem: React.FC<NavItemProps> = ({ to, icon, label, active }) => (
   <Link
     to={to}
     className={`flex flex-col items-center space-y-1.5 text-2xl transition-all 
-    ${active ? 'text-green-400' : 'text-white/80'}`}
+    ${active ? 'text-green-400' : 'text-white'}`}
   >
     {icon}
-    <span className="text-[10px] tracking-wider font-medium leading-none">
+    <span
+      className={`text-[10px] tracking-widest font-medium leading-none ${
+        active ? 'text-green-400' : 'text-white/60'
+      }`}
+    >
       {label}
     </span>
   </Link>

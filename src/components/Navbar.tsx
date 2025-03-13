@@ -104,7 +104,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`fixed top-0 right-0 z-999999 w-[95%] h-[90%] overflow-y-scroll customBlur bg-bodydark1/90 p-10 transform transition-transform ${
+          className={`fixed top-0 right-0 z-999999 w-[95%] h-screen overflow-y-scroll bg-bodydark1/95 pt-14 transform transition-transform ${
             mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           onClick={() => setMobileMenuOpen(false)}
@@ -117,17 +117,19 @@ export default function Navbar() {
           </button>
 
           {user && (
-            <UserProfile
-              email={user.email}
-              verified={false}
-              uid="7154949378"
-              tradingStatus={user.tradingStatus}
-              tradingLevel={user.tradingLevel}
-              tradingLimit={user.tradingLimit}
-            />
+            <div className="mb-10">
+              <UserProfile
+                email={user.email}
+                verified={false}
+                uid="7154949378"
+                tradingStatus={user.tradingStatus}
+                tradingLevel={user.tradingLevel}
+                tradingLimit={user.tradingLimit}
+              />
+            </div>
           )}
 
-          <div className="space-y-6">
+          <div className="space-y-8 mb-30 pl-3">
             {navItems.map(({ icon: Icon, label, to }, i) => (
               <Link
                 key={i}
