@@ -43,7 +43,7 @@ export default function Home() {
     <>
       <SEO
         title="Uptcoin - The Future of Crypto Trading"
-        description="Trade seamlessly with Uptcoin. Buy, sell, and exchange cryptocurrencies with top security and real-time market insights."
+        description="Experience the future of trading with Uptcoin—the super-fast, ultra-secure, smart trading community. Seamlessly buy, sell, and exchange assets with lightning speed while enjoying top-tier security and a thriving network of expert traders."
         url="https://www.uptcoin.com"
       />
 
