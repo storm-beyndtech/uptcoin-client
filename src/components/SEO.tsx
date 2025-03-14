@@ -11,7 +11,7 @@ const SEO: React.FC<SEOProps> = ({ title, description, url }) => {
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="keywords" content="crypto, trading, exchange, bitcoin, ethereum, altcoins, Uptcoin" />
+      <meta name="keywords" content="crypto, trading, exchange, bitcoin, ethereum, altcoins, Uptcoin, good rate" />
       <meta name="robots" content="index, follow" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />

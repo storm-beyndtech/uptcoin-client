@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.uptcoin.com/sitemap.xml
