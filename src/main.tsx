@@ -6,16 +6,19 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
 import ScrollToTop from './components/ScrollToTop.tsx';
 import { CryptoProvider } from './context/CoinContext.tsx';
+import { HelmetProvider } from 'react-helmet-async';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Router>
-    <CryptoProvider>
-      <AuthProvider>
-        <ScrollToTop />
-        <App />
-        </AuthProvider>
+    <HelmetProvider>
+      <Router>
+        <CryptoProvider>
+          <AuthProvider>
+            <ScrollToTop />
+            <App />
+          </AuthProvider>
         </CryptoProvider>
-    </Router>
+      </Router>
+    </HelmetProvider>
   </React.StrictMode>,
 );
