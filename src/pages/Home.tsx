@@ -61,8 +61,8 @@ export default function Home() {
           <Features />
           <CryptoCarousel />
           <Journey />
-          <Guide />
           <CustomSec secData={HomeSec2} />
+          <Guide />
           <Testimonials data={testimonies} />
           <Join />
           <Footer />

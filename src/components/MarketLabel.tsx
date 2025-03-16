@@ -18,7 +18,7 @@ const MarketLabel: React.FC<MarketLabelProps> = ({ market }) => {
 
   return (
     <div className="flex items-center justify-between bg-[#1a1b1c] px-4 py-3 rounded-sm w-full">
-      <div className="flex lg:flex-col">
+      <div className="flex lg:items-start lg:flex-col">
         <span className="font-semibold mb-1 max-lg:hidden">
           {symbol} / USDT
         </span>
@@ -38,12 +38,14 @@ const MarketLabel: React.FC<MarketLabelProps> = ({ market }) => {
       <div className="flex max-lg:justify-between space-x-6 max-lg:space-x-3 text-xs text-right text-white/60 font-medium">
         <div>
           <span className="block lg:mb-1 mb-3">Low</span>
-          <span className="lg:text-sm text-white">{Number(low).toFixed()}</span>
+          <span className="lg:text-sm text-white">
+            {Number(low).toFixed(2)}
+          </span>
         </div>
         <div>
           <span className="block lg:mb-1 mb-3">High</span>
           <span className="lg:text-sm text-white">
-            {Number(high).toFixed()}
+            {Number(high).toFixed(2)}
           </span>
         </div>
         <div>
