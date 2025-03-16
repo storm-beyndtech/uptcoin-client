@@ -1,3 +1,5 @@
+import tradeDevice from '../assets/multibank-mt4.png';
+
 export interface SymbolMargin {
   symbol: string;
   margin: number;
@@ -13,7 +15,7 @@ export interface SymbolMargin {
 }
 
 export interface Asset {
-  id: string;
+  _id: string;
   symbol: string;
   funding: number;
   spot: number;
@@ -22,7 +24,7 @@ export interface Asset {
   network: string;
 }
 
-export function formatNumber(num:number) {
+export function formatNumber(num: number) {
   if (num >= 1000000000) {
     return `${Math.round((num / 1000000000) * 10) / 10}b`; // Billions
   } else if (num >= 1000000) {
@@ -34,7 +36,6 @@ export function formatNumber(num:number) {
   }
 }
 
-
 export const imgRootLink =
   'https://assets.website-files.com/63904f663019b0d8edf8d57c';
 
@@ -45,43 +46,97 @@ export const heroAvatarLinks = [
   `${imgRootLink}/6390543797156ee437ef0425_Ellipse-1.jpg`,
 ];
 
+export const HomeSec2 = {
+  title: 'Trade Like a Pro',
+  span: undefined,
+  desc: 'Experience seamless trading with advanced tools, one-click trade execution, and real-time market insights for smarter, faster decisions. ',
+  moreDesc: [
+    'Find a trader you like and make sure to check if the risk score suits you.',
+    'Choose if you want to invest relative or a fixed amount per each trade.',
+    'Begin mirroring the strategies of other traders automatically in real-time.',
+  ],
+  imgUrl: tradeDevice,
+};
 
-export const userAssets: Asset[] = [
+export const testimonies = [
   {
-    id: '1',
-    symbol: 'BTC',
-    funding: 0.2,
-    spot: 0.19698,
-    name: 'Bitcoin',
-    address: '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy',
-    network: 'Bitcoin',
+    title: 'Product Manager | Capsule',
+    name: 'Josh Tyson',
+    imgUrl:
+      'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80',
+    message:
+      "Uptcoin has made navigating the complex world of finance a breeze. Their extensive range of services reflects their expertise. Uptcoin's friendly demeanor and organized approach have made managing my investments effortless. For all things related to copy trading and financial planning, they're the ones I trust.",
   },
   {
-    id: '2',
-    symbol: 'ETH',
-    funding: 0.5,
-    spot: 1.7,
-    name: 'Ethereum',
-    address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
-    network: 'Ethereum',
+    title: 'Senior Director of Operations | Fitbit',
+    name: 'Luisa',
+    imgUrl:
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80',
+    message:
+      "Uptcoin epitomizes excellence in copy trading services. Their unwavering dedication to ensuring customer satisfaction sets them apart. With a secure approach, authentic insights, and swift responsiveness, every interaction is seamless. If you're looking for a copy trading platform that delivers results, I wholeheartedly recommend Uptcoin!",
   },
   {
-    id: '3',
-    symbol: 'LTC',
-    funding: 3,
-    spot: 0.5,
-    name: 'Litecoin',
-    address: 'LcHKz9H7gk4WfX9B8QWr9PM2tgjP8SbF9a',
-    network: 'Litecoin',
+    title: 'Financial Analyst | Nova',
+    name: 'Alisa Williams',
+    imgUrl:
+      'https://images.unsplash.com/photo-1579017331263-ef82f0bbc748?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80',
+    message:
+      "I've had the privilege of working with Uptcoin for some time now, and their professionalism and knowledge continue to impress me. They provide thoughtful advice tailored to my financial goals and risk tolerance. Uptcoin's commitment to their clients' success is truly remarkable.",
   },
   {
-    id: '4',
-    symbol: 'USDT',
-    funding: 4000,
-    spot: 0,
-    name: 'Tether',
-    address: '1KdXaqcBeoMAFVAPwTmYvDbEq6RnvNPF8x',
-    network: 'Ethereum (ERC-20)',
+    title: 'Tech Entrepreneur | Quantum',
+    name: 'Michael',
+    imgUrl:
+      'https://images.pexels.com/photos/3932542/pexels-photo-3932542.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    message:
+      "Uptcoin's financial expertise has been a game-changer for me. Their insights into market trends and their ability to explain complex concepts in simple terms have empowered me to make better financial decisions. Their services have exceeded my expectations in every way.",
+  },
+  {
+    title: 'Investment Strategist | Luna',
+    name: 'Sarah Thompson',
+    imgUrl: 'https://source.unsplash.com/320x320/?woman',
+    message:
+      "Uptcoin's commitment to their clients is truly commendable. Their dedication to achieving financial goals is evident in every interaction. Their insights have helped me navigate volatile markets with confidence, and their friendly approach makes discussing finances a breeze.",
+  },
+  {
+    title: 'Wealth Manager | Quantum',
+    name: 'Anderson',
+    imgUrl:
+      'https://plus.unsplash.com/premium_photo-1682000321215-a061fd738095?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODV8fHdoaXRlJTIwbWFsZXxlbnwwfHwwfHx8MA%3D%3D',
+    message:
+      "Working with Uptcoin has been enlightening. Their advice extends beyond mere financial matters; they're a holistic wealth advisor. Their personalized approach and genuine care for their clients' financial well-being are what set them apart. I'm grateful for their guidance.",
+  },
+  {
+    title: 'Entrepreneur | Happy customer',
+    name: 'Clark',
+    imgUrl:
+      'https://images.unsplash.com/photo-1554260570-9140fd3b7614?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fHdoaXRlJTIwbWFsZXxlbnwwfHwwfHx8MA%3D%3D',
+    message:
+      "Uptcoin's expertise stands out in a crowded financial landscape. Their knowledge of investment opportunities and risk management is unparalleled. They've not only helped me make informed decisions but also educated me along the way. I highly recommend their services.",
+  },
+  {
+    title: 'Crypto Enthusiast | Cosmos',
+    name: 'Miller',
+    imgUrl:
+      'https://images.unsplash.com/photo-1514851947871-97fd1e04b2e5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fHdoaXRlJTIwbWFsZXxlbnwwfHwwfHx8MA%3D%3D',
+    message:
+      "Uptcoin is a financial wizard. Their ability to foresee market trends and recommend timely actions is remarkable. I've achieved significant growth in my investments under their guidance. They're not just financial advisors; they're strategic partners in wealth-building.",
+  },
+  {
+    title: 'Retirement Planner | Nebula',
+    name: 'Yousaf',
+    imgUrl:
+      'https://images.unsplash.com/photo-1610611803787-7cd04238196f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzh8fHdoaXRlJTIwbWFsZXxlbnwwfHwwfHx8MA%3D%3D',
+    message:
+      "I've been a client of Uptcoin for years, and their dedication to my financial success has never wavered. Their well-rounded expertise covers everything from retirement planning to tax-efficient investing. They're an invaluable asset in securing my financial future.",
+  },
+  {
+    title: 'Socially Responsible Investor | Quantum',
+    name: 'Nathan',
+    imgUrl:
+      'https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hpdGUlMjBtYWxlfGVufDB8fDB8fHww',
+    message:
+      "Uptcoin's commitment to ethical financial practices is inspiring. Their recommendations are always aligned with my values, and their transparency in explaining financial strategies is refreshing. With their guidance, I've been able to achieve my financial goals while staying socially responsible.",
   },
 ];
 

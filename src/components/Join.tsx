@@ -16,7 +16,7 @@ export default function Join() {
       }}
     >
       <div className="w-full max-w-[500px] text-gray-800">
-        <h1 className="text-4xl font-semibold">Join the Bitpapy Group Today</h1>
+        <h1 className="text-4xl font-semibold">Join the Uptcoin Group Today</h1>
         <p className="text-lg text-gray-600 mt-3 max-w-[90%]">
           Always there for you anytime, anywhere, and anyday. Enjoy 24 hours
           trading with no limitation

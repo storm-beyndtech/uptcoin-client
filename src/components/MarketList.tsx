@@ -41,11 +41,11 @@ const MarketList: React.FC<MarketListProps> = ({
         <span className="col-span-1 ml-auto">Price</span>
         <span className="col-span-1 ml-auto">24h%</span>
       </div>
-      <div className="mt-2">
+      <div className="mt-2 font-medium leading-3">
         {markets.map((market) => (
           <div
             key={market.symbol}
-            className={`grid grid-cols-3 gap-2 max-lg:gap-3 p-2 cursor-pointer rounded-sm text-gray-200 ${
+            className={`grid grid-cols-3 gap-2 max-lg:gap-3 p-2 py-4 cursor-pointer rounded-sm text-white ${
               selectedMarket === market.symbol
                 ? 'bg-bodydark1'
                 : 'hover:bg-bodydark1'

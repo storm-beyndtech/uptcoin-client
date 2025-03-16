@@ -14,6 +14,11 @@ import { useState } from 'react';
 import { MarketData } from './Exchange';
 import HotPairs, { TradingPair } from '@/components/HotPairs';
 import SEO from '@/components/SEO';
+import { Features } from '@/components/Features';
+import CryptoCarousel from '@/components/cryptoCarousel/CryptoCarousel';
+import Testimonials from '@/components/Testimonials';
+import { HomeSec2, testimonies } from '@/lib/utils';
+import CustomSec from '@/components/CustomSec';
 
 export default function Home() {
   const { cryptoData } = useCrypto();
@@ -53,8 +58,12 @@ export default function Home() {
           <Hero />
           <BannerSlides />
           <MarketTable />
+          <Features />
+          <CryptoCarousel />
           <Journey />
           <Guide />
+          <CustomSec secData={HomeSec2} />
+          <Testimonials data={testimonies} />
           <Join />
           <Footer />
         </div>
@@ -68,6 +77,8 @@ export default function Home() {
             selectedMarket={selectedMarket}
             setSelectedMarket={setSelectedMarket}
           />
+          <Guide />
+          <Features />
           <MobileNav />
         </div>
       </div>

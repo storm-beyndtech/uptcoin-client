@@ -93,11 +93,11 @@ const QuickMargin: React.FC = () => {
       {/* Margin Trade Modal - Mobile */}
       {marginModal && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50"
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 pb-20"
           onClick={() => setMarginModal(false)}
         >
           <div
-            className="w-full max-w-md bg-bodydark2 rounded-t-2xl p-5 pb-20 relative transform translate-y-full transition-all duration-300 ease-in-out max-lg:translate-y-0"
+            className="w-full max-w-md bg-bodydark2 rounded-t-2xl p-5 md:pb-20 relative transform translate-y-full transition-all duration-300 ease-in-out max-lg:translate-y-0"
             onClick={(e) => e.stopPropagation()}
           >
             <button

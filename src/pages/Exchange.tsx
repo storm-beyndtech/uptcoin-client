@@ -10,6 +10,7 @@ import { useCrypto } from '@/context/CoinContext';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import SEO from '@/components/SEO';
+import MobileNav from '@/components/MobileNav';
 
 export interface MarketData {
   symbol: string;
@@ -56,8 +57,9 @@ const Exchange: React.FC = () => {
         description=""
         url="https://www.uptcoin.com/exchange"
       />
-      <section className="w-full bg-bodydark1 pb-36 pt-20">
+      <section className="w-full bg-bodydark1 pb-46 pt-20">
         <Navbar />
+        <MobileNav />
         <div className="max-ctn !max-w-[1300px] text-white">
           {/* Mobile Tabs */}
           <div className="flex items-center justify-between p-4 pt-0 lg:hidden">
@@ -66,7 +68,8 @@ const Exchange: React.FC = () => {
             <p>Spot</p>
           </div>
 
-          <div className="w-full lg:hidden grid grid-cols-2 p-2 gap-2 text-sm fixed bottom-0 z-99999 bg-bodydark1/90 customBlur">
+          {/* Actions */}
+          <div className="w-full lg:hidden grid grid-cols-2 p-2 gap-2 text-sm fixed bottom-19 z-99999 bg-bodydark1/90 customBlur">
             <Link
               to="/dashboard/conversion"
               className="w-full bg-[#202020] py-2 rounded text-white col-span-2 text-center"
@@ -89,7 +92,6 @@ const Exchange: React.FC = () => {
               Transfer
             </Link>
           </div>
-
           <div className="lg:hidden grid grid-cols-2 p-3 w-full text-sm text-white/70">
             <button
               className={`px-4 py-1 rounded-l-sm col-span-1 ${
@@ -108,7 +110,6 @@ const Exchange: React.FC = () => {
               Chart
             </button>
           </div>
-
           <div className="w-full grid grid-cols-10 gap-4 py-5">
             {/* Market List */}
             <div className="col-span-2 max-lg:col-span-10 bg-bodydark2 p-3 rounded-sm max-lg:hidden">
@@ -219,7 +220,6 @@ const Exchange: React.FC = () => {
               />
             </div>
           </div>
-
           {/* Order History */}
           <div className="w-full bg-bodydark1 p-2 rounded-sm">
             <OrderHistory />

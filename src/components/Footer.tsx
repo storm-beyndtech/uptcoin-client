@@ -16,25 +16,6 @@ export default function Footer() {
               <img className="h-9 w-auto" src={logo} alt="logo" />
             </Link>
             <div className="flex flex-col">
-              {/* <form action="" className="mb-10 mt-5 max-w-[421px]">
-                <div className="relative">
-                  <label htmlFor="email" className="font-inter font-medium">
-                    SUBSCRIBE TO NEWSLETTER
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    name="email"
-                    className="font-inter relative mt-4 w-full rounded-md border border-black bg-[#0e0e0e] px-6 py-4 text-base"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-[15px] top-[55px]"
-                  >
-                    <RiMailFill size={30} color={'#ffffff4e'} />
-                  </button>
-                </div>
-              </form> */}
               <div>
                 <h3 className="font-inter mb-4 mt-8 font-medium">EMAIL US</h3>
                 <p className="font-inter text-base">support@uptcoin.com</p>
@@ -55,7 +36,7 @@ export default function Footer() {
                   About
                 </Link>
                 <Link
-                  to="/business"
+                  to="/about"
                   className="font-inter font-light text-gray-500"
                 >
                   Business
@@ -67,10 +48,10 @@ export default function Footer() {
                   Exchange
                 </Link>
                 <Link
-                  to="/quick-usage"
+                  to="/market"
                   className="font-inter font-light text-gray-500"
                 >
-                  Quick Usage
+                  Market
                 </Link>
               </div>
 
@@ -78,22 +59,16 @@ export default function Footer() {
               <div className="my-5 mr-8 flex max-w-[500px] grow basis-[100px] flex-col space-y-5 lg:my-0">
                 <h2 className="font-inter font-medium">Support</h2>
                 <Link
-                  to="/fair"
+                  to="/faq"
                   className="font-inter font-light text-gray-500"
                 >
-                  Fair
+                  Faq
                 </Link>
                 <Link
-                  to="/shelters-retail"
+                  to="/press"
                   className="font-inter font-light text-gray-500"
                 >
-                  Shelters & Retail
-                </Link>
-                <Link
-                  to="/technology-base"
-                  className="font-inter font-light text-gray-500"
-                >
-                  Technology Base
+                  Knowledge Base
                 </Link>
               </div>
 
@@ -107,16 +82,10 @@ export default function Footer() {
                   Security
                 </Link>
                 <Link
-                  to="/recovering"
+                  to="/legal-statement"
                   className="font-inter font-light text-gray-500"
                 >
-                  Recovering
-                </Link>
-                <Link
-                  to="/logic-statement"
-                  className="font-inter font-light text-gray-500"
-                >
-                  Logic Statement
+                  Legal Statement
                 </Link>
               </div>
             </div>

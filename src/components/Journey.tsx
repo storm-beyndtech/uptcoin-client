@@ -3,8 +3,8 @@ import { FaApple, FaGooglePlay } from 'react-icons/fa';
 
 export default function Journey() {
   return (
-    <div className="max-ctn flex justify-center items-center flex-wrap gap-10 py-20">
-      <div className="grid gap-8 max-w-100">
+    <div className="max-ctn flex justify-center items-center flex-wrap gap-10 pb-20">
+      <div className="w-full max-w-115 space-y-6">
         <div className="space-y-4 text-sm text-gray-500">
           <h2 className="text-5xl font-bold mb-5 text-bodydark2">
             We're Optimized <br />
@@ -31,7 +31,7 @@ export default function Journey() {
           </p>
         </div>
 
-        <div className="w-full max-w-100">
+        <div className="w-full">
           <div className="flex gap-5">
             <a
               href="https://download.mql5.com/cdn/mobile/mt5/android?utm_source=www.metatrader5.com&utm_campaign=install.metaquotes"

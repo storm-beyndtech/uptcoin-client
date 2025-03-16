@@ -2,21 +2,33 @@ import AddAddressModal from '@/components/AddAddressModal';
 import { Address } from '@/components/ManageAddress';
 import MobileNav from '@/components/MobileNav';
 import WithdrawForm from '@/components/WithdrawForm';
-import { symbols, userAssets } from '@/lib/utils';
+import { contextData } from '@/context/AuthContext';
+import { useCrypto } from '@/context/CoinContext';
+import { Asset, symbols } from '@/lib/utils';
 import { useState } from 'react';
 
 export default function Withdraw() {
+  const { cryptoData } = useCrypto();
+  const { user } = contextData();
+
+  //user Assets
+  const userAssets = user.assets.map((asset: Asset) => {
+    const coinInfo = cryptoData.find((coin) => coin.symbol === asset.symbol);
+    return { ...asset, price: coinInfo ? Number(coinInfo.price) : 0 };
+  });
   const [editing, setEditing] = useState(false);
   const [address, setAddress] = useState<Address>(userAssets[0]);
   const [addressModalOpen, setIsAddressModalOpen] = useState(false);
 
   // Get user addresses with usefull fields
-  const addresses: Address[] = userAssets.map(({ funding, spot, ...rest }) => ({
-    ...rest,
-  }));
+  const addresses: Address[] = userAssets.map(
+    ({ funding, spot, ...rest }: { funding: number; spot: number }) => ({
+      ...rest,
+    }),
+  );
 
   // get user assets with some extra fields for withdrawals
-  const withdrawAssets = userAssets.map((ass) => {
+  const withdrawAssets = userAssets.map((ass: Asset) => {
     const foundSym = symbols.find((symbol) => ass.symbol === symbol.symbol)!;
 
     return {

@@ -41,9 +41,9 @@ const ManageAddress: React.FC<ManageAddressProps> = ({
             </tr>
           </thead>
           <tbody>
-            {addresses.map(({ id, symbol, address, network, name }) => (
+            {addresses.map(({ _id, symbol, address, network, name }) => (
               <tr
-                key={id}
+                key={_id}
                 className="border-t max-lg:border-white/10 max-lg:text-white/60"
               >
                 <td className="p-3">{symbol}</td>
@@ -53,13 +53,13 @@ const ManageAddress: React.FC<ManageAddressProps> = ({
                   <button
                     className="p-2 text-blue-500 hover:text-blue-700"
                     onClick={() =>
-                      onEdit({ id, symbol, address, network, name })
+                      onEdit({ _id, symbol, address, network, name })
                     }
                   >
                     <Pencil size={16} />
                   </button>
                   <button
-                    onClick={() => onDelete(id)}
+                    onClick={() => onDelete(_id)}
                     className="p-2 text-red-500 hover:text-red-700"
                   >
                     <Trash2 size={16} />

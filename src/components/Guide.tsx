@@ -41,7 +41,7 @@ export default function Guide() {
               key={i}
               className="p-6 bg-bodydark2 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
             >
-              <div className="w-full relative text-blue-500 text-3xl">
+              <div className="w-full relative text-green-400 text-3xl">
                 <h4 className="text-xl font-semibold tracking-wide text-white/90 mt-4">
                   {step.title}
                 </h4>
@@ -53,7 +53,7 @@ export default function Guide() {
         </div>
 
         <Link to="/exchange">
-          <button className="mt-14 px-6 py-1.5 bg-blue-500 hover:bg-blue-600 text-white/90 font-semibold text-sm rounded-sm">
+          <button className="mt-14 px-6 py-1.5 bg-green-500 hover:bg-green-600 text-white/90 font-semibold text-sm rounded-sm">
             Start Trading
           </button>
         </Link>

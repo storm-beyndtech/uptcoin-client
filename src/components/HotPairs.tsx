@@ -10,7 +10,7 @@ interface HotPairsProps {
 
 export default function HotPairs({ hotList }: HotPairsProps) {
   return (
-    <div className="max-w-lg mx-auto p-4">
+    <div className="max-ctn p-4">
       <h2 className="text-lg font-semibold mb-4 text-white">
         🔥 Hot Trading Pairs
       </h2>

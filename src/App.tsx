@@ -46,6 +46,7 @@ import Deposit from './pages/Dashboard/Deposit';
 import Withdraw from './pages/Dashboard/Withdraw';
 import Transfer from './pages/Dashboard/Transfer';
 import PrivateRoute from './components/PrivateRoute';
+import About from './pages/About';
 
 function App() {
   const { fetching, user } = contextData();
@@ -67,6 +68,7 @@ function App() {
         <Route path="/press" element={<Press />} />
         <Route path="/Rewards" element={<Rewards />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/about" element={<About />} />
 
         {/*    --    --   --   --  */}
         {/* Auth routes */}
