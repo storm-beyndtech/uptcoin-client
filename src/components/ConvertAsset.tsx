@@ -16,7 +16,7 @@ export default function ConvertAsset() {
 
   //user Assets
   const assets = user.assets.map((asset: Asset) => {
-    const coinInfo = cryptoData.find((coin) => coin.symbol === asset.symbol);
+    const coinInfo = Object.values(cryptoData).find((coin) => coin.symbol === asset.symbol);
     return { ...asset, price: coinInfo ? Number(coinInfo.price) : 0 };
   });
 

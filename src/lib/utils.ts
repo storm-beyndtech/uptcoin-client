@@ -12,6 +12,7 @@ export interface SymbolMargin {
   withdraw: boolean;
   minWithdraw: number;
   minDeposit: number;
+  conversionFee: number;
 }
 
 export interface Asset {
@@ -23,6 +24,25 @@ export interface Asset {
   address: string;
   network: string;
 }
+
+export const formatTradePrice = (amount: number) => {
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: amount < 1 ? 6 : 2,
+    maximumFractionDigits: amount < 1 ? 6 : 2,
+  }).format(amount);
+};
+
+
+export const formatChange = (change: number) => {
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    signDisplay: "always",
+  }).format(change) + "%";
+};
+
+
+
 
 export function formatNumber(num: number) {
   if (num >= 1000000000) {
@@ -153,6 +173,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.001,
     minDeposit: 0.0005,
+    conversionFee: 0
   },
   {
     symbol: 'ETH',
@@ -166,6 +187,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.01,
     minDeposit: 0.005,
+    conversionFee: 0
   },
   {
     symbol: 'SOL',
@@ -179,10 +201,11 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
   {
     symbol: 'ATOM',
-    margin: 1.8,
+    margin: 0,
     charges: 0.0005,
     name: 'Cosmos',
     address: 'cosmos1qyu3aq85c49wvz8g6wz2q273l3c7k9922773xv',
@@ -192,6 +215,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
   {
     symbol: 'XRP',
@@ -205,6 +229,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'BCH',
@@ -218,6 +243,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.01,
     minDeposit: 0.005,
+    conversionFee: 0
   },
   {
     symbol: 'BNB',
@@ -231,6 +257,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
   {
     symbol: 'LTC',
@@ -244,6 +271,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
   {
     symbol: 'USDT',
@@ -257,6 +285,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'ONT',
@@ -270,6 +299,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'TRX',
@@ -283,6 +313,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 100,
     minDeposit: 50,
+    conversionFee: 0
   },
   {
     symbol: 'WBTC',
@@ -296,6 +327,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.001,
     minDeposit: 0.0005,
+    conversionFee: 0
   },
   {
     symbol: 'LINK',
@@ -309,6 +341,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'BAT',
@@ -322,6 +355,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'HOT',
@@ -335,6 +369,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1000,
     minDeposit: 500,
+    conversionFee: 0
   },
   {
     symbol: 'DOGE',
@@ -348,6 +383,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 50,
     minDeposit: 25,
+    conversionFee: 0
   },
   {
     symbol: 'FTM',
@@ -361,6 +397,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'MATIC',
@@ -374,6 +411,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'GALA',
@@ -387,6 +425,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 100,
     minDeposit: 50,
+    conversionFee: 0
   },
   {
     symbol: 'SHIB',
@@ -400,6 +439,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 500000,
     minDeposit: 250000,
+    conversionFee: 0
   },
   {
     symbol: 'ROSE',
@@ -413,6 +453,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'CAKE',
@@ -426,6 +467,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
   {
     symbol: 'YFI',
@@ -439,6 +481,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.001,
     minDeposit: 0.0005,
+    conversionFee: 0
   },
   {
     symbol: 'SUSHI',
@@ -452,6 +495,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'DYDX',
@@ -465,6 +509,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'LUNA',
@@ -478,6 +523,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
   {
     symbol: '1INCH',
@@ -491,6 +537,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'COMP',
@@ -504,6 +551,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
   {
     symbol: 'QNT',
@@ -517,6 +565,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.01,
     minDeposit: 0.005,
+    conversionFee: 0
   },
   {
     symbol: 'PAXG',
@@ -530,6 +579,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.01,
     minDeposit: 0.005,
+    conversionFee: 0
   },
   {
     symbol: 'UNI',
@@ -543,6 +593,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'MKR',
@@ -556,6 +607,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.01,
     minDeposit: 0.005,
+    conversionFee: 0
   },
   {
     symbol: 'ONE',
@@ -569,6 +621,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'FLOW',
@@ -582,6 +635,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'CELO',
@@ -595,6 +649,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'ADA',
@@ -609,6 +664,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'RDNT',
@@ -622,6 +678,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'VET',
@@ -635,6 +692,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 100,
     minDeposit: 50,
+    conversionFee: 0
   },
   {
     symbol: 'EGLD',
@@ -648,6 +706,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 50,
+    conversionFee: 0
   },
   {
     symbol: 'ALGO',
@@ -661,6 +720,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'USDC',
@@ -674,6 +734,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'XLM',
@@ -687,6 +748,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'WAVES',
@@ -700,6 +762,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 5,
     minDeposit: 2.5,
+    conversionFee: 0
   },
   {
     symbol: 'FLM',
@@ -713,6 +776,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'ONDO',
@@ -726,6 +790,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'ZEN',
@@ -739,6 +804,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
   {
     symbol: 'SAND',
@@ -752,6 +818,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 5,
     minDeposit: 2.5,
+    conversionFee: 0
   },
   {
     symbol: 'BUSD',
@@ -765,6 +832,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'ARB',
@@ -778,6 +846,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'SNX',
@@ -791,6 +860,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'TUSD',
@@ -804,6 +874,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 10,
     minDeposit: 5,
+    conversionFee: 0
   },
   {
     symbol: 'NEO',
@@ -817,6 +888,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'APT',
@@ -830,6 +902,7 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 1,
     minDeposit: 0.5,
+    conversionFee: 0
   },
   {
     symbol: 'FIL',
@@ -843,5 +916,6 @@ export const symbols: SymbolMargin[] = [
     withdraw: true,
     minWithdraw: 0.1,
     minDeposit: 0.05,
+    conversionFee: 0
   },
 ];

@@ -12,11 +12,11 @@ export default function Market() {
   const { cryptoData } = useCrypto();
   const [selectedMarket, setSelectedMarket] = useState<string>('BTC');
 
-  const marketData: MarketData[] = cryptoData.map(
+  const marketData: MarketData[] = Object.values(cryptoData).map(
     ({ symbol, price, change, low, high, volume }) => ({
       symbol,
-      price: Number(price),
-      change: parseFloat(change),
+      price,
+      change,
       low,
       high,
       volume,

@@ -20,7 +20,7 @@ export default function UserOverview() {
 
   // Get user's coins with USD equivalent
   const parsedAssets = user.assets.map((asset: Asset) => {
-    const coinInfo = cryptoData.find((coin) => coin.symbol === asset.symbol);
+    const coinInfo = Object.values(cryptoData).find((coin) => coin.symbol === asset.symbol);
 
     if (!coinInfo) return { ...asset, equivalent: 0, image: '', price: 0 };
     return {
@@ -32,10 +32,12 @@ export default function UserOverview() {
   });
 
   // Get available coins (excluding ones in wallet)
-  const availableCoins = cryptoData.filter(
+  const availableCoins = Object.values(cryptoData).filter(
     (coin) =>
       !user.assets.some((wallet: Asset) => wallet.symbol === coin.symbol),
   );
+
+  console.log(availableCoins, parsedAssets, cryptoData)
 
   //handle adding new asset
   const handleAddAsset = (coin: string) => {

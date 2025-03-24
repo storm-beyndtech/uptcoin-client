@@ -38,62 +38,119 @@ export default function TransactionsTable() {
 
   return (
     <div className="p-4 text-sm">
-      <h2 className="text-xl font-medium">Transactions</h2>
+      <h2 className="text-xl font-medium mb-4 text-gray-500 max-lg:text-gray-300">
+        Transactions
+      </h2>
 
       {/* Search input */}
-      <div className={`relative max-w-70`}>
+      <div className={`relative max-w-70 mb-4`}>
         <FiSearch className="absolute top-[50%] translate-y-[-50%] left-3 text-xl text-gray-400" />
         <input
           type="text"
-          placeholder="Search Symbol"
+          placeholder="Search Transaction"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-2 border border-gray-200 rounded-lg pl-10 bg-transparent my-2"
+          className="input pl-10"
         />
       </div>
 
-      <table className="w-full mt-2 text-xs">
-        <thead className="bg-gray-200 text-left">
-          <tr>
-            <th className="px-2 py-3">#</th>
-            <th className="px-2 py-3">Currency</th>
-            <th className="px-2 py-3">Address</th>
-            <th className="px-2 py-3">Amount</th>
-            <th className="px-2 py-3">Charges</th>
-            <th className="px-2 py-3">Network</th>
-            <th className="px-2 py-3">Operation</th>
-            <th className="px-2 py-3">Event</th>
-            <th className="px-2 py-3">Status</th>
-            <th className="px-2 py-3">View</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredAssets.map((txn) => (
-            <tr key={txn.id} className="bg-white border-t">
-              <td className="px-2 py-3">{txn.id}</td>
-              <td className="px-2 py-3">{txn.symbol}</td>
-              <td className="px-2 py-3">{truncateAddress(txn.address)}</td>
-              <td className="px-2 py-3">{txn.amount}</td>
-              <td className="px-2 py-3">{txn.charges}</td>
-              <td className="px-2 py-3">{txn.network}</td>
-              <td className="px-2 py-3">{txn.operation}</td>
-              <td className="px-2 py-3">{txn.event}</td>
-              <td
-                className={`px-2 py-3 font-medium ${
-                  txn.status === 'Approved' ? 'text-green-500' : 'text-red-500'
-                }`}
-              >
-                {txn.status}
-              </td>
-              <td className="px-2 py-3">
-                <button className="bg-gray-400 text-white px-2 py-[2px] rounded text-xs">
-                  view
-                </button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left whitespace-nowrap">
+          <thead>
+            <tr className="bg-gray-50 max-lg:bg-bodydark2">
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                ID
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                Currency
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                Address
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                Amount
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                Charges
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                Network
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                Operation
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                Event
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                Status
+              </th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+                View
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-100 max-lg:divide-gray-700">
+            {filteredAssets.map((txn) => (
+              <tr
+                key={txn.id}
+                className="text-sm hover:bg-gray-50 max-lg:hover:bg-bodydark2 transition-colors duration-200"
+              >
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.id}
+                </td>
+                <td className="px-6 py-4 font-mono text-sm text-gray-700 max-lg:text-gray-300">
+                  {txn.symbol}
+                </td>
+                <td className="px-6 py-4 font-mono text-sm text-gray-700 max-lg:text-gray-300">
+                  {truncateAddress(txn.address)}
+                </td>
+                <td className="px-6 py-4 font-medium text-gray-800 max-lg:text-gray-200">
+                  {txn.amount}
+                </td>
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.charges}
+                </td>
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.network}
+                </td>
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.operation}
+                </td>
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.event}
+                </td>
+                <td className="px-6 py-4">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      txn.status === 'Approved'
+                        ? 'bg-green-100 max-lg:bg-green-900 text-green-800 max-lg:text-green-200'
+                        : 'bg-red-100 max-lg:bg-red-900 text-red-800 max-lg:text-red-200'
+                    }`}
+                  >
+                    {txn.status}
+                  </span>
+                </td>
+                <td className="px-6 py-4">
+                  <button className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200">
+                    View
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {filteredAssets.length === 0 && (
+              <tr className="text-sm bg-gray-50 max-lg:bg-bodydark2">
+                <td
+                  colSpan={10}
+                  className="px-6 py-8 text-center text-gray-500 max-lg:text-gray-400"
+                >
+                  No transactions found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -18,14 +18,14 @@ const ManageAddress: React.FC<ManageAddressProps> = ({
   onEdit,
 }) => {
   return (
-    <div className="p-4 bg-white max-lg:bg-bodydark2 max-lg:text-white/80 max-lg:text-sm rounded-lg shadow-md">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold max-lg:font-medium">
+    <div className="p-4 bg-white max-lg:bg-bodydark2 max-lg:text-white/80 max-lg:text-sm rounded">
+      <div className="flex justify-between items-center mb-4 ">
+        <h2 className="text-xl max-lg:text-base font-semibold max-lg:font-medium">
           Manage Address
         </h2>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center bg-gray-800 text-white px-3 py-1 rounded-sm hover:opacity-80"
+          className="flex items-center bg-gray-800 max-lg:bg-black text-white px-3 py-1 rounded-sm hover:opacity-80 whitespace-nowrap"
         >
           <PlusCircle className="w-4 h-4 mr-2" /> Add Address
         </button>

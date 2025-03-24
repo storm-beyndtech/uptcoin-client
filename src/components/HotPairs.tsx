@@ -1,6 +1,8 @@
+import { formatChange, formatTradePrice } from "@/lib/utils";
+
 export interface TradingPair {
   symbol: string;
-  price: string;
+  price: number;
   change: number;
 }
 
@@ -21,13 +23,13 @@ export default function HotPairs({ hotList }: HotPairsProps) {
             className="grid grid-cols-3 text-xs tracking-wide p-3 bg-bodydark2 rounded-lg"
           >
             <span className="col-span-1 text-white/90">{pair.symbol}</span>
-            <span className="col-span-1 text-white/90">${pair.price}</span>
+            <span className="col-span-1 text-white/90">${formatTradePrice(pair.price)}</span>
             <span
               className={`col-span-1 ml-auto font-semibold ${
                 pair.change >= 0 ? 'text-green-500' : 'text-red-500'
               }`}
             >
-              {pair.change >= 0 ? `+${pair.change}%` : `${pair.change}%`}
+              {pair.change >= 0 ? `${formatChange(pair.change)}` : `${formatChange(pair.change)}`}
             </span>
           </div>
         ))}

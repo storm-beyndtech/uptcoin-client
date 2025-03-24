@@ -24,24 +24,25 @@ export default function Home() {
   const { cryptoData } = useCrypto();
   const [selectedMarket, setSelectedMarket] = useState<string>('BTC');
 
-  const marketData: MarketData[] = cryptoData.map(
+  const marketData: MarketData[] = Object.values(cryptoData).map(
     ({ symbol, price, change, low, high, volume }) => ({
       symbol,
-      price: Number(price),
-      change: parseFloat(change),
+      price,
+      change,
       low,
       high,
       volume,
     }),
   );
 
+
   // Filter only hot pairs ["BNB", "SOL", "ATOM"]
-  const hotList: TradingPair[] = cryptoData
-    .filter((pair) => ['BNB', 'SOL', 'ATOM'].includes(pair.symbol))
+  const hotList: TradingPair[] = Object.values(cryptoData)
+    .filter((pair) => ['BNB', 'SOL', 'XRP'].includes(pair.symbol))
     .map(({ symbol, price, change }) => ({
       symbol,
       price,
-      change: parseFloat(change),
+      change
     }));
 
   return (

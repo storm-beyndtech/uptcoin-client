@@ -1,3 +1,4 @@
+import { formatChange, formatTradePrice } from '@/lib/utils';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +33,7 @@ const MarketList: React.FC<MarketListProps> = ({
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto no-scrollbar max-lg:px-4">
+    <div className="w-full h-full max-lg:px-4">
       <h2 className="text-sm font-semibold text-white/60 mb-2 max-lg:hidden">
         Market
       </h2>
@@ -71,11 +72,11 @@ const MarketList: React.FC<MarketListProps> = ({
                   market.change >= 0 ? 'lg:text-green-400' : 'lg:text-red-400'
                 }`}
               >
-                {market.price.toFixed(2)}
+                {formatTradePrice(market.price)}
               </span>
 
               <span className="lg:hidden font-inter ml-auto font-light text-white/50 text-[10px]">
-                {market.price.toFixed(2)} USDT
+                {formatTradePrice(market.price)} USDT
               </span>
             </div>
 
@@ -87,7 +88,7 @@ const MarketList: React.FC<MarketListProps> = ({
                     : 'text-red-400 max-lg:bg-red-500/10'
                 }`}
               >
-                {market.change.toFixed(2)}%
+                {formatChange(market.change)}
               </span>
             </div>
           </div>

@@ -12,7 +12,7 @@ export default function WalletAddress() {
 
   //user Assets
   const userAssets = user.assets.map((asset: Asset) => {
-    const coinInfo = cryptoData.find((coin) => coin.symbol === asset.symbol);
+    const coinInfo = Object.values(cryptoData).find((coin) => coin.symbol === asset.symbol);
     return { ...asset, price: coinInfo ? Number(coinInfo.price) : 0 };
   });
 
@@ -45,7 +45,7 @@ export default function WalletAddress() {
   };
 
   return (
-    <div className="max-lg:min-h-screen max-lg:bg-bodydark1 py-20 px-2">
+    <div className="max-lg:min-h-screen max-lg:bg-bodydark1 py-10 px-2">
       <ManageAddress
         onDelete={onDelete}
         addresses={addresses}

@@ -27,7 +27,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
     if (!user || !cryptoData) return;
     
     const asset = user.assets.find((asset: AssetWithPrice) => asset.symbol === market);
-    const coinInfo = cryptoData.find((coin) => coin.symbol === market);
+    const coinInfo = Object.values(cryptoData).find((coin) => coin.symbol === market);
     const assetPrice = coinInfo ? Number(coinInfo.price) : 0;
 
     console.log(assetPrice)

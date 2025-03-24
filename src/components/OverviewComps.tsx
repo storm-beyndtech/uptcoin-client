@@ -131,27 +131,89 @@ const PressRelease: React.FC = () => {
 
 // AssetTransactions Component
 const AssetTransactions: React.FC = () => {
+  const transactions: any = [];
   return (
-    <div className="mt-2 border rounded-sm overflow-hidden">
-      <table className="w-full text-left">
-        <thead className="bg-gray-200 text-left text-sm">
-          <tr>
-            <th className="p-2">#</th>
-            <th className="p-2">Symbol</th>
-            <th className="p-2">Direction</th>
-            <th className="p-2">Price</th>
-            <th className="p-2">Quantity</th>
-            <th className="p-2">Turnover</th>
-            <th className="p-2">Complete</th>
-            <th className="p-2">Time</th>
+    <div className="overflow-x-auto">
+      <table className="w-full text-left whitespace-nowrap">
+        <thead>
+          <tr className="bg-gray-50 max-lg:bg-bodydark2">
+            <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+              ID
+            </th>
+            <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+              Symbol
+            </th>
+            <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+              Direction
+            </th>
+            <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+              Price
+            </th>
+            <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+              Quantity
+            </th>
+            <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+              Turnover
+            </th>
+            <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+              Complete
+            </th>
+            <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
+              Time
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr className="border-t text-gray-500 text-sm">
-            <td className="p-2" colSpan={8}>
-              No transactions available
-            </td>
-          </tr>
+        <tbody className="divide-y divide-gray-100 max-lg:divide-gray-700">
+          {transactions.length > 0 ? (
+            transactions.map((txn: any, index: number) => (
+              <tr
+                key={index}
+                className="text-sm hover:bg-gray-50 max-lg:hover:bg-bodydark2 transition-colors duration-200"
+              >
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.id}
+                </td>
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.symbol}
+                </td>
+                <td className="px-6 py-4">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      txn.direction === 'BUY'
+                        ? 'bg-green-100 max-lg:bg-green-900 text-green-800 max-lg:text-green-200'
+                        : 'bg-red-100 max-lg:bg-red-900 text-red-800 max-lg:text-red-200'
+                    }`}
+                  >
+                    {txn.direction}
+                  </span>
+                </td>
+                <td className="px-6 py-4 font-medium text-gray-800 max-lg:text-gray-200">
+                  {txn.price}
+                </td>
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.quantity}
+                </td>
+                <td className="px-6 py-4 font-medium text-gray-800 max-lg:text-gray-200">
+                  {txn.turnover}
+                </td>
+                <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                  {txn.complete}%
+                </td>
+                <td className="px-6 py-4 text-gray-500 max-lg:text-gray-400 text-xs">
+                  {txn.time}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr className="text-sm bg-gray-50 max-lg:bg-bodydark2">
+              <td
+                colSpan={8}
+                className="text-center px-6 py-5 text-gray-500 max-lg:text-gray-400"
+              >
+                No transactions available
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

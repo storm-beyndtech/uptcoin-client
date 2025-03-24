@@ -51,7 +51,7 @@ export default function KYC() {
   };
 
   return (
-    <div className="w-full max-w-lg bg-white p-6 shadow-lg rounded-lg">
+    <div className="w-full max-w-lg bg-white max-lg:bg-transparent p-5 max-lg:pt-10 rounded">
       <Alert
         type="simple"
         message="Complete the KYC information below to update your account. You'll be verified within 24 hours and gain full access."
@@ -69,12 +69,10 @@ export default function KYC() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            First name
-          </label>
+          <label className="label">First name</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg"
+            className="input mb-4"
             placeholder="Enter first name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -82,12 +80,10 @@ export default function KYC() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Last name
-          </label>
+          <label className="label">Last name</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg"
+            className="input mb-4"
             placeholder="Enter last name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -95,24 +91,20 @@ export default function KYC() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Date of birth
-          </label>
+          <label className="label">Date of birth</label>
           <input
             type="date"
-            className="w-full p-2 border rounded-lg"
+            className="input mb-4"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Phone number
-          </label>
+          <label className="label">Phone number</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg"
+            className="input mb-4"
             placeholder="Enter phone number"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
@@ -120,11 +112,9 @@ export default function KYC() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Citizen
-          </label>
+          <label className="label">Citizen</label>
           <select
-            className="w-full p-2 border rounded-lg"
+            className="input mb-4"
             value={citizen}
             onChange={(e) => setCitizen(e.target.value)}
           >
@@ -140,11 +130,9 @@ export default function KYC() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Document Type
-          </label>
+          <label className="label">Document Type</label>
           <select
-            className="w-full p-2 border rounded-lg"
+            className="input mb-4"
             value={documentType}
             onChange={(e) => setDocumentType(e.target.value)}
           >
@@ -156,12 +144,10 @@ export default function KYC() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Document number
-          </label>
+          <label className="label">Document number</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg"
+            className="input mb-4"
             placeholder="Enter document's number"
             value={documentNumber}
             onChange={(e) => setDocumentNumber(e.target.value)}

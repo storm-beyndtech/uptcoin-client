@@ -21,7 +21,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   return (
     <div className="flex-1 space-y-2">
-      <label className="block text-sm font-medium text-gray-600">{label}</label>
+      <label className="label">{label}</label>
 
       <div
         className="border-[1.5px] border-dashed border-gray-300 p-6 text-center rounded-xl hover:bg-gray-50 cursor-pointer"

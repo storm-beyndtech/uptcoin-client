@@ -1,11 +1,12 @@
 import Alert from '@/components/UI/Alert';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [password1, setPassword1] = useState<string>('');
   const [password2, setPassword2] = useState<string>('');
   const [errors, setErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // Validate the form
   const validateForm = (): boolean => {
@@ -20,19 +21,23 @@ export default function ChangePassword() {
     return validationErrors.length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (validateForm()) {
       const formData = {
         currentPassword,
         password1,
       };
       console.log(formData);
+
+      setLoading(true);
     }
   };
 
   return (
-    <div className="w-full max-w-lg bg-white p-6 shadow-lg rounded-lg">
-      <h3 className="font-semibold">Change Password</h3>
+    <div className="w-full max-w-lg bg-white max-lg:bg-transparent p-5 max-lg:pt-10 rounded">
+      <h3 className="font-semibold max-lg:text-white">Change Password</h3>
       <Alert
         type="simple"
         message="For fund security, withdrawals are disabled for 24 hours after changing
@@ -51,24 +56,20 @@ export default function ChangePassword() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Current Password
-          </label>
+          <label className="label">Current Password</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg"
+            className="input"
             placeholder="Enter Current Password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
+          <label className="label">Password</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg"
+            className="input"
             placeholder="Enter New Password"
             value={password1}
             onChange={(e) => setPassword1(e.target.value)}
@@ -76,12 +77,10 @@ export default function ChangePassword() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Confirm Password
-          </label>
+          <label className="label">Confirm Password</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg"
+            className="input"
             placeholder="Re-type New Password"
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
@@ -89,11 +88,10 @@ export default function ChangePassword() {
         </div>
 
         <button
-          type="button"
-          className="text-sm px-6 py-2 bg-blue-600 text-white rounded"
-          onClick={handleSubmit}
+          className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+          disabled={loading}
         >
-          Submit
+          {loading ? 'Updating...' : 'Update Password'}
         </button>
       </form>
     </div>

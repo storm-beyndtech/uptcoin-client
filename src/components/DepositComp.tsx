@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Copy, OctagonAlert } from 'lucide-react';
 
 interface Coin {
@@ -14,7 +15,22 @@ interface DepositProps {
 }
 
 export default function DepositComp({ coins }: DepositProps) {
-  const [selectedCoin, setSelectedCoin] = useState<Coin>(coins[0]);
+  const [searchParams] = useSearchParams();
+  const coinFromParams = searchParams.get('coin'); // Get coin from URL params
+
+  const initialCoin =
+    coins.find((coin) => coin.symbol === coinFromParams) || coins[0];
+  const [selectedCoin, setSelectedCoin] = useState<Coin>(initialCoin);
+  const [amount, setAmount] = useState(0);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (coinFromParams) {
+      const newCoin = coins.find((coin) => coin.symbol === coinFromParams);
+      if (newCoin) setSelectedCoin(newCoin);
+    }
+  }, [coinFromParams, coins]);
+
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
     selectedCoin.address,
   )}`;
@@ -26,8 +42,25 @@ export default function DepositComp({ coins }: DepositProps) {
 
   const handleCoinChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = coins.find((coin) => coin.symbol === e.target.value);
-    if (selected) {
-      setSelectedCoin(selected);
+    if (selected) setSelectedCoin(selected);
+  };
+
+  const handleDeposit = async () => {
+    if (amount < selectedCoin.minDeposit) {
+      setError(
+        `Minimum deposit is ${selectedCoin.minDeposit} ${selectedCoin.symbol}.`,
+      );
+      return;
+    }
+
+    setError('');
+
+    // Send deposit request
+    try {
+      alert('Deposit request submitted successfully!');
+      setAmount(0);
+    } catch (err) {
+      setError('An error occurred. Please try again.');
     }
   };
 
@@ -47,7 +80,6 @@ export default function DepositComp({ coins }: DepositProps) {
           value={selectedCoin.symbol}
           onChange={handleCoinChange}
         >
-          <option disabled>Choose A Coin</option>
           {coins.map((coin, i) => (
             <option key={i} value={coin.symbol}>
               {coin.name} ({coin.symbol})
@@ -86,6 +118,31 @@ export default function DepositComp({ coins }: DepositProps) {
             </button>
           </div>
         </div>
+
+        {/* Enter Amount */}
+        <div className="mt-4">
+          <label className="text-gray-700 dark:text-gray-300 max-lg:text-white/30">
+            Enter Amount
+          </label>
+          <input
+            type="number"
+            className="input"
+            placeholder={`Min: ${selectedCoin.minDeposit} ${selectedCoin.symbol}`}
+            value={amount}
+            onChange={(e) => setAmount(Number(e.target.value))}
+          />
+        </div>
+
+        {/* Error Message */}
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+
+        {/* Submit Button */}
+        <button
+          onClick={handleDeposit}
+          className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Submit Deposit
+        </button>
       </div>
 
       <div className="max-w-100 space-y-6 shadow-1 p-5 rounded-md max-lg:text-white/60 bg-white max-lg:bg-bodydark2 text-sm ">

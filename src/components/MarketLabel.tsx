@@ -1,12 +1,12 @@
-import { formatNumber } from '@/lib/utils';
+import { formatNumber, formatTradePrice } from '@/lib/utils';
 import React from 'react';
 
 type marketData = {
   price: number;
   symbol: string;
-  low: string;
-  high: string;
-  volume: string;
+  low: number;
+  high: number;
+  volume: number;
 };
 
 interface MarketLabelProps {
@@ -26,11 +26,11 @@ const MarketLabel: React.FC<MarketLabelProps> = ({ market }) => {
           <span className="text-white max-lg:hidden">SPOT </span>
 
           <span className="font-semibold text-green-400 max-lg:text-2xl">
-            {price.toFixed(2)}
+            {formatTradePrice(price)}
           </span>
 
           <span className="lg:hidden text-xs">
-            Last Traded: {price.toFixed(2)}
+            Last Traded: {formatTradePrice(price)}
           </span>
         </div>
       </div>
@@ -39,19 +39,19 @@ const MarketLabel: React.FC<MarketLabelProps> = ({ market }) => {
         <div>
           <span className="block lg:mb-1 mb-3">Low</span>
           <span className="lg:text-sm text-white">
-            {Number(low).toFixed(2)}
+            {formatTradePrice(low)}
           </span>
         </div>
         <div>
           <span className="block lg:mb-1 mb-3">High</span>
           <span className="lg:text-sm text-white">
-            {Number(high).toFixed(2)}
+            {formatTradePrice(high)}
           </span>
         </div>
         <div>
           <span className="block lg:mb-1 mb-3">24H Vol.</span>
           <span className="lg:text-sm text-white">
-            {formatNumber(parseFloat(volume.replace(/,/g, '')))}
+            {formatNumber(volume)}
           </span>
         </div>
       </div>

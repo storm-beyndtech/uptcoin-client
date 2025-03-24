@@ -22,7 +22,7 @@ const generateRandomOrders = (
   basePrice: number,
 ): Order[] => {
   return Array.from({ length: 10 }, () => {
-    const variation = Math.random() * (type === 'bid' ? -0.5 : 0.5);
+    const variation = Math.random() * (type === 'bid' ? -0.2 : 0.2);
     return {
       price: parseFloat((basePrice + variation).toFixed(2)), // Ensure price is to 2 decimals
       quantity: parseFloat((Math.random() * 2).toFixed(4)),
@@ -46,7 +46,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ marketData, version }) => {
       const interval = setInterval(() => {
         setBids(generateRandomOrders('bid', marketData.price));
         setAsks(generateRandomOrders('ask', marketData.price));
-      }, 1000);
+      }, 10000);
 
       return () => clearInterval(interval);
     }

@@ -16,9 +16,9 @@ export interface MarketData {
   symbol: string;
   price: number;
   change: number;
-  low: string;
-  high: string;
-  volume: string;
+  low: number;
+  high: number;
+  volume: number;
 }
 
 const Exchange: React.FC = () => {
@@ -39,11 +39,11 @@ const Exchange: React.FC = () => {
     if (symbol) setSelectedMarket(symbol as string);
   }, [symbol]);
 
-  const marketData: MarketData[] = cryptoData.map(
+  const marketData: MarketData[] = Object.values(cryptoData).map(
     ({ symbol, price, change, low, high, volume }) => ({
       symbol,
-      price: Number(price),
-      change: parseFloat(change),
+      price,
+      change,
       low,
       high,
       volume,
@@ -112,7 +112,7 @@ const Exchange: React.FC = () => {
           </div>
           <div className="w-full grid grid-cols-10 gap-4 py-5">
             {/* Market List */}
-            <div className="col-span-2 max-lg:col-span-10 bg-bodydark2 p-3 rounded-sm max-lg:hidden">
+            <div className="max-h-[900px] overflow-y-auto custom-scrollbar col-span-2 max-lg:col-span-10 bg-bodydark2 p-3 rounded-sm max-lg:hidden">
               <MarketList
                 markets={marketData}
                 selectedMarket={selectedMarket}
@@ -129,9 +129,9 @@ const Exchange: React.FC = () => {
                   ) || {
                     price: 0,
                     symbol: selectedMarket,
-                    high: '---',
-                    low: '---',
-                    volume: '---',
+                    high: 0,
+                    low: 0,
+                    volume: 0,
                   }
                 }
               />
@@ -151,9 +151,9 @@ const Exchange: React.FC = () => {
                   ) || {
                     price: 0,
                     symbol: selectedMarket,
-                    high: '---',
-                    low: '---',
-                    volume: '---',
+                    high: 0,
+                    low: 0,
+                    volume: 0,
                   }
                 }
               />

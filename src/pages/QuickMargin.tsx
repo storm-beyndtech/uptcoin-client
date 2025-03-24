@@ -14,9 +14,9 @@ interface MarketData {
   symbol: string;
   price: number;
   change: number;
-  low: string;
-  high: string;
-  volume: string;
+  low: number;
+  high: number;
+  volume: number;
 }
 
 const QuickMargin: React.FC = () => {
@@ -25,11 +25,11 @@ const QuickMargin: React.FC = () => {
   const [selectedMarket, setSelectedMarket] = useState<string>('BTC');
   const [marginModal, setMarginModal] = useState<boolean>(false);
 
-  const marketData: MarketData[] = cryptoData.map(
+  const marketData: MarketData[] = Object.values(cryptoData).map(
     ({ symbol, price, change, low, high, volume }) => ({
       symbol,
-      price: Number(price),
-      change: parseFloat(change),
+      price,
+      change,
       low,
       high,
       volume,
@@ -42,8 +42,6 @@ const QuickMargin: React.FC = () => {
     }
   }, [symbol]);
 
-  console.log(marginModal);
-
   return (
     <section className="w-full bg-bodydark1 py-20 relative">
       <Navbar />
@@ -51,7 +49,7 @@ const QuickMargin: React.FC = () => {
       <div className="max-ctn !max-w-[1300px] text-white">
         <div className="w-full grid grid-cols-10 gap-4 py-5">
           {/* Market List */}
-          <div className="col-span-2 max-lg:col-span-10 bg-bodydark2 rounded-sm">
+          <div className="max-h-[570px] overflow-y-auto custom-scrollbar col-span-2 max-lg:col-span-10 bg-bodydark2 rounded-sm">
             <MarketList
               markets={marketData}
               selectedMarket={selectedMarket}
@@ -69,9 +67,9 @@ const QuickMargin: React.FC = () => {
                 ) || {
                   price: 0,
                   symbol: selectedMarket,
-                  high: '---',
-                  low: '---',
-                  volume: '---',
+                  high: 0,
+                  low: 0,
+                  volume: 0,
                 }
               }
             />

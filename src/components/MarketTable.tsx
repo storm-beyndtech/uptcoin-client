@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FiSearch } from 'react-icons/fi';
 import { useCrypto } from '@/context/CoinContext';
+import { formatChange, formatNumber, formatTradePrice } from '@/lib/utils';
 
 const MarketTable: React.FC = () => {
   const location = useLocation();
@@ -20,7 +21,7 @@ const MarketTable: React.FC = () => {
   ];
 
   // Filter crypto data based on search query
-  const filteredData = cryptoData.filter(
+  const filteredData = Object.values(cryptoData).filter(
     (coin) =>
       coin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       coin.symbol.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -75,30 +76,34 @@ const MarketTable: React.FC = () => {
                 }`}
               >
                 <td className="p-3 py-5 flex items-center space-x-2.5">
-                  <img src={coin.image} alt={coin.name} width="24" />{' '}
+                  <img
+                    src={`https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`}
+                    alt={coin.name}
+                    width="24"
+                    onError={(e) =>
+                      (e.currentTarget.src =
+                        'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/generic.png')
+                    }
+                  />{' '}
                   <span>{`${coin.symbol}/ USDT`}</span>
                 </td>
                 <td
                   className={`p-3 py-4 ${
-                    parseFloat(coin.change) < 0
-                      ? 'text-red-500'
-                      : 'text-green-500'
+                    coin.change < 0 ? 'text-red-500' : 'text-green-500'
                   }`}
                 >
-                  ${coin.price}
+                  ${formatTradePrice(coin.price)}
                 </td>
                 <td
                   className={`p-3 py-4 ${
-                    parseFloat(coin.change) < 0
-                      ? 'text-red-500'
-                      : 'text-green-500'
+                    coin.change < 0 ? 'text-red-500' : 'text-green-500'
                   }`}
                 >
-                  {coin.change}
+                  {formatChange(coin.change)}
                 </td>
-                <td className="p-3 py-4">${coin.low}</td>
-                <td className="p-3 py-4">${coin.high}</td>
-                <td className="p-3 py-4">{coin.volume}</td>
+                <td className="p-3 py-4">${formatTradePrice(coin.low)}</td>
+                <td className="p-3 py-4">${formatTradePrice(coin.high)}</td>
+                <td className="p-3 py-4">{formatNumber(coin.volume)}</td>
                 <td className="p-3 py-4">
                   <Link to={`/margin/${coin.symbol}`}>
                     <button className="py-2 px-4 bg-red-500 text-white rounded-md">

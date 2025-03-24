@@ -13,7 +13,7 @@ export default function Withdraw() {
 
   //user Assets
   const userAssets = user.assets.map((asset: Asset) => {
-    const coinInfo = cryptoData.find((coin) => coin.symbol === asset.symbol);
+    const coinInfo = Object.values(cryptoData).find((coin) => coin.symbol === asset.symbol);
     return { ...asset, price: coinInfo ? Number(coinInfo.price) : 0 };
   });
   const [editing, setEditing] = useState(false);

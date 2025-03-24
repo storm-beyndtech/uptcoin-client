@@ -49,13 +49,15 @@ export default function TransferAsset() {
   };
 
   return (
-    <div className="max-w-md p-6 bg-white rounded-lg">
+    <div className="max-w-md p-5 bg-white max-lg:bg-bodydark2 rounded">
       {/* Transfer Mode & Switch Button */}
       <div className="flex justify-between items-center mb-4">
-        <span className="text-gray-500 font-semibold">Transfer Mode</span>
+        <span className="text-gray-500 max-lg:text-white font-semibold">
+          Transfer Mode
+        </span>
         <button
           onClick={handleSwitch}
-          className="flex items-center gap-2 px-3 py-1.5 border rounded-lg text-gray-700 hover:bg-gray-100"
+          className="flex items-center gap-2 px-3 py-1.5 border rounded-lg text-gray-700 max-lg:text-white lg:hover:bg-gray-100"
         >
           <ArrowLeftRight className="w-4 h-4" />
           Switch
@@ -65,7 +67,7 @@ export default function TransferAsset() {
       {/* From & To Dropdowns */}
       <label className="label">
         <span>From</span>{' '}
-        <span>{from === 'Funding' ? coin.funding : coin.spot}</span>
+        <span>bal:{from === 'Funding' ? coin.funding : coin.spot}</span>
       </label>
       <input
         onChange={(e) => setFrom(e.target.value)}
@@ -75,7 +77,8 @@ export default function TransferAsset() {
       />
 
       <label className="label">
-        <span>To</span> <span>{to === 'Spot' ? coin.spot : coin.funding}</span>
+        <span>To</span>{' '}
+        <span>bal:{to === 'Spot' ? coin.spot : coin.funding}</span>
       </label>
       <input
         onChange={(e) => setTo(e.target.value)}
