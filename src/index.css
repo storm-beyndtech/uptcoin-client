@@ -75,7 +75,6 @@ h2 {
   background: #545454; /* Lighter on hover */
 }
 
-
 @keyframes toNfro {
   0% {
     width: 0%;
@@ -121,7 +120,16 @@ h2 {
   }
 
   .tradePanelInput {
-    @apply w-full bg-transparent border rounded-md py-1.5 outline-none active:border-green-500 focus:border-green-500 border-white/20 pl-20;
+    @apply block px-2.5 pb-1.5 pt-3 w-full text-sm text-white bg-transparent rounded-lg border border-white/20 focus:outline-none focus:border-blue-500;
+  }
+
+  .tradePanelLabel {
+    @apply absolute text-sm text-white/40 duration-300 transform 
+    -translate-y-3 scale-75 top-1 left-0 z-10 bg-[#1a1b1c] px-2 
+    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 
+    peer-placeholder-shown:top-1/2 peer-placeholder-shown:left-2 
+    peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 
+    pointer-events-none; /* This makes the label non-clickable */
   }
 
   .editUserInput {
@@ -207,15 +215,8 @@ h2 {
 }
 
 /* third-party libraries CSS */
-
-@media screen and (max-width: 1024px) {
-  #headlessui-portal-root .relative {
-    margin: 20px 0 !important;
-  }
-
-  #headlessui-portal-root .relative span {
-    font-size: 1.2rem !important;
-  }
+#tv-attr-logo {
+  display: none;
 }
 
 @media screen and (max-width: 500px) {

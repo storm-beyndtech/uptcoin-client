@@ -5,10 +5,11 @@ import MobileNav from '@/components/MobileNav';
 import MarketLabel from '@/components/MarketLabel';
 import MarketList from '@/components/MarketList';
 import OrderHistory from '@/components/OrderHistory';
-import Chart from '@/components/Chart';
+// import Chart from '@/components/Chart';
 import MarginTrade from '@/components/MarginTrade';
 import { useCrypto } from '@/context/CoinContext';
 import { IoChevronDownSharp } from 'react-icons/io5';
+import TradingChart from '@/components/TradingChart';
 
 interface MarketData {
   symbol: string;
@@ -73,7 +74,8 @@ const QuickMargin: React.FC = () => {
                 }
               }
             />
-            <Chart symbol={selectedMarket} />
+            {/* <Chart symbol={selectedMarket} /> */}
+            <TradingChart symbol={selectedMarket} />
           </div>
 
           {/* Margin Trade - Desktop */}

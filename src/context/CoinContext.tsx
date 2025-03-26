@@ -1,10 +1,11 @@
+import { symbols } from "@/lib/utils";
 import React, {
   createContext,
   useContext,
   useEffect,
   useState,
   ReactNode,
-} from 'react';
+} from "react";
 
 export interface CryptoData {
   id: string;
@@ -16,6 +17,7 @@ export interface CryptoData {
   high: number;
   volume: number;
   image: string;
+  time: number;
 }
 
 interface CryptoContextType {
@@ -23,7 +25,7 @@ interface CryptoContextType {
 }
 
 export const CryptoContext = createContext<CryptoContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export const CryptoProvider: React.FC<{ children: ReactNode }> = ({
@@ -32,30 +34,53 @@ export const CryptoProvider: React.FC<{ children: ReactNode }> = ({
   const [cryptoData, setCryptoData] = useState<Record<string, CryptoData>>({});
   let ws: WebSocket | null = null;
 
+  // Extract symbols from assets dynamically
+  const coinOrder: string[] = symbols.map((coin) => coin.symbol);
+
   const connectWebSocket = () => {
     ws = new WebSocket(import.meta.env.VITE_REACT_APP_SERVER_URL_BASE);
-    ws.onmessage = (event) => {
-      const newData = JSON.parse(event.data);
 
-      // console.log("New Update", newData)
-  
-      if (!newData.price || newData.price === 0) return; // Ignore empty updates
-  
-      setCryptoData((prevData) => ({
-        ...prevData,
-        [newData.symbol]: newData, // Update only the changed coin
-      }));
+    ws.onmessage = (event) => {
+      try {
+        const newData: CryptoData = JSON.parse(event.data);
+
+        if (!newData.symbol || !newData.price || newData.price === 0) return; // Ignore empty updates
+
+        setCryptoData((prevData) => {
+          const updatedData = {
+            ...prevData,
+            [newData.symbol]: newData, // Update only the changed coin
+          };
+
+          // Sort based on predefined order
+          const sortedDataArray = Object.values(updatedData).sort((a, b) => {
+            const indexA = coinOrder.indexOf(a.symbol);
+            const indexB = coinOrder.indexOf(b.symbol);
+
+            // If not found in the order list, push them to the end
+            return (indexA !== -1 ? indexA : coinOrder.length) - 
+                   (indexB !== -1 ? indexB : coinOrder.length);
+          });
+
+          // Convert sorted array back to an object
+          return sortedDataArray.reduce((acc, coin) => {
+            acc[coin.symbol] = coin;
+            return acc;
+          }, {} as Record<string, CryptoData>);
+        });
+      } catch (error) {
+        console.error("WebSocket Data Parsing Error:", error);
+      }
     };
 
-
     ws.onclose = () => {
-      console.log('WebSocket Disconnected. Reconnecting...');
+      console.warn("WebSocket Disconnected. Reconnecting...");
       setTimeout(connectWebSocket, 5000);
     };
   };
 
   useEffect(() => {
-    connectWebSocket()
+    connectWebSocket();
     return () => {
       ws?.close();
     };
@@ -72,7 +97,7 @@ export const CryptoProvider: React.FC<{ children: ReactNode }> = ({
 export const useCrypto = () => {
   const context = useContext(CryptoContext);
   if (!context) {
-    throw new Error('useCrypto must be used within a CryptoProvider');
+    throw new Error("useCrypto must be used within a CryptoProvider");
   }
   return context;
 };

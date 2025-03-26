@@ -14,76 +14,96 @@ export default function ConvertAsset() {
   const { cryptoData } = useCrypto();
   const { user } = contextData();
 
-  //user Assets
+  // Get user's assets with real-time prices
   const assets = user.assets.map((asset: Asset) => {
-    const coinInfo = Object.values(cryptoData).find((coin) => coin.symbol === asset.symbol);
+    const coinInfo = Object.values(cryptoData).find(
+      (coin) => coin.symbol === asset.symbol,
+    );
     return { ...asset, price: coinInfo ? Number(coinInfo.price) : 0 };
   });
 
-  // Get user's coins with realtime prices
   const parsedAssets = assets.filter(
     (asset: AssetWithPrice) =>
       asset.symbol !== 'USDT' && Number(asset.spot) !== 0,
   );
 
-  //filtered assets to get only USDT
-  const usdtAsset = assets.filter(
-    (asset: AssetWithPrice) => asset.symbol === 'USDT',
-  );
+  const usdtAsset = assets
+    .filter((asset: AssetWithPrice) => asset.symbol === 'USDT')
+    .map((ass: AssetWithPrice) => {
+      return { ...ass, price: 1 };
+    });
 
-  const [fromAsset, setFromAsset] = useState(parsedAssets[0]);
+  const [fromAsset, setFromAsset] = useState(parsedAssets[0] || null);
   const [fromAssets, setFromAssets] = useState(parsedAssets);
-  const [toAsset, setToAsset] = useState(usdtAsset[0]);
+  const [toAsset, setToAsset] = useState(usdtAsset[0] || null);
   const [toAssets, setToAssets] = useState(usdtAsset);
-  const [amountToConvert, setAmountToConvert] = useState(0);
-  const [convertedAmount, setConvertedAmount] = useState(0);
+  const [amountToConvert, setAmountToConvert] = useState('');
+  const [convertedAmount, setConvertedAmount] = useState('');
   const [error, setError] = useState<null | string>(null);
   const [success, setSuccess] = useState<null | string>(null);
   const [loading, setLoading] = useState(false);
 
-  //calculate conversion amount
-  const calAmount = (
-    asset: AssetWithPrice,
+  const calculateConversion = (
+    from: AssetWithPrice,
+    to: AssetWithPrice,
     amount: number,
     reverse?: boolean,
   ) => {
-    const availableAssetInUsd = Number(asset.spot) * Number(asset.price);
-    if (availableAssetInUsd < amount)
-      setError(`Insufficient ${asset.symbol} Balance`);
+    setError(null);
+
+    if (!from || !to || isNaN(amount) || amount <= 0) {
+      setConvertedAmount('');
+      return;
+    }
 
     if (!reverse) {
-      setConvertedAmount((amount * Number(asset.price)) / toAsset.price);
-      setAmountToConvert(amount);
+      if (from.symbol !== 'USDT') {
+        console.log((amount * from.price).toString());
+        setConvertedAmount((amount * from.price).toString());
+      } else {
+        setConvertedAmount((amount / to.price).toString());
+      }
     } else {
-      setAmountToConvert(amount / fromAsset.price);
-      setConvertedAmount(amount);
+      if (to.symbol !== 'USDT') {
+        setAmountToConvert((amount * to.price).toString());
+      } else {
+        setAmountToConvert((amount / from.price).toString());
+      }
     }
   };
 
-  // Function to swap the assets correctly
+  // Swap assets
   const handleSwitch = () => {
-    setFromAssets(toAssets);
     setFromAsset(toAsset);
-    setToAssets(fromAssets);
     setToAsset(fromAsset);
+    setFromAssets(toAssets);
+    setToAssets(fromAssets);
+    setAmountToConvert('');
+    setConvertedAmount('');
   };
 
-  // Clears the selected asset and amount
+  // Clear inputs
   const handleClear = () => {
-    setFromAsset(parsedAssets[0]);
-    toAsset(usdtAsset[0]);
-    setAmountToConvert(0);
+    setFromAsset(parsedAssets[0] || null);
+    setToAsset(usdtAsset[0] || null);
+    setAmountToConvert('');
+    setConvertedAmount('');
+    setError(null);
+    setSuccess(null);
   };
 
   // Submit conversion request
   const handleSubmit = async () => {
+    if (!fromAsset || !toAsset) return setError('Please select assets');
+
     const availableAssetInUsd =
       Number(fromAsset.spot) * Number(fromAsset.price);
 
-    if (availableAssetInUsd < amountToConvert)
+    if (availableAssetInUsd < Number(amountToConvert))
       return setError(`Insufficient ${fromAsset.symbol} Balance`);
 
-    if (convertedAmount <= 0) return setError(`Please enter amount`);
+    if (Number(convertedAmount) <= 0)
+      return setError(`Please enter a valid amount`);
 
     setLoading(true);
     setError(null);
@@ -91,8 +111,8 @@ export default function ConvertAsset() {
 
     try {
       const { message } = await sendRequest('/transaction/convert', 'POST', {
-        amountToConvert,
-        convertedAmount,
+        amountToConvert: Number(amountToConvert),
+        convertedAmount: Number(convertedAmount),
         fromAsset: fromAsset.symbol,
         toAsset: toAsset.symbol,
       });
@@ -122,18 +142,19 @@ export default function ConvertAsset() {
         </button>
       </div>
 
-      {/* From Asset Dropdown */}
+      {/* From Asset Selection */}
       <label className="label">
         <span>From</span>
-        <span>Bal: {fromAsset.spot}</span>
+        <span>Bal: {fromAsset?.spot || 0}</span>
       </label>
 
       <div className="flex gap-4 mb-7">
         <select
           onChange={(e) => setFromAsset(JSON.parse(e.target.value))}
           className="input"
+          value={JSON.stringify(fromAsset)}
         >
-          {fromAssets.map((asset: any, i: number) => (
+          {fromAssets.map((asset: Asset, i: number) => (
             <option key={i} value={JSON.stringify(asset)}>
               {`${asset.name} (${asset.symbol})`}
             </option>
@@ -142,24 +163,29 @@ export default function ConvertAsset() {
 
         <input
           type="number"
-          value={amountToConvert > 0 ? amountToConvert : ''}
-          onChange={(e) => calAmount(fromAsset, Number(e.target.value))}
+          value={amountToConvert}
+          onChange={(e) => {
+            setAmountToConvert(e.target.value);
+            calculateConversion(fromAsset, toAsset, Number(e.target.value));
+          }}
           className="input"
+          step={fromAsset.symbol === 'USDT' ? '0.01' : '0.00000001'}
         />
       </div>
 
-      {/* To Asset Dropdown */}
+      {/* To Asset Selection */}
       <label className="label">
         <span>To</span>
-        <span>Bal: {toAsset.spot}</span>
+        <span>Bal: {toAsset?.spot || 0}</span>
       </label>
 
       <div className="flex gap-4 mb-3">
         <select
           onChange={(e) => setToAsset(JSON.parse(e.target.value))}
           className="input"
+          value={JSON.stringify(toAsset)}
         >
-          {toAssets.map((asset: any, i: number) => (
+          {toAssets.map((asset: Asset, i: number) => (
             <option key={i} value={JSON.stringify(asset)}>
               {`${asset.name} (${asset.symbol})`}
             </option>
@@ -168,9 +194,18 @@ export default function ConvertAsset() {
 
         <input
           type="number"
-          value={convertedAmount > 0 ? convertedAmount : ''}
-          onChange={(e) => calAmount(fromAsset, Number(e.target.value), true)}
+          value={convertedAmount}
+          onChange={(e) => {
+            setConvertedAmount(e.target.value);
+            calculateConversion(
+              fromAsset,
+              toAsset,
+              Number(e.target.value),
+              true,
+            );
+          }}
           className="input"
+          step={toAsset.symbol === 'USDT' ? '0.01' : '0.00000001'}
         />
       </div>
 
@@ -178,17 +213,14 @@ export default function ConvertAsset() {
       {error && <Alert message={error} type="danger" />}
       {success && <Alert message={success} type="success" />}
       <div className="flex gap-3">
-        {/* Convert Button */}
         <button
           className="bg-customGreen text-white py-2 px-5 text-sm rounded hover:bg-green-600 transition"
-          onClick={() =>
-            handleSubmit()
-          }
+          onClick={handleSubmit}
+          disabled={loading}
         >
-          {loading ? "Converting..." : "Convert"}
+          {loading ? 'Converting...' : 'Convert'}
         </button>
 
-        {/* Clear Button */}
         <button
           className="bg-gray-500 text-white py-2 px-5 text-sm rounded hover:bg-gray-600 transition"
           onClick={handleClear}

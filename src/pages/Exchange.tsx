@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Chart from '@/components/Chart';
+// import Chart from '@/components/Chart';
 import MarketLabel from '@/components/MarketLabel';
 import MarketList from '@/components/MarketList';
 import Navbar from '@/components/Navbar';
@@ -8,9 +8,10 @@ import OrderHistory from '@/components/OrderHistory';
 import TradePanel from '@/components/TradePanel';
 import { useCrypto } from '@/context/CoinContext';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowUpDown, Coins } from 'lucide-react';
 import SEO from '@/components/SEO';
 import MobileNav from '@/components/MobileNav';
+import TradingChart from '@/components/TradingChart';
 
 export interface MarketData {
   symbol: string;
@@ -69,29 +70,51 @@ const Exchange: React.FC = () => {
           </div>
 
           {/* Actions */}
-          <div className="w-full lg:hidden grid grid-cols-2 p-2 gap-2 text-sm fixed bottom-19 z-99999 bg-bodydark1/90 customBlur">
-            <Link
-              to="/dashboard/conversion"
-              className="w-full bg-[#202020] py-2 rounded text-white col-span-2 text-center"
-            >
-              Convert
-            </Link>
+          {activeTab === 'chart' && (
+            <div className="w-full lg:hidden flex items-center justify-around flex-wrap px-2 py-3 gap-2 fixed bottom-17 z-99999 bg-bodydark1">
+              <div className="flex gap-3">
+                <Link
+                  to="/dashboard/conversion"
+                  className="flex flex-col items-center text-white"
+                >
+                  <div className="flex items-center justify-center">
+                    <Coins
+                      size={14}
+                      className="text-green-300"
+                      strokeWidth={1}
+                    />
+                  </div>
+                  <p className="text-[10px] mt-2">Convert</p>
+                </Link>
 
-            <button className="w-full bg-green-600 py-2 rounded text-white col-span-1">
-              Buy {selectedMarket}
-            </button>
+                <Link
+                  to="/dashboard/transfer"
+                  className="flex flex-col items-center text-white"
+                >
+                  <div className="flex items-center justify-center">
+                    <ArrowUpDown
+                      size={14}
+                      className="text-green-300"
+                      strokeWidth={1}
+                    />
+                  </div>
+                  <p className="text-[10px] mt-2">Transfer</p>
+                </Link>
+              </div>
 
-            <button className="w-full bg-red-600 py-2 rounded text-white col-span-1">
-              Sell {selectedMarket}
-            </button>
+              <div className="flex gap-3">
+                <button className="w-full whitespace-nowrap bg-green-600 px-4 py-2 rounded text-white text-sm font-medium">
+                  Buy {selectedMarket}
+                </button>
 
-            <Link
-              to="/dashboard/transfer"
-              className="w-full bg-[#202020] py-2 rounded text-white col-span-2 text-center"
-            >
-              Transfer
-            </Link>
-          </div>
+                <button className="w-full whitespace-nowrap bg-red-600 px-4 py-2 rounded text-white text-sm font-medium">
+                  Sell {selectedMarket}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Tabs */}
           <div className="lg:hidden grid grid-cols-2 p-3 w-full text-sm text-white/70">
             <button
               className={`px-4 py-1 rounded-l-sm col-span-1 ${
@@ -112,7 +135,7 @@ const Exchange: React.FC = () => {
           </div>
           <div className="w-full grid grid-cols-10 gap-4 py-5">
             {/* Market List */}
-            <div className="max-h-[900px] overflow-y-auto custom-scrollbar col-span-2 max-lg:col-span-10 bg-bodydark2 p-3 rounded-sm max-lg:hidden">
+            <div className="h-full max-h-[900px] overflow-y-auto custom-scrollbar col-span-2 max-lg:col-span-10 bg-bodydark2 p-3 rounded-sm max-lg:hidden">
               <MarketList
                 markets={marketData}
                 selectedMarket={selectedMarket}
@@ -135,7 +158,8 @@ const Exchange: React.FC = () => {
                   }
                 }
               />
-              <Chart symbol={selectedMarket} />
+              {/* <Chart symbol={selectedMarket} /> */}
+              <TradingChart symbol={selectedMarket} />
               <div className="flex max-lg:flex-wrap gap-4">
                 <TradePanel market={selectedMarket} tradeType="buy" />
                 <TradePanel market={selectedMarket} tradeType="sell" />
@@ -201,7 +225,8 @@ const Exchange: React.FC = () => {
               </div>
             ) : (
               <div className="lg:hidden col-span-10 grid gap-10 px-3 py-1">
-                <Chart symbol={selectedMarket} />
+                {/* <Chart symbol={selectedMarket} /> */}
+                <TradingChart symbol={selectedMarket} />
                 <OrderBook
                   marketData={marketData.find(
                     (market) => market.symbol === selectedMarket,

@@ -1,4 +1,4 @@
-import tradeDevice from '../assets/multibank-mt4.png';
+import tradeDevice from '../assets/exchange-script-banner.webp';
 
 export interface SymbolMargin {
   symbol: string;
