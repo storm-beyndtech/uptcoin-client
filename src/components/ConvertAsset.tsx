@@ -117,7 +117,7 @@ export default function ConvertAsset() {
       });
 
       setSuccess(message);
-      setTimeout(() => handleClear(), 3000)
+      setTimeout(() => handleClear(), 3000);
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -144,7 +144,10 @@ export default function ConvertAsset() {
       {/* From Asset Selection */}
       <label className="label">
         <span>From</span>
-        <span>Bal: {fromAsset?.spot || 0}</span>
+        <span>
+          Bal:{' '}
+          {fromAsset?.spot.toFixed(fromAsset.symbol === 'USDT' ? 2 : 8) || 0}
+        </span>
       </label>
 
       <div className="flex gap-4 mb-7">
@@ -175,7 +178,9 @@ export default function ConvertAsset() {
       {/* To Asset Selection */}
       <label className="label">
         <span>To</span>
-        <span>Bal: {toAsset?.spot || 0}</span>
+        <span>
+          Bal: {toAsset?.spot.toFixed(toAsset.symbol === 'USDT' ? 2 : 8) || 0}
+        </span>
       </label>
 
       <div className="flex gap-4 mb-3">
