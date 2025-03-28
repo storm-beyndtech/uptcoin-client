@@ -12,6 +12,8 @@
   "dependencies": {
     "apexcharts": "^3.41.0",
     "axios": "^1.7.9",
+    "chart.js": "^4.4.8",
+    "chartjs-chart-financial": "^0.2.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "helmet": "^7.1.0",

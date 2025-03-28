@@ -58,16 +58,15 @@ export default function ConvertAsset() {
 
     if (!reverse) {
       if (from.symbol !== 'USDT') {
-        console.log((amount * from.price).toString());
-        setConvertedAmount((amount * from.price).toString());
+        setConvertedAmount((amount * from.price).toFixed(2));
       } else {
-        setConvertedAmount((amount / to.price).toString());
+        setConvertedAmount((amount / to.price).toFixed(8));
       }
     } else {
       if (to.symbol !== 'USDT') {
-        setAmountToConvert((amount * to.price).toString());
+        setAmountToConvert((amount * to.price).toFixed(2));
       } else {
-        setAmountToConvert((amount / from.price).toString());
+        setAmountToConvert((amount / from.price).toString(8));
       }
     }
   };
@@ -78,8 +77,8 @@ export default function ConvertAsset() {
     setToAsset(fromAsset);
     setFromAssets(toAssets);
     setToAssets(fromAssets);
-    setAmountToConvert('');
-    setConvertedAmount('');
+    setAmountToConvert(convertedAmount);
+    setConvertedAmount(amountToConvert);
   };
 
   // Clear inputs
@@ -99,7 +98,7 @@ export default function ConvertAsset() {
     const availableAssetInUsd =
       Number(fromAsset.spot) * Number(fromAsset.price);
 
-    if (availableAssetInUsd < Number(amountToConvert))
+    if (availableAssetInUsd < Number(amountToConvert) * fromAsset.price)
       return setError(`Insufficient ${fromAsset.symbol} Balance`);
 
     if (Number(convertedAmount) <= 0)
@@ -111,14 +110,14 @@ export default function ConvertAsset() {
 
     try {
       const { message } = await sendRequest('/transaction/convert', 'POST', {
-        amountToConvert: Number(amountToConvert),
-        convertedAmount: Number(convertedAmount),
-        fromAsset: fromAsset.symbol,
-        toAsset: toAsset.symbol,
+        userId: user._id,
+        amount: Number(amountToConvert),
+        from: fromAsset.symbol,
+        to: toAsset.symbol,
       });
 
       setSuccess(message);
-      handleClear();
+      setTimeout(() => handleClear(), 3000)
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -212,6 +211,12 @@ export default function ConvertAsset() {
       {/* Action Buttons */}
       {error && <Alert message={error} type="danger" />}
       {success && <Alert message={success} type="success" />}
+      {!error && !success && (
+        <Alert
+          type="simple"
+          message="Prices update rapidly; the displayed price may vary slightly upon submission and processing."
+        />
+      )}
       <div className="flex gap-3">
         <button
           className="bg-customGreen text-white py-2 px-5 text-sm rounded hover:bg-green-600 transition"

@@ -72,7 +72,11 @@ const AssetList = ({ assets, setIsModalOpen }: AssetListProps) => {
                 >
                   <td className="px-3 py-4 flex items-center space-x-2">
                     <img
-                      src={asset.image}
+                      src={
+                        asset.symbol !== 'USDT'
+                          ? asset.image
+                          : `https://assets.coincap.io/assets/icons/tether2@2x.png`
+                      }
                       alt={asset.symbol}
                       className="w-5 h-5"
                     />

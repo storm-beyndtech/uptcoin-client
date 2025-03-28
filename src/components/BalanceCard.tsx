@@ -8,26 +8,12 @@ import {
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-interface Asset {
-  _id: string;
-  symbol: string;
-  funding: number;
-  spot: number;
-  name: string;
-  address: string;
-  network: string;
-}
-
 interface BalanceCardProps {
-  assets: Asset[];
+  totalBalance: number;
 }
 
-const BalanceCard: React.FC<BalanceCardProps> = ({ assets }) => {
+const BalanceCard: React.FC<BalanceCardProps> = ({ totalBalance }) => {
   const [showBalance, setShowBalance] = useState(true);
-  const totalBalance = assets.reduce(
-    (acc, asset) => acc + asset.funding + asset.spot,
-    0,
-  );
 
   return (
     <div className="relative bg-black/20 text-white px-4 py-5 tracking-wider rounded-2xl shadow-lg w-full max-w-md mx-auto">

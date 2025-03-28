@@ -30,12 +30,6 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
     if (!user || !cryptoData) return;
 
     const asset = user.assets.find((a: AssetWithPrice) => a.symbol === market);
-    const coinInfo = Object.values(cryptoData).find(
-      (coin) => coin.symbol === market,
-    );
-    const currentPrice = coinInfo ? Number(coinInfo.price) : 0;
-
-    setLimitPrice((prev) => (prev ? prev : currentPrice.toString()));
 
     if (tradeType === 'buy') {
       const usdtAsset = user.assets.find(
@@ -46,6 +40,16 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
       setAvailableBalance(asset ? asset.spot : 0);
     }
   }, [user, cryptoData, market, tradeType]);
+
+  //update limitPrice
+  useEffect(() => {
+    const coinInfo = Object.values(cryptoData).find(
+      (coin) => coin.symbol === market,
+    );
+    const currentPrice = coinInfo ? Number(coinInfo.price) : 0;
+
+    setLimitPrice(currentPrice.toFixed(2));
+  }, [market]);
 
   const handleLimitPriceChange = (value: string) => {
     setLimitPrice(value);
@@ -140,7 +144,8 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
         <h4 className="flex justify-between font-semibold text-xs lg:text-base text-white/40 mb-4">
           <span>Available</span>{' '}
           <span>
-            {availableBalance} {tradeType === 'buy' ? 'USDT' : market}
+            {availableBalance.toFixed(tradeType === 'buy' ? 2 : 6)}{' '}
+            {tradeType === 'buy' ? 'USDT' : market}
           </span>
         </h4>
 

@@ -98,12 +98,15 @@ const UserProfile = ({
 };
 
 // AccountBalance Component
-const AccountBalance: React.FC = () => {
+interface IBal{
+  totalBalance: number
+}
+const AccountBalance: React.FC<IBal> = ({totalBalance}) => {
   return (
     <div className="p-4 border rounded-lg shadow-sm bg-white">
       <h3 className="font-semibold">Account balance</h3>
       <p className="text-3xl font-bold mt-2">
-        0.00 <span className="text-gray-500 text-lg">USDT</span>
+        {totalBalance.toFixed(2)} <span className="text-gray-500 text-lg">USDT</span>
       </p>
       <a href="#" className="text-green-500 flex items-center gap-1 mt-2">
         <Wallet /> <span>My wallet </span>{' '}

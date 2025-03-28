@@ -9,8 +9,8 @@ export default function TransferAsset() {
   const { user } = contextData();
   const assets = user.assets.filter((asset: Asset) => Number(asset.spot) > 0);
 
-  const [from, setFrom] = useState('Funding');
-  const [to, setTo] = useState('Spot');
+  const [from, setFrom] = useState('funding');
+  const [to, setTo] = useState('spot');
   const [coin, setCoin] = useState(assets[0]);
   const [amount, setAmount] = useState(0);
   const [error, setError] = useState<null | string>(null);
@@ -23,20 +23,26 @@ export default function TransferAsset() {
   };
 
   const handleTransfer = async () => {
-    if (from === to) return setError('Cannot transfer to the same balance');
     if (Number(amount) <= 0) return setError('Enter a valid amount');
-    if (Number(coin.spot) < Number(amount))
-      return setError('Insufficient balance');
+
+    if (from === 'funding') {
+      if (Number(coin.funding) < Number(amount))
+        return setError(`Insufficient ${coin.symbol} funding balance`);
+    } else if (from === 'spot') {
+      if (Number(coin.spot) < Number(amount))
+        return setError(`Insufficient ${coin.symbol} spot balance`);
+    }
 
     setLoading(true);
     setError(null);
     setSuccess(null);
 
     try {
-      const { message } = await sendRequest('/transaction/transfer', 'POST', {
+      const { message } = await sendRequest(`/transaction/transfer/`, 'POST', {
+        userId: user._id,
         from,
         to,
-        coin: coin.symbol,
+        symbol: coin.symbol,
         amount,
       });
       setSuccess(message);
@@ -67,7 +73,7 @@ export default function TransferAsset() {
       {/* From & To Dropdowns */}
       <label className="label">
         <span>From</span>{' '}
-        <span>bal:{from === 'Funding' ? coin.funding : coin.spot}</span>
+        <span>bal:{from === 'funding' ? coin.funding : coin.spot}</span>
       </label>
       <input
         onChange={(e) => setFrom(e.target.value)}
@@ -78,7 +84,7 @@ export default function TransferAsset() {
 
       <label className="label">
         <span>To</span>{' '}
-        <span>bal:{to === 'Spot' ? coin.spot : coin.funding}</span>
+        <span>bal:{to === 'spot' ? coin.spot : coin.funding}</span>
       </label>
       <input
         onChange={(e) => setTo(e.target.value)}
