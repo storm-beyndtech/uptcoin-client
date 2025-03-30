@@ -1,17 +1,32 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Edit2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Edit2, OctagonAlert } from 'lucide-react';
+import { sendRequest } from '@/lib/sendRequest';
 import Alert from './UI/Alert';
-import { Asset, SymbolMargin } from '@/lib/utils';
+import { contextData } from '@/context/AuthContext';
 import CompleteTransactionModal from './CompleteTransactionModal';
 import Btn from './UI/Btn';
 
-type WithdrawAsset = Asset &
-  Pick<SymbolMargin, 'minWithdraw' | 'charges' | 'withdraw'>;
+interface WithdrawAsset {
+  symbol: string;
+  name: string;
+  network: string;
+  address: string;
+  minWithdraw: number;
+  funding: number;
+}
+
+interface PendingWithdrawal {
+  _id: string;
+  symbol: string;
+  network: string;
+  amount: number;
+  address: string;
+}
 
 interface WithdrawFormProps {
   withdrawAssets: WithdrawAsset[];
-  setIsAddressModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsAddressModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function WithdrawForm({
@@ -19,10 +34,21 @@ export default function WithdrawForm({
   setIsAddressModalOpen,
 }: WithdrawFormProps) {
   const { symbol } = useParams();
-  const [selectedAsset, setSelectedAsset] = useState<WithdrawAsset>(
-    withdrawAssets[0],
-  );
-  const [amount, setAmount] = useState<number>(0);
+  const { user } = contextData();
+
+  const initialAsset =
+    withdrawAssets.find((asset) => asset.symbol === symbol) ||
+    withdrawAssets[0];
+  const [selectedAsset, setSelectedAsset] =
+    useState<WithdrawAsset>(initialAsset);
+  const [amount, setAmount] = useState(0);
+  const [pendingWithdrawals, setPendingWithdrawals] = useState<
+    PendingWithdrawal[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState('');
   const [submitModalOpen, setIsSubmitModalOpen] = useState(false);
 
   useEffect(() => {
@@ -30,8 +56,30 @@ export default function WithdrawForm({
       const asset = withdrawAssets.find((asset) => asset.symbol === symbol);
       if (asset) setSelectedAsset(asset);
     }
-  }, [symbol]);
+  }, [symbol, withdrawAssets]);
 
+  // Fetch pending withdrawals
+  const fetchPendingWithdrawals = async () => {
+    try {
+      const data = await sendRequest(
+        `/transaction/withdrawals?userId=${user._id}&status=pending&symbol=${selectedAsset.symbol}`,
+        'GET',
+      );
+      setPendingWithdrawals(
+        data[0]?.symbol === selectedAsset.symbol ? data : [],
+      );
+    } catch (error) {
+      console.error('Error fetching pending withdrawals:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPendingWithdrawals();
+  }, []);
+
+  // Handle asset change
   const handleAssetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = withdrawAssets.find(
       (asset) => asset.symbol === e.target.value,
@@ -39,11 +87,89 @@ export default function WithdrawForm({
     if (selected) setSelectedAsset(selected);
   };
 
-  const handleSubmit = (password: string) => {
-    console.log(password);
+  // Handle submit withdrawal
+  const handleSubmit = async (password: string) => {
+    if (amount < selectedAsset.minWithdraw) {
+      setError(
+        `Minimum withdrawal is ${selectedAsset.minWithdraw} ${selectedAsset.symbol}.`,
+      );
+      return;
+    }
+
+    setError('');
+    setIsSubmitting(true);
+
+    try {
+      const { message } = await sendRequest('/transaction/withdraw', 'POST', {
+        userId: user._id,
+        address: selectedAsset.address,
+        network: selectedAsset.network,
+        symbol: selectedAsset.symbol,
+        amount,
+        password,
+      });
+      setSuccess(message);
+      setIsSubmitModalOpen(false);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        fetchPendingWithdrawals();
+        setAmount(0);
+        setSuccess('');
+      }, 3000);
+    }
   };
 
-  return (
+  // Handle cancel withdrawal
+  const handleCancelWithdrawal = async (id: string) => {
+    setIsSubmitting(true);
+    try {
+      const { message } = await sendRequest(
+        `/transaction/withdraw/${id}/cancel`,
+        'DELETE',
+      );
+      setSuccess(message);
+    } catch (error) {
+      console.error('Error canceling withdrawal:', error);
+      setError('Failed to cancel withdrawal.');
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        fetchPendingWithdrawals();
+        setSuccess('');
+      }, 3000);
+    }
+  };
+
+  if (loading) return <p>Loading withdrawals...</p>;
+
+  return pendingWithdrawals.length > 0 ? (
+    <div className="mt-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded-lg">
+      <div className="flex items-center gap-2">
+        <OctagonAlert size={18} />
+        <h3 className="text-md font-semibold">Pending Withdrawals</h3>
+      </div>
+      {pendingWithdrawals.map((withdrawal) => (
+        <div
+          key={withdrawal._id}
+          className="mt-3 p-2 bg-white rounded-md shadow-sm flex justify-between"
+        >
+          <span>
+            {withdrawal.amount} {withdrawal.symbol} - {withdrawal.network}
+          </span>
+          <button
+            className="text-red-500 text-sm"
+            onClick={() => handleCancelWithdrawal(withdrawal._id)}
+            disabled={isSubmitting}
+          >
+            Cancel
+          </button>
+        </div>
+      ))}
+    </div>
+  ) : (
     <>
       <div className="max-w-md p-6 px-4 bg-white max-lg:bg-bodydark1 rounded-lg space-y-7">
         <h2 className="text-xl font-medium max-md:text-white/90">
@@ -56,17 +182,20 @@ export default function WithdrawForm({
           </label>
           <select
             className="input !text-sm"
-            value={selectedAsset?.symbol || ''}
+            value={selectedAsset.symbol}
             onChange={handleAssetChange}
           >
-            <option value="" disabled>
-              Choose an Asset
-            </option>
-            {withdrawAssets.map((asset) => (
-              <option key={asset.symbol} value={asset.symbol}>
-                {asset.name} ({asset.symbol})
+            {symbol ? (
+              <option value={symbol}>
+                {selectedAsset.name} ({selectedAsset.symbol})
               </option>
-            ))}
+            ) : (
+              withdrawAssets.map((coin, i) => (
+                <option key={i} value={coin.symbol}>
+                  {coin.name} ({coin.symbol})
+                </option>
+              ))
+            )}
           </select>
         </div>
 
@@ -110,19 +239,25 @@ export default function WithdrawForm({
           <input
             type="number"
             min={selectedAsset.minWithdraw}
-            value={amount}
+            value={amount === 0 ? '' : amount}
             onChange={(e) => setAmount(Number(e.target.value))}
+            placeholder={`${selectedAsset.minWithdraw}`}
             className="input !text-sm"
           />
         </div>
 
-        <Alert
-          type="warning"
-          message={`Minimum withdrawal amount is ${selectedAsset.minWithdraw} ${selectedAsset.symbol}. Withdrawals below this amount will not be processed.`}
-        />
+        {error && <Alert type="danger" message={error} />}
+        {success && <Alert type="success" message={success} />}
+
+        {!error && !success && (
+          <Alert
+            type="warning"
+            message={`Minimum withdrawal amount is ${selectedAsset.minWithdraw} ${selectedAsset.symbol}.`}
+          />
+        )}
 
         <Btn
-          label="Submit"
+          label={isSubmitting ? 'Processing...' : 'Submit'}
           type="primary"
           className="w-full"
           onClick={() => setIsSubmitModalOpen(true)}
@@ -134,6 +269,9 @@ export default function WithdrawForm({
           setIsModalOpen={setIsSubmitModalOpen}
           onSubmit={handleSubmit}
           title="Withdrawal"
+          isSubmitting={isSubmitting}
+          error={error && error}
+          success={success && success}
         />
       )}
     </>

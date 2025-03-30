@@ -1,77 +1,107 @@
 import Alert from '@/components/UI/Alert';
 import { useState } from 'react';
+import { sendRequest } from '@/lib/sendRequest';
+import { contextData } from '@/context/AuthContext';
 
-export default function WithdrawalPassword() {
-  const [password1, setPassword1] = useState<string>('');
-  const [password2, setPassword2] = useState<string>('');
+export default function ChangePassword() {
+  const { user } = contextData();
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  // Validate the form
-  const validateForm = (): boolean => {
-    const validationErrors: string[] = [];
-    if (password1.length < 3) validationErrors.push('Invalid Password.');
-    if (password2.length < 3) validationErrors.push('Invalid Password.');
-    if (password1 !== password2)
-      validationErrors.push("Passwords Doesn't Match.");
-    setErrors(validationErrors);
-    return validationErrors.length === 0;
-  };
+  // Submit password update
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      const formData = {
-        password1,
-      };
-      console.log(formData);
+    // Basic validation
+    if (currentPassword.length < 3) {
+      setError('Current password is required.');
+      return;
+    }
 
-      setLoading(true)
+    if (newPassword.length < 6) {
+      setError('New password must be at least 6 characters.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords don't match.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const { message } = await sendRequest('/auth/update-password', 'PUT', {
+        userId: user._id,
+        currentPassword,
+        newPassword,
+      });
+
+      setSuccess(message);
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setSuccess('');
+        setError('');
+      }, 3000);
     }
   };
 
   return (
-    <div className="w-full max-w-lg bg-white max-lg:bg-transparent p-5 max-lg:pt-10 rounded">
-      <h3 className="font-semibold max-lg:text-white">
-        Setup withdrawal password
-      </h3>
+    <div className="w-full max-w-lg bg-white p-5 rounded">
+      <h3 className="font-semibold">Change Account Password</h3>
+
       <Alert
         type="simple"
-        message="For fund security, withdrawals are disabled for 24 hours after changing
-        your login password."
+        message="For security, withdrawals are disabled for 24 hours after changing your login password."
       />
-
-      {errors.length > 0 && (
-        <div className="mb-4 p-4 bg-red-100 text-red-600 rounded-lg">
-          <ul>
-            {errors.map((error, idx) => (
-              <li key={idx}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="label">Password</label>
+          <label className="label">Current Password</label>
           <input
-            type="text"
+            type="password"
             className="input"
-            placeholder="Enter New Password"
-            value={password1}
-            onChange={(e) => setPassword1(e.target.value)}
+            placeholder="Enter Current Password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
           />
         </div>
 
         <div>
-          <label className="label">Confirm Password</label>
+          <label className="label">New Password</label>
           <input
-            type="text"
+            type="password"
             className="input"
-            placeholder="Re-type New Password"
-            value={password2}
-            onChange={(e) => setPassword2(e.target.value)}
+            placeholder="Enter New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
         </div>
+
+        <div>
+          <label className="label">Confirm New Password</label>
+          <input
+            type="password"
+            className="input"
+            placeholder="Re-type New Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+
+        {error && <Alert type="danger" message={error} />}
+        {success && <Alert type="success" message={success} />}
 
         <button
           className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"

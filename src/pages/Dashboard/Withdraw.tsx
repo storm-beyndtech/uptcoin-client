@@ -13,7 +13,9 @@ export default function Withdraw() {
 
   //user Assets
   const userAssets = user.assets.map((asset: Asset) => {
-    const coinInfo = Object.values(cryptoData).find((coin) => coin.symbol === asset.symbol);
+    const coinInfo = Object.values(cryptoData).find(
+      (coin) => coin.symbol === asset.symbol,
+    );
     return { ...asset, price: coinInfo ? Number(coinInfo.price) : 0 };
   });
   const [editing, setEditing] = useState(false);
@@ -35,7 +37,7 @@ export default function Withdraw() {
       ...ass,
       minWithdraw: foundSym.minWithdraw,
       withdraw: foundSym.withdraw,
-      charges: foundSym.charges,
+      withdrawalFee: foundSym.withdrawalFee,
     };
   });
 
@@ -45,7 +47,7 @@ export default function Withdraw() {
   };
 
   return (
-    <div className="max-lg:min-h-screen max-lg:bg-bodydark1 py-20 px-2">
+    <div className="max-lg:min-h-screen max-lg:bg-bodydark1 py-20 sm:py-5 px-2">
       {addressModalOpen && (
         <AddAddressModal
           addresses={addresses}

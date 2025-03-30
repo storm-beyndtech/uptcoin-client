@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Copy, OctagonAlert } from 'lucide-react';
+import { sendRequest } from '@/lib/sendRequest'; // Assuming you have this function for API requests.
+import Alert from './UI/Alert';
+import { contextData } from '@/context/AuthContext';
 
 interface Coin {
   symbol: string;
@@ -10,41 +13,71 @@ interface Coin {
   minDeposit: number;
 }
 
+interface PendingDeposit {
+  _id: string;
+  symbol: string;
+  network: string;
+  amount: number;
+  address: string;
+}
+
 interface DepositProps {
   coins: Coin[];
 }
 
 export default function DepositComp({ coins }: DepositProps) {
-  const [searchParams] = useSearchParams();
-  const coinFromParams = searchParams.get('coin'); // Get coin from URL params
+  const { symbol } = useParams();
+  const { user } = contextData();
 
-  const initialCoin =
-    coins.find((coin) => coin.symbol === coinFromParams) || coins[0];
+  const initialCoin = coins.find((coin) => coin.symbol === symbol) || coins[0];
   const [selectedCoin, setSelectedCoin] = useState<Coin>(initialCoin);
   const [amount, setAmount] = useState(0);
+  const [pendingDeposits, setPendingDeposits] = useState<PendingDeposit[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    if (coinFromParams) {
-      const newCoin = coins.find((coin) => coin.symbol === coinFromParams);
+    if (symbol) {
+      const newCoin = coins.find((coin) => coin.symbol === symbol);
       if (newCoin) setSelectedCoin(newCoin);
     }
-  }, [coinFromParams, coins]);
+  }, [symbol, coins]);
 
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-    selectedCoin.address,
-  )}`;
+  // Fetch pending deposits
+  const fetchPendingDeposits = async () => {
+    try {
+      const data = await sendRequest(
+        `/transaction/deposits?userId=${user._id}&status=pending&${selectedCoin.symbol}`,
+        'GET',
+      );
+      setPendingDeposits(data[0].symbol === selectedCoin.symbol ? data : []);
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching pending deposits:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    fetchPendingDeposits();
+  }, []);
+
+  //Handle copy address
   const handleCopy = (address: string) => {
     navigator.clipboard.writeText(address);
     alert('Address copied to clipboard!');
   };
 
+  //Handle select coin
   const handleCoinChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = coins.find((coin) => coin.symbol === e.target.value);
     if (selected) setSelectedCoin(selected);
   };
 
+  //Submit Deposit
   const handleDeposit = async () => {
     if (amount < selectedCoin.minDeposit) {
       setError(
@@ -55,20 +88,56 @@ export default function DepositComp({ coins }: DepositProps) {
 
     setError('');
 
-    // Send deposit request
     try {
-      alert('Deposit request submitted successfully!');
-      setAmount(0);
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+      setIsSubmitting(true);
+      const { message } = await sendRequest('/transaction/deposit', 'POST', {
+        userId: user._id,
+        address: selectedCoin.address,
+        network: selectedCoin.network,
+        symbol: selectedCoin.symbol,
+        amount,
+      });
+      setSuccess(message);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        fetchPendingDeposits();
+        setAmount(0);
+        setSuccess('');
+      }, 3000);
     }
   };
+
+  //Cancel Deposit
+  const handleCancelDeposit = async (id: string) => {
+    setIsSubmitting(true);
+    try {
+      const { message } = await sendRequest(
+        `/transaction/deposit/${id}/cancel`,
+        'DELETE',
+      );
+      setSuccess(message);
+    } catch (error) {
+      console.error('Error canceling deposit:', error);
+      setError('Failed to cancel deposit.');
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        fetchPendingDeposits();
+        setSuccess('');
+      }, 3000);
+    }
+  };
+
+  if (loading) return <p>Loading deposits...</p>;
 
   return (
     <div className="flex gap-5 max-lg:flex-col py-10 px-4">
       <div className="p-6 max-lg:px-0 max-w-lg bg-white max-lg:bg-bodydark1 shadow-md rounded-lg">
         <h2 className="text-xl font-semibold max-lg:font-medium text-gray-800 max-lg:text-white/90 mb-4">
-          Deposit
+          {pendingDeposits.length > 0 ? 'Pending Deposit(s)' : 'Deposit'}
         </h2>
 
         {/* Select a coin */}
@@ -80,11 +149,17 @@ export default function DepositComp({ coins }: DepositProps) {
           value={selectedCoin.symbol}
           onChange={handleCoinChange}
         >
-          {coins.map((coin, i) => (
-            <option key={i} value={coin.symbol}>
-              {coin.name} ({coin.symbol})
+          {symbol ? (
+            <option value={symbol}>
+              {initialCoin.name} ({initialCoin.symbol})
             </option>
-          ))}
+          ) : (
+            coins.map((coin, i) => (
+              <option key={i} value={coin.symbol}>
+                {coin.name} ({coin.symbol})
+              </option>
+            ))
+          )}
         </select>
 
         {/* Choose a network */}
@@ -101,7 +176,13 @@ export default function DepositComp({ coins }: DepositProps) {
             Deposit address
           </label>
           <div className="mt-2 p-4 lg:border rounded-lg flex items-center bg-gray-50 max-lg:bg-bodydark2">
-            <img src={qrCodeUrl} alt="QR Code" className="w-16 h-16 mr-4" />
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                selectedCoin.address,
+              )}`}
+              alt="QR Code"
+              className="w-16 h-16 mr-4"
+            />
             <div className="flex-1">
               <input
                 type="text"
@@ -112,37 +193,78 @@ export default function DepositComp({ coins }: DepositProps) {
             </div>
             <button
               onClick={() => handleCopy(selectedCoin.address)}
-              className="text-gray-600 dark:text-gray-400"
+              className="text-gray-600 dark:text-gray-400 ml-2"
             >
               <Copy size={18} />
             </button>
           </div>
         </div>
 
-        {/* Enter Amount */}
-        <div className="mt-4">
-          <label className="text-gray-700 dark:text-gray-300 max-lg:text-white/30">
-            Enter Amount
-          </label>
-          <input
-            type="number"
-            className="input"
-            placeholder={`Min: ${selectedCoin.minDeposit} ${selectedCoin.symbol}`}
-            value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
-          />
-        </div>
+        {/* Show pending deposit details if available */}
+        {pendingDeposits.length > 0 ? (
+          <>
+            {pendingDeposits.map((deposit) => (
+              <div key={deposit._id}>
+                <div className="mt-4">
+                  <label className="text-gray-700 dark:text-gray-300 max-lg:text-white/30">
+                    Enter Amount
+                  </label>
+                  <input className="input" value={deposit.amount} disabled />
+                </div>
 
-        {/* Error Message */}
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                {/* Alert Message */}
+                {error && <Alert message={error} type="danger" />}
+                {success && <Alert message={success} type="success" />}
 
-        {/* Submit Button */}
-        <button
-          onClick={handleDeposit}
-          className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          Submit Deposit
-        </button>
+                {/* Pending Instruction */}
+                {!error && !success && (
+                  <Alert
+                    type="simple"
+                    message="Copy or scan the wallet address to complete deposit."
+                  />
+                )}
+
+                {/* Cancel Deposit */}
+                <button
+                  onClick={() => handleCancelDeposit(deposit._id)}
+                  className="mt-3 w-full max-w-50 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Cancelling...' : 'Cancel Deposit'}
+                </button>
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            {/* Enter Amount */}
+            <div className="mt-4">
+              <label className="text-gray-700 dark:text-gray-300 max-lg:text-white/30">
+                Enter Amount
+              </label>
+              <input
+                type="number"
+                className="input"
+                placeholder={`Min: ${selectedCoin.minDeposit} ${selectedCoin.symbol}`}
+                value={amount === 0 ? '' : amount}
+                onChange={(e) => setAmount(Number(e.target.value))}
+              />
+            </div>
+
+            {/* Alert Message */}
+            {error && <Alert message={error} type="danger" />}
+            {success && <Alert message={success} type="success" />}
+
+            {/* Submit Button */}
+            <button
+              onClick={handleDeposit}
+              className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Deposit'}
+            </button>
+          </>
+        )}
       </div>
 
       <div className="max-w-100 space-y-6 shadow-1 p-5 rounded-md max-lg:text-white/60 bg-white max-lg:bg-bodydark2 text-sm ">

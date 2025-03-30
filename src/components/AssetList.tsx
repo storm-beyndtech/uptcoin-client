@@ -99,19 +99,19 @@ const AssetList = ({ assets, setIsModalOpen }: AssetListProps) => {
                   </td>
                   <td className="px-3 py-4">${asset.equivalent.toFixed(2)}</td>
                   <td className="space-x-2 mx-auto">
-                    <Link to="/dashboard/deposit">
+                    <Link to={`/dashboard/deposit/${asset.symbol}`}>
                       <button className="bg-[#138ea1] font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
                         Deposit
                       </button>
                     </Link>
 
-                    <Link to="/dashboard/withdraw">
+                    <Link to={`/dashboard/withdraw/${asset.symbol}`}>
                       <button className="bg-customGreen font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
                         Withdraw
                       </button>
                     </Link>
 
-                    <Link to="/dashboard/transfer">
+                    <Link to={`/dashboard/transfer/${asset.symbol}`}>
                       <button className="bg-blue-600 font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
                         Transfer
                       </button>

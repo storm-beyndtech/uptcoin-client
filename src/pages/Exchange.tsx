@@ -135,7 +135,7 @@ const Exchange: React.FC = () => {
           </div>
           <div className="w-full grid grid-cols-10 gap-4 py-5">
             {/* Market List */}
-            <div className="h-full max-h-[900px] overflow-y-auto custom-scrollbar col-span-2 max-lg:col-span-10 bg-bodydark2 p-3 rounded-sm max-lg:hidden">
+            <div className="h-full max-h-[950px] overflow-y-auto custom-scrollbar col-span-2 max-lg:col-span-10 bg-bodydark2 p-3 rounded-sm max-lg:hidden">
               <MarketList
                 markets={marketData}
                 selectedMarket={selectedMarket}

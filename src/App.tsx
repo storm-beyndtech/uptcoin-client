@@ -92,10 +92,13 @@ function App() {
           <Route index element={<UserOverview />} />
           <Route path="/dashboard/wallet" element={<UserWallet />} />
           <Route path="/dashboard/deposit" element={<Deposit />} />
+          <Route path="/dashboard/deposit/:symbol" element={<Deposit />} />
           <Route path="/dashboard/withdraw" element={<Withdraw />} />
           <Route path="/dashboard/withdraw/:symbol" element={<Withdraw />} />
           <Route path="/dashboard/transfer" element={<Transfer />} />
+          <Route path="/dashboard/transfer/:symbol" element={<Transfer />} />
           <Route path="/dashboard/conversion" element={<Conversion />} />
+          <Route path="/dashboard/conversion/:symbol" element={<Conversion />} />
           <Route path="/dashboard/wallet-address" element={<WalletAddress />} />
           <Route path="/dashboard/auth" element={<KYC />} />
           <Route

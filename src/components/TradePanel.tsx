@@ -3,6 +3,7 @@ import { useCrypto } from '../context/CoinContext';
 import { contextData } from '../context/AuthContext';
 import { Asset } from '@/lib/utils';
 import Alert from './UI/Alert';
+import { sendRequest } from '@/lib/sendRequest';
 
 interface TradePanelProps {
   market: string;
@@ -19,8 +20,9 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
   const [quantity, setQuantity] = useState('');
   const [amount, setAmount] = useState('');
   const [availableBalance, setAvailableBalance] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [balPercent, setBalPercent] = useState(0);
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState('');
 
   const { cryptoData } = useCrypto();
@@ -54,22 +56,24 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
   const handleLimitPriceChange = (value: string) => {
     setLimitPrice(value);
     if (quantity) {
-      setAmount((Number(value) * Number(quantity)).toFixed(4));
+      setAmount((Number(value) * Number(quantity)).toFixed(2));
     }
   };
 
   const handleQuantityChange = (value: string) => {
     setQuantity(value);
     if (limitPrice) {
-      setAmount((Number(limitPrice) * Number(value)).toFixed(4));
+      setAmount((Number(limitPrice) * Number(value)).toFixed(2));
     }
+    setBalPercent(0);
   };
 
   const handleAmountChange = (value: string) => {
     setAmount(value);
     if (limitPrice) {
-      setQuantity((Number(value) / Number(limitPrice)).toFixed(4));
+      setQuantity((Number(value) / Number(limitPrice)).toFixed(6));
     }
+    setBalPercent(0);
   };
 
   const handlePercentageClick = (percent: number) => {
@@ -77,27 +81,30 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
       if (tradeType === 'buy') {
         const calculatedQuantity =
           (availableBalance * percent) / 100 / Number(limitPrice);
-        setQuantity(calculatedQuantity.toFixed(4));
-        setAmount(((availableBalance * percent) / 100).toFixed(4));
+        setQuantity(calculatedQuantity.toFixed(6));
+        setAmount(((availableBalance * percent) / 100).toFixed(2));
       } else {
         // For SELL: Use Asset balance → Amount is calculated based on price
         const calculatedAmount =
           availableBalance * (percent / 100) * Number(limitPrice);
-        setQuantity(((availableBalance * percent) / 100).toFixed(4));
-        setAmount(calculatedAmount.toFixed(4));
+        setQuantity(((availableBalance * percent) / 100).toFixed(6));
+        setAmount(calculatedAmount.toFixed(2));
       }
     } else {
       if (tradeType === 'buy') {
-        setQuantity(((availableBalance * percent) / 100).toFixed(4));
+        setQuantity(((availableBalance * percent) / 100).toFixed(6));
       } else {
-        setQuantity(((availableBalance * percent) / 100).toFixed(4));
+        setQuantity(((availableBalance * percent) / 100).toFixed(2));
       }
     }
+
+    setBalPercent(percent);
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setError('');
+    setSuccess('');
 
     if (
       orderType === 'limit' &&
@@ -113,28 +120,27 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
       return;
     }
 
-    const orderData = {
-      market,
-      tradeType,
-      orderType,
-      price: orderType === 'market' ? 'market_price' : limitPrice,
-      quantity,
-    };
-
     try {
-      const response = await fetch('/api/trade', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderData),
+      const { message } = await sendRequest('/transaction/trade', 'POST', {
+        userId: user._id,
+        symbol: market,
+        action: tradeType,
+        orderType,
+        limitPrice: Number(limitPrice),
+        amount: Number(amount),
+        quantity: Number(quantity),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Trade failed');
 
-      setSuccess(data.message);
+      setSuccess(message);
     } catch (err: any) {
       setError(err.message);
     } finally {
       setIsSubmitting(false);
+      setTimeout(() => {
+        setAmount('');
+        setQuantity('');
+        setSuccess('');
+      }, 3000);
     }
   };
 
@@ -171,7 +177,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
         {orderType === 'limit' && (
           <div className="relative mt-6">
             <input
-              type="text"
+              type="number"
               className="tradePanelInput peer"
               placeholder=" "
               value={limitPrice}
@@ -183,7 +189,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
 
         <div className="relative mt-6">
           <input
-            type="text"
+            type="number"
             className="tradePanelInput peer"
             placeholder=" "
             value={quantity}
@@ -199,7 +205,11 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
               className="flex flex-col items-center gap-1"
               onClick={() => handlePercentageClick(percent)}
             >
-              <span className="block bg-white/30 px-4 py-1 rounded hover:bg-green-500"></span>
+              <span
+                className={`block px-4 py-1 rounded hover:bg-green-500 ${
+                  balPercent >= percent ? 'bg-green-400' : 'bg-white/30'
+                }`}
+              ></span>
               <span className="text-center text-xs text-white/30">
                 {percent}%
               </span>
@@ -209,7 +219,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
 
         <div className="relative mt-6">
           <input
-            type="text"
+            type="number"
             className="tradePanelInput peer"
             placeholder=" "
             value={amount}
@@ -218,10 +228,10 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
           <label className="tradePanelLabel">Amount (USDT)</label>
         </div>
 
-        {/* Action Buttons */}
         {error && <Alert message={error} type="danger" />}
         {success && <Alert message={success} type="success" />}
 
+        {/* Action Buttons */}
         <div className="pt-4">
           <button
             className={`w-full py-2 rounded-md text-white ${

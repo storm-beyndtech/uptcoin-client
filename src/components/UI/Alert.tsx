@@ -21,7 +21,7 @@ export default function Alert({
     case 'simple':
       return (
         showAlert && (
-          <div className="flex items-center max-sm:px-1 p-4 my-5 text-blue-800 rounded-md bg-blue-50 max-lg:bg-bodydark2">
+          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-blue-800 rounded-md bg-blue-50 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-semibold font-inter">{message}</div>
             {showToggle && (
@@ -42,13 +42,13 @@ export default function Alert({
     case 'danger':
       return (
         showAlert && (
-          <div className="flex items-center max-sm:px-1 p-4 my-5 text-red-800 rounded-md bg-red-50 max-lg:bg-bodydark2">
+          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-red-700 rounded-md bg-red-500/10 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-semibold font-inter">{message}</div>
             {showToggle && (
               <button
                 type="button"
-                className="bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex justify-center h-8 w-8"
+                className="bg-red-500/10 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-400/10 inline-flex justify-center h-8 w-8"
                 data-dismiss-target="#alert-border-2"
                 onClick={() => setShowAlert(false)}
               >
@@ -64,13 +64,13 @@ export default function Alert({
     case 'success':
       return (
         showAlert && (
-          <div className="flex items-center max-sm:px-1 p-4 my-5 text-green-600 rounded-md bg-green-50 dark:text-green-400 max-lg:bg-bodydark2">
+          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-green-600 rounded-md bg-green-500/10 dark:text-green-400 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-semibold font-inter">{message}</div>
             {showToggle && (
               <button
                 type="button"
-                className="bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex justify-center h-8 w-8 dark:bg-black dark:text-green-400 dark:hover:bg-gray-700"
+                className="bg-green-500/10 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-400/10 inline-flex justify-center h-8 w-8 dark:bg-black dark:text-green-400 dark:hover:bg-gray-700"
                 data-dismiss-target="#alert-border-3"
                 onClick={() => setShowAlert(false)}
               >
@@ -86,7 +86,7 @@ export default function Alert({
     case 'warning':
       return (
         showAlert && (
-          <div className="flex items-center max-sm:px-1 p-4 my-5 text-yellow-500 rounded-md bg-yellow-100/20 max-lg:bg-bodydark2">
+          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-yellow-500 rounded-md bg-yellow-100/20 max-lg:bg-bodydark2">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
             <div className="ms-3 text-xs font-semibold font-inter">{message}</div>
             {showToggle && (
