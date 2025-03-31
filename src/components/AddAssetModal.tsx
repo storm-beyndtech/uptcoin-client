@@ -1,16 +1,23 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { CgClose } from 'react-icons/cg';
+import Alert from './UI/Alert';
 
 interface AddAssetModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   onAdd: (coin: string) => void;
   coins: { name: string; symbol: string }[];
+  error: string;
+  success: string;
+  isSubmitting: boolean;
 }
 
 const AddAssetModal: React.FC<AddAssetModalProps> = ({
   onAdd,
   coins,
   setIsModalOpen,
+  error,
+  success,
+  isSubmitting,
 }) => {
   const [selectedCoin, setSelectedCoin] = useState<string>('');
 
@@ -50,6 +57,10 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
           ))}
         </select>
 
+        {/* Action Buttons */}
+        {error && <Alert message={error} type="danger" />}
+        {success && <Alert message={success} type="success" />}
+
         {/* Buttons */}
         <div className="flex space-x-5 text-sm">
           <button
@@ -60,13 +71,14 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
           </button>
           <button
             className="px-5 py-1.5 bg-blue-600 text-white rounded-sm"
+            disabled={isSubmitting}
             onClick={() => {
               if (selectedCoin) {
                 onAdd(selectedCoin);
               }
             }}
           >
-            Add asset
+            {isSubmitting ? 'Submitting...' : 'Add asset'}
           </button>
         </div>
       </div>

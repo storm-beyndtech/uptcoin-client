@@ -8,10 +8,10 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({
   firstName,
-  profileImageUrl = '', // Default to an empty string if not provided
+  profileImageUrl = '',
   height,
   width,
-  borderRadius = '9999px', // Default to fully rounded (circular)
+  borderRadius = '9999px',
 }) => {
   // Extract the first letter of the user's first name as the initial
   const avatarInitial = firstName.charAt(0).toUpperCase();

@@ -1,14 +1,18 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { CgClose } from 'react-icons/cg';
 import { Address } from './ManageAddress';
+import Alert from './UI/Alert';
 
 interface AddAddressModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-  onAdd: (address: Address) => void;
+  onAdd: (addressData: { symbol: string; address: string }) => void;
   addresses: Address[];
   address: Address;
   editing: boolean;
   setEditing: Dispatch<SetStateAction<boolean>>;
+  error: string | null;
+  success: string | null;
+  loading: string | null;
 }
 
 const AddAddressModal: React.FC<AddAddressModalProps> = ({
@@ -18,21 +22,28 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
   setIsModalOpen,
   editing,
   setEditing,
+  error,
+  success,
+  loading,
 }) => {
-  const [selectedAddress, setSelectedAddress] = useState<any>(
+  const [selectedAddress, setSelectedAddress] = useState<Address>(
     editing ? address : addresses[0],
   );
+
   const [newAddress, setNewAddress] = useState<string>(
     editing ? address.address : '',
   );
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selected = addresses.find(
-      (address) => address.symbol === e.target.value,
-    );
-    if (selected) {
-      setSelectedAddress(selected);
-    }
+    const selected = addresses.find((addr) => addr.symbol === e.target.value);
+    if (selected) setSelectedAddress(selected);
+  };
+
+  const handleSubmit = () => {
+    onAdd({
+      symbol: selectedAddress.symbol,
+      address: newAddress,
+    });
   };
 
   return (
@@ -59,7 +70,7 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
             </label>
             <input
               type="text"
-              value={address.name + `(${address.symbol})`}
+              value={`${address.name} (${address.symbol})`}
               className="input mb-4"
               disabled
             />
@@ -71,13 +82,13 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
             </label>
             <select
               className="input mb-4"
-              value={selectedAddress.symbol}
+              value={selectedAddress?.symbol || ''}
               onChange={handleAddressChange}
             >
               <option disabled>Choose A Currency</option>
-              {addresses.map((address, i) => (
-                <option key={i} value={address.symbol}>
-                  {address.name} ({address.symbol})
+              {addresses.map((addr, i) => (
+                <option key={i} value={addr.symbol}>
+                  {addr.name} ({addr.symbol})
                 </option>
               ))}
             </select>
@@ -90,7 +101,7 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
         </label>
         <input
           type="text"
-          value={selectedAddress.network}
+          value={selectedAddress?.network || ''}
           className="input mb-4"
           placeholder="Fixed Withdrawal Network"
           disabled
@@ -105,8 +116,12 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
           value={newAddress}
           onChange={(e) => setNewAddress(e.target.value)}
           className="input mb-4"
-          placeholder="Set Withdrawal Address"
+          placeholder="Enter Withdrawal Address"
         />
+
+        {/* Action Buttons */}
+        {error && <Alert message={error} type="danger" />}
+        {success && <Alert message={success} type="success" />}
 
         {/* Buttons */}
         <div className="flex space-x-5 text-sm">
@@ -121,16 +136,13 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
           </button>
           <button
             className="px-5 py-1.5 bg-blue-600 text-white rounded-sm"
-            onClick={() => {
-              if (selectedAddress) {
-                onAdd({
-                  ...selectedAddress,
-                  address,
-                });
-              }
-            }}
+            onClick={handleSubmit}
           >
-            {editing ? 'Update Address' : 'Add Address'}
+            {editing && !loading
+              ? 'Update Address'
+              : !editing && !loading
+                ? 'Add Address'
+                : 'Submitting'}
           </button>
         </div>
       </div>

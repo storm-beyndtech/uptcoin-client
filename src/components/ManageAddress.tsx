@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Trash2, Pencil, PlusCircle } from 'lucide-react';
+import { Pencil, PlusCircle } from 'lucide-react';
 import { Asset } from '@/lib/utils';
 
 export type Address = Omit<Asset, 'funding' | 'spot'>;
@@ -7,14 +7,12 @@ export type Address = Omit<Asset, 'funding' | 'spot'>;
 interface ManageAddressProps {
   addresses: Address[];
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-  onDelete: (id: string) => void;
   onEdit: (address: Address) => void;
 }
 
 const ManageAddress: React.FC<ManageAddressProps> = ({
   addresses,
   setIsModalOpen,
-  onDelete,
   onEdit,
 }) => {
   return (
@@ -47,7 +45,10 @@ const ManageAddress: React.FC<ManageAddressProps> = ({
                 className="border-t max-lg:border-white/10 max-lg:text-white/60"
               >
                 <td className="p-3">{symbol}</td>
-                <td className="p-3 truncate max-w-xs">{address}</td>
+                <td className="p-3 max-lg:hidden">{address}</td>
+                <td className="p-3 lg:hidden">
+                  {address.length > 10 ? `${address.slice(0, 10)}...` : address}
+                </td>
                 <td className="p-3">{network}</td>
                 <td className="p-3 flex gap-2">
                   <button
@@ -57,12 +58,6 @@ const ManageAddress: React.FC<ManageAddressProps> = ({
                     }
                   >
                     <Pencil size={16} />
-                  </button>
-                  <button
-                    onClick={() => onDelete(_id)}
-                    className="p-2 text-red-500 hover:text-red-700"
-                  >
-                    <Trash2 size={16} />
                   </button>
                 </td>
               </tr>

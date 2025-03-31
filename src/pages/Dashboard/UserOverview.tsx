@@ -10,6 +10,7 @@ import {
 import TradeTransactions from '@/components/TradeTransactions';
 import { contextData } from '@/context/AuthContext';
 import { useCrypto } from '@/context/CoinContext';
+import { sendRequest } from '@/lib/sendRequest';
 import { Asset } from '@/lib/utils';
 import { useState } from 'react';
 
@@ -20,8 +21,11 @@ interface CustomAsset extends Asset {
 
 export default function UserOverview() {
   const { cryptoData } = useCrypto();
-  const { user } = contextData();
+  const { user, refreshUser } = contextData();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Get user's coins with USD equivalent
   const parsedAssets = user.assets.map((asset: Asset) => {
@@ -52,9 +56,29 @@ export default function UserOverview() {
   );
 
   // Handle adding new asset
-  const handleAddAsset = (coin: string) => {
+  const handleAddAsset = async (coin: string) => {
+    setError('');
+
+    //Validate asset
     const newAsset = availableCoins.find((c) => c.symbol === coin);
-    if (newAsset) {
+    if (!newAsset) return setError('No Asset Selected');
+    try {
+      setIsSubmitting(true);
+      const { message } = await sendRequest(`/auth/add-asset`, 'POST', {
+        symbol: coin,
+        userId: user._id,
+      });
+
+      setSuccess(message);
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setSuccess('');
+        refreshUser();
+      }, 3000);
     }
   };
 
@@ -63,8 +87,8 @@ export default function UserOverview() {
       <div className="grid gap-5 pr-5 max-lg:hidden">
         <UserProfile
           email={user.email}
-          verified={false}
-          uid="7154949378"
+          verified={user.kycStatus === 'approved' ? true : false}
+          uid={user?.uid}
           tradingStatus={user.tradingStatus}
           tradingLevel={user.tradingLevel}
           tradingLimit={user.tradingLimit}
@@ -97,6 +121,9 @@ export default function UserOverview() {
             setIsModalOpen={setIsModalOpen}
             coins={availableCoins}
             onAdd={handleAddAsset}
+            error={error}
+            success={success}
+            isSubmitting={isSubmitting}
           />
         )}
 

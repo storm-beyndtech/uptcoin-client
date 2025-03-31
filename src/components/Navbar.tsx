@@ -26,7 +26,6 @@ export default function Navbar() {
     { title: 'Quick Margin', link: '/margin' },
     { title: 'Market', link: '/market' },
     { title: 'Support', link: '/support' },
-    // { title: 'Rewards', link: '/rewards' },
     { title: 'Press', link: '/press' },
   ];
 

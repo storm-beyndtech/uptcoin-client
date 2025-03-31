@@ -40,11 +40,9 @@ export default function DropdownUser() {
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-3 border border-green-400/50 p-1 rounded-full"
       >
-        {user.firstName && (
-          <span className="hidden max-lg:block font-medium text-sm max-lg:ml-3 text-white/90 whitespace-nowrap">
-            {user?.firstName} {user?.lastName?.charAt(0)}
-          </span>
-        )}
+        <span className="hidden max-lg:block font-medium text-sm max-lg:ml-3 text-white/90 whitespace-nowrap">
+          UID: {user?.uid}
+        </span>
 
         {/* Use Avatar Component */}
         <Avatar firstName={user?.firstName || 'U'} height="30px" width="30px" />
