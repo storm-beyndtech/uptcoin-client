@@ -3,6 +3,7 @@ import AssetList from '@/components/AssetList';
 import MobileNav from '@/components/MobileNav';
 import { contextData } from '@/context/AuthContext';
 import { useCrypto } from '@/context/CoinContext';
+import { sendRequest } from '@/lib/sendRequest';
 import { Asset } from '@/types/types';
 import { useState } from 'react';
 
@@ -19,12 +20,17 @@ const TotalConversion = ({ total }: { total: number }) => {
 
 export default function UserWallet() {
   const { cryptoData } = useCrypto();
-  const { user } = contextData();
+  const { user, refreshUser } = contextData();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Get user's coins with USD equivalent
   const parsedAssets = user.assets.map((asset: Asset) => {
-    const coinInfo = Object.values(cryptoData).find((coin) => coin.symbol === asset.symbol);
+    const coinInfo = Object.values(cryptoData).find(
+      (coin) => coin.symbol === asset.symbol,
+    );
 
     if (!coinInfo) return { ...asset, equivalent: 0, image: '', price: 0 };
     return {
@@ -48,10 +54,32 @@ export default function UserWallet() {
       !user.assets.some((wallet: Asset) => wallet.symbol === coin.symbol),
   );
 
-  //handle adding new asset
-  const handleAddAsset = (coin: string) => {
+  
+
+  // Handle adding new asset
+  const handleAddAsset = async (coin: string) => {
+    setError('');
+
+    //Validate asset
     const newAsset = availableCoins.find((c) => c.symbol === coin);
-    if (newAsset) {
+    if (!newAsset) return setError('No Asset Selected');
+    try {
+      setIsSubmitting(true);
+      const { message } = await sendRequest(`/auth/add-asset`, 'POST', {
+        symbol: coin,
+        userId: user._id,
+      });
+
+      setSuccess(message);
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setSuccess('');
+        refreshUser();
+      }, 3000);
     }
   };
 
@@ -68,6 +96,9 @@ export default function UserWallet() {
           setIsModalOpen={setIsModalOpen}
           coins={availableCoins}
           onAdd={handleAddAsset}
+          error={error}
+          success={success}
+          isSubmitting={isSubmitting}
         />
       )}
 

@@ -102,7 +102,7 @@ export default function WalletAddress() {
           setEditing={setEditing}
           error={error}
           success={success}
-          loading={loading ? 'Loading...' : null}
+          loading={loading}
         />
       )}
 

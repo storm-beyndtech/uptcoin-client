@@ -12,7 +12,7 @@ interface AddAddressModalProps {
   setEditing: Dispatch<SetStateAction<boolean>>;
   error: string | null;
   success: string | null;
-  loading: string | null;
+  loading: boolean;
 }
 
 const AddAddressModal: React.FC<AddAddressModalProps> = ({
