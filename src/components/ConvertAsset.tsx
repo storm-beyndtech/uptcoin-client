@@ -12,30 +12,27 @@ interface AssetWithPrice extends Asset {
 
 export default function ConvertAsset() {
   const { cryptoData } = useCrypto();
-  const { user } = contextData();
+  const { user, refreshUser } = contextData();
 
   // Get user's assets with real-time prices
   const assets = user.assets.map((asset: Asset) => {
     const coinInfo = Object.values(cryptoData).find(
       (coin) => coin.symbol === asset.symbol,
     );
-    return { ...asset, price: coinInfo ? Number(coinInfo.price) : 0 };
+    return { ...asset, price: coinInfo ? Number(coinInfo.price) : 1 };
   });
 
   const parsedAssets = assets.filter(
-    (asset: AssetWithPrice) =>
-      asset.symbol !== 'USDT' && Number(asset.spot) !== 0,
+    (asset: AssetWithPrice) => asset.symbol !== 'USDT',
   );
 
-  const usdtAsset = assets
-    .filter((asset: AssetWithPrice) => asset.symbol === 'USDT')
-    .map((ass: AssetWithPrice) => {
-      return { ...ass, price: 1 };
-    });
+  const usdtAsset = assets.filter(
+    (asset: AssetWithPrice) => asset.symbol === 'USDT',
+  );
 
-  const [fromAsset, setFromAsset] = useState(parsedAssets[0] || null);
+  const [fromAsset, setFromAsset] = useState(parsedAssets[0]);
   const [fromAssets, setFromAssets] = useState(parsedAssets);
-  const [toAsset, setToAsset] = useState(usdtAsset[0] || null);
+  const [toAsset, setToAsset] = useState(usdtAsset[0]);
   const [toAssets, setToAssets] = useState(usdtAsset);
   const [amountToConvert, setAmountToConvert] = useState('');
   const [convertedAmount, setConvertedAmount] = useState('');
@@ -83,8 +80,10 @@ export default function ConvertAsset() {
 
   // Clear inputs
   const handleClear = () => {
-    setFromAsset(parsedAssets[0] || null);
-    setToAsset(usdtAsset[0] || null);
+    setFromAsset(parsedAssets[0]);
+    setFromAssets(parsedAssets);
+    setToAsset(usdtAsset[0]);
+    setToAssets(usdtAsset);
     setAmountToConvert('');
     setConvertedAmount('');
     setError(null);
@@ -117,11 +116,15 @@ export default function ConvertAsset() {
       });
 
       setSuccess(message);
-      setTimeout(() => handleClear(), 3000);
     } catch (error: any) {
       setError(error.message);
     } finally {
       setLoading(false);
+      refreshUser();
+      setTimeout(() => {
+        handleClear();
+        setSuccess(null);
+      }, 3000);
     }
   };
 

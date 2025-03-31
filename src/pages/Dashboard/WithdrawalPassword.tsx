@@ -82,8 +82,8 @@ export default function WithdrawalPassword() {
   if (hasPassword === null) return <p>Loading...</p>;
 
   return (
-    <div className="w-full max-w-lg bg-white p-5 rounded">
-      <h3 className="font-semibold">
+    <div className="w-full max-w-lg bg-white max-lg:bg-transparent p-5 rounded">
+      <h3 className="font-semibold max-lg:text-white">
         {hasPassword
           ? 'Change Withdrawal Password'
           : 'Setup Withdrawal Password'}

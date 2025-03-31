@@ -7,11 +7,11 @@ import { Asset } from '@/types/types';
 
 export default function TransferAsset() {
   const { user } = contextData();
-  const assets = user.assets.filter((asset: Asset) => Number(asset.spot) > 0);
 
   const [from, setFrom] = useState('funding');
   const [to, setTo] = useState('spot');
-  const [coin, setCoin] = useState(assets[0]);
+
+  const [coin, setCoin] = useState(user.assets[0]);
   const [amount, setAmount] = useState(0);
   const [error, setError] = useState<null | string>(null);
   const [success, setSuccess] = useState<null | string>(null);
@@ -23,6 +23,7 @@ export default function TransferAsset() {
   };
 
   const handleTransfer = async () => {
+    setError(null);
     if (Number(amount) <= 0) return setError('Enter a valid amount');
 
     if (from === 'funding') {
@@ -33,11 +34,8 @@ export default function TransferAsset() {
         return setError(`Insufficient ${coin.symbol} spot balance`);
     }
 
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
     try {
+      setLoading(true);
       const { message } = await sendRequest(`/transaction/transfer/`, 'POST', {
         userId: user._id,
         from,
@@ -51,6 +49,9 @@ export default function TransferAsset() {
       setError(error.message);
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        setSuccess(null);
+      }, 2000);
     }
   };
 
@@ -70,10 +71,23 @@ export default function TransferAsset() {
         </button>
       </div>
 
+      {/* Coin Selection */}
+      <label className="label">Coin</label>
+      <select
+        onChange={(e) => setCoin(JSON.parse(e.target.value))}
+        className="input mb-3"
+      >
+        {user.assets.map((asset: Asset, i: number) => (
+          <option key={i} value={JSON.stringify(asset)}>
+            {`${asset.name} (${asset.symbol})`}
+          </option>
+        ))}
+      </select>
+
       {/* From & To Dropdowns */}
       <label className="label">
         <span>From</span>{' '}
-        <span>bal:{from === 'funding' ? coin.funding : coin.spot}</span>
+        <span>bal: {from === 'funding' ? coin.funding : coin.spot}</span>
       </label>
       <input
         onChange={(e) => setFrom(e.target.value)}
@@ -84,7 +98,7 @@ export default function TransferAsset() {
 
       <label className="label">
         <span>To</span>{' '}
-        <span>bal:{to === 'spot' ? coin.spot : coin.funding}</span>
+        <span>bal: {to === 'spot' ? coin.spot : coin.funding}</span>
       </label>
       <input
         onChange={(e) => setTo(e.target.value)}
@@ -92,19 +106,6 @@ export default function TransferAsset() {
         value={to}
         disabled
       />
-
-      {/* Coin Selection */}
-      <label className="label">Coin</label>
-      <select
-        onChange={(e) => setCoin(JSON.parse(e.target.value))}
-        className="input mb-3"
-      >
-        {assets.map((asset: Asset, i: number) => (
-          <option key={i} value={JSON.stringify(asset)}>
-            {`${asset.name} (${asset.symbol})`}
-          </option>
-        ))}
-      </select>
 
       {/* Amount Input */}
       <label className="label">Amount</label>
