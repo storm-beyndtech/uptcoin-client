@@ -10,6 +10,7 @@ import MarginTrade from '@/components/MarginTrade';
 import { useCrypto } from '@/context/CoinContext';
 import { IoChevronDownSharp } from 'react-icons/io5';
 import TradingChart from '@/components/TradingChart';
+import { contextData } from '@/context/AuthContext';
 
 interface MarketData {
   symbol: string;
@@ -23,6 +24,7 @@ interface MarketData {
 const QuickMargin: React.FC = () => {
   const { symbol } = useParams();
   const { cryptoData } = useCrypto();
+  const { user } = contextData();
   const [selectedMarket, setSelectedMarket] = useState<string>('BTC');
   const [marginModal, setMarginModal] = useState<boolean>(false);
 
@@ -85,9 +87,11 @@ const QuickMargin: React.FC = () => {
         </div>
 
         {/* Order History */}
-        <div className="w-full bg-bodydark1 p-2 rounded-sm max-lg:hidden">
-          <OrderHistory />
-        </div>
+        {user && (
+          <div className="w-full bg-bodydark1 p-2 rounded-sm max-lg:hidden">
+            <OrderHistory />
+          </div>
+        )}
       </div>
 
       {/* Margin Trade Modal - Mobile */}

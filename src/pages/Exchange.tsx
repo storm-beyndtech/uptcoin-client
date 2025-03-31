@@ -12,6 +12,7 @@ import { ArrowLeft, ArrowUpDown, Coins } from 'lucide-react';
 import SEO from '@/components/SEO';
 import MobileNav from '@/components/MobileNav';
 import TradingChart from '@/components/TradingChart';
+import { contextData } from '@/context/AuthContext';
 
 export interface MarketData {
   symbol: string;
@@ -24,6 +25,7 @@ export interface MarketData {
 
 const Exchange: React.FC = () => {
   const { cryptoData } = useCrypto();
+  const { user } = contextData();
   const { symbol } = useParams();
   const [selectedMarket, setSelectedMarket] = useState<string>(
     (symbol as string) || 'BTC',
@@ -246,9 +248,11 @@ const Exchange: React.FC = () => {
             </div>
           </div>
           {/* Order History */}
-          <div className="w-full bg-bodydark1 p-2 rounded-sm">
-            <OrderHistory />
-          </div>
+          {user && (
+            <div className="w-full bg-bodydark1 p-2 rounded-sm">
+              <OrderHistory />
+            </div>
+          )}
         </div>
       </section>
     </>

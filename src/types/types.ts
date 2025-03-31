@@ -16,8 +16,10 @@ export interface User {
   phone?: string;
   country?: string;
   documentType?: string;
+  documentNumber?: string;
   documentFront?: string;
   documentBack?: string;
+  kycStatus: string;
 
   email: string; // Required fields
   password: string;

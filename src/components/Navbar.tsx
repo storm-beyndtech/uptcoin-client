@@ -103,7 +103,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`fixed top-0 right-0 z-999999 w-[95%] h-screen overflow-y-scroll bg-bodydark1/95 customBlur pt-14 transform transition-transform ${
+          className={`fixed top-0 right-0 z-999999 w-[95%] h-screen overflow-y-scroll bg-bodydark1/95 customBlur pt-14 pl-5 transform transition-transform ${
             mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           onClick={() => setMobileMenuOpen(false)}

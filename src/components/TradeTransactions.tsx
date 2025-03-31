@@ -26,7 +26,7 @@ const tableHeads = [
   'Status',
 ];
 
-const OrderHistory: React.FC = () => {
+const TradeTransactions: React.FC = () => {
   const { user } = contextData();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +52,6 @@ const OrderHistory: React.FC = () => {
 
   return (
     <div className="rounded-sm w-full text-sm">
-      <h2 className="text-white font-semibold mb-2">Order History</h2>
       <div className="overflow-x-auto">
         {loading ? (
           <p className="text-white/40 text-center py-4">Loading orders...</p>
@@ -60,10 +59,13 @@ const OrderHistory: React.FC = () => {
           <p className="text-white/40 text-center py-4">No orders found.</p>
         ) : (
           <table className="w-full text-left text-white/40">
-            <thead className="text-xs bg-[#1a1b1c] text-white/80">
-              <tr>
+            <thead>
+              <tr className="bg-gray-50 max-lg:bg-bodydark2">
                 {tableHeads.map((head) => (
-                  <th key={head} className="px-4 py-2">
+                  <th
+                    key={head}
+                    className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider"
+                  >
                     {head}
                   </th>
                 ))}
@@ -71,9 +73,16 @@ const OrderHistory: React.FC = () => {
             </thead>
             <tbody>
               {orders.map((order, i) => (
-                <tr key={i} className="border-b border-white/10 text-xs">
-                  <td className="px-4 py-3">{i + 1}</td>
-                  <td className="px-4 py-3">{order.symbol}</td>
+                <tr
+                  key={i}
+                  className="text-sm hover:bg-gray-50 max-lg:hover:bg-bodydark2 transition-colors duration-200"
+                >
+                  <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                    {i + 1}
+                  </td>
+                  <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                    {order.symbol}
+                  </td>
                   <td
                     className={`px-4 py-2 font-medium ${
                       order.action === 'Buy' ? 'text-green-500' : 'text-red-500'
@@ -81,15 +90,19 @@ const OrderHistory: React.FC = () => {
                   >
                     {order.action}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
                     $
                     {order.orderType === 'limit' && order.limitPrice
                       ? order.limitPrice.toFixed(2)
                       : order.marketPrice && order.marketPrice.toFixed(2)}
                   </td>
-                  <td className="px-4 py-3">{order.quantity}</td>
-                  <td className="px-4 py-3">${order.amount.toFixed(2)}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">
+                  <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                    {order.quantity}
+                  </td>
+                  <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300">
+                    ${order.amount.toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 text-gray-700 max-lg:text-gray-300 whitespace-nowrap">
                     {new Date(order.createdAt).toLocaleString()}
                   </td>
                   <td
@@ -113,4 +126,4 @@ const OrderHistory: React.FC = () => {
   );
 };
 
-export default OrderHistory;
+export default TradeTransactions;

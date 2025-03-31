@@ -123,7 +123,7 @@ export default function Login() {
               />
 
               <p className="text-gray-600 max-lg:text-white/30 mt-4 text-center">
-                Don’t have an account?{' '}
+                Don't have an account?{' '}
                 <Link to="/register" className="text-blue-600 font-semibold">
                   Sign Up
                 </Link>

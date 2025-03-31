@@ -4,6 +4,7 @@ import { contextData } from '../context/AuthContext';
 import { Asset } from '@/lib/utils';
 import Alert from './UI/Alert';
 import { sendRequest } from '@/lib/sendRequest';
+import { useNavigate } from 'react-router-dom';
 
 interface TradePanelProps {
   market: string;
@@ -15,6 +16,7 @@ interface AssetWithPrice extends Asset {
 }
 
 const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
+  const navigate = useNavigate();
   const [orderType, setOrderType] = useState<'limit' | 'market'>('limit');
   const [limitPrice, setLimitPrice] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -106,6 +108,8 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
     setError('');
     setSuccess('');
 
+    if (!user) navigate('/login');
+
     if (
       orderType === 'limit' &&
       (!limitPrice || isNaN(Number(limitPrice)) || Number(limitPrice) <= 0)
@@ -147,13 +151,15 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
   return (
     <div className="flex flex-col bg-[#1a1b1c] p-4 rounded-sm w-full max-w-md text-[13px]">
       <div className="flex-1">
-        <h4 className="flex justify-between font-semibold text-xs lg:text-base text-white/40 mb-4">
-          <span>Available</span>{' '}
-          <span>
-            {availableBalance.toFixed(tradeType === 'buy' ? 2 : 6)}{' '}
-            {tradeType === 'buy' ? 'USDT' : market}
-          </span>
-        </h4>
+        {user && (
+          <h4 className="flex justify-between font-semibold text-xs lg:text-base text-white/40 mb-4">
+            <span>Available</span>{' '}
+            <span>
+              {availableBalance.toFixed(tradeType === 'buy' ? 2 : 6)}{' '}
+              {tradeType === 'buy' ? 'USDT' : market}
+            </span>
+          </h4>
+        )}
 
         <div className="flex text-xs pb-2">
           <button

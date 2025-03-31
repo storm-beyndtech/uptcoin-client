@@ -4,14 +4,15 @@ import { useLocation } from 'react-router-dom';
 
 const AuthContext = createContext<any>(null);
 
-export const AuthProvider = ({ children }:any) => {
+export const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | null>(null);
   const [fetching, setFetching] = useState(true);
   const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
   const location = useLocation();
 
-  const login = (userData:User) => {
+  const login = (userData: User) => {
     setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
@@ -35,28 +36,31 @@ export const AuthProvider = ({ children }:any) => {
       } else {
         throw new Error(data.message);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(error.message);
     } finally {
       clearTimeout(timeoutId);
-      setTimeout(() => { 
-        setFetching(false);
-      }, 5000);
+      setFetching(false);
+    }
+  };
+
+  // ✅ Silent refresh function (Triggers app-wide updates)
+  const refreshUser = async () => {
+    if (user) {
+      await fetchUser(user._id);
     }
   };
 
   useEffect(() => {
     setFetching(true);
     const storageData = localStorage.getItem('user');
-  
+
     if (storageData) {
       const user = JSON.parse(storageData);
       fetchUser(user._id);
     } else {
-      setTimeout(() => { 
-        setUser(null);
-        setFetching(false);
-      }, 5000);
+      setUser(null);
+      setFetching(false);
     }
   }, []);
 
@@ -64,7 +68,6 @@ export const AuthProvider = ({ children }:any) => {
     const storageData = localStorage.getItem('user');
     if (storageData) {
       const user = JSON.parse(storageData);
-
       if (location.pathname.includes('/dashboard')) {
         fetchUser(user._id);
       }
@@ -72,7 +75,9 @@ export const AuthProvider = ({ children }:any) => {
   }, [location.pathname]);
 
   return (
-    <AuthContext.Provider value={{ user, fetching, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, fetching, login, logout, refreshUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

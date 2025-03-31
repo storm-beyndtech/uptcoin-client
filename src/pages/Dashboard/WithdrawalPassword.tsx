@@ -1,51 +1,72 @@
 import Alert from '@/components/UI/Alert';
-import { useState } from 'react';
-import { sendRequest } from '@/lib/sendRequest';
-import { contextData } from '@/context/AuthContext';
+import { useState, useEffect } from 'react';
+import { sendRequest } from '@/lib/sendRequest'; // Function to send API requests
+import { contextData } from '@/context/AuthContext'; // User context
 
-export default function ChangePassword() {
+export default function WithdrawalPassword() {
   const { user } = contextData();
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState<string>('');
+  const [password1, setPassword1] = useState<string>('');
+  const [password2, setPassword2] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [hasPassword, setHasPassword] = useState<boolean | null>(null);
 
-  // Submit password update
+  // Fetch withdrawal password status
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const data = await sendRequest(
+          `/auth/check-withdrawal-password/${user._id}`,
+          'GET',
+        );
+        setHasPassword(data.hasWithdrawalPassword);
+      } catch (error) {
+        console.error('Error fetching withdrawal password status:', error);
+      }
+    };
+
+    fetchStatus();
+  }, [user._id]);
+
+  //Submit password
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setSuccess('');
 
-    // Basic validation
-    if (currentPassword.length < 3) {
+    if (hasPassword && currentPassword.length < 3) {
       setError('Current password is required.');
       return;
     }
 
-    if (newPassword.length < 6) {
-      setError('New password must be at least 6 characters.');
+    if (password1.length < 3) {
+      setError('New password is too short.');
       return;
     }
 
-    if (newPassword !== confirmPassword) {
+    if (password1 !== password2) {
       setError("Passwords don't match.");
       return;
     }
 
+    const requestData: any = {
+      userId: user._id,
+      withdrawalPassword: password1,
+    };
+
+    if (hasPassword) {
+      requestData.currentPassword = currentPassword;
+    }
+
     try {
       setLoading(true);
-      const { message } = await sendRequest('/auth/update-password', 'PUT', {
-        userId: user._id,
-        currentPassword,
-        newPassword,
-      });
-
+      const { message } = await sendRequest(
+        '/auth/set-withdrawal-password',
+        'PUT',
+        requestData,
+      );
       setSuccess(message);
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -57,26 +78,35 @@ export default function ChangePassword() {
     }
   };
 
+  // Show loading state until we confirm password status
+  if (hasPassword === null) return <p>Loading...</p>;
+
   return (
     <div className="w-full max-w-lg bg-white p-5 rounded">
-      <h3 className="font-semibold">Change Account Password</h3>
+      <h3 className="font-semibold">
+        {hasPassword
+          ? 'Change Withdrawal Password'
+          : 'Setup Withdrawal Password'}
+      </h3>
 
       <Alert
         type="simple"
         message="For security, withdrawals are disabled for 24 hours after changing your login password."
       />
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="label">Current Password</label>
-          <input
-            type="password"
-            className="input"
-            placeholder="Enter Current Password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-          />
-        </div>
+      <form className="space-y-4">
+        {hasPassword && (
+          <div>
+            <label className="label">Current Password</label>
+            <input
+              type="password"
+              className="input"
+              placeholder="Enter Current Password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+          </div>
+        )}
 
         <div>
           <label className="label">New Password</label>
@@ -84,8 +114,8 @@ export default function ChangePassword() {
             type="password"
             className="input"
             placeholder="Enter New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            value={password1}
+            onChange={(e) => setPassword1(e.target.value)}
           />
         </div>
 
@@ -95,8 +125,8 @@ export default function ChangePassword() {
             type="password"
             className="input"
             placeholder="Re-type New Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
           />
         </div>
 
@@ -105,9 +135,14 @@ export default function ChangePassword() {
 
         <button
           className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+          onClick={handleSubmit}
           disabled={loading}
         >
-          {loading ? 'Updating...' : 'Update Password'}
+          {loading
+            ? 'Updating...'
+            : hasPassword
+              ? 'Change Password'
+              : 'Set Password'}
         </button>
       </form>
     </div>

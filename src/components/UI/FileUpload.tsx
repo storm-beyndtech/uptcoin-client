@@ -52,6 +52,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         ref={fileInputRef}
         className="hidden"
         onChange={onChange}
+        accept=".jpg,.jpeg,.png,.webp"
       />
     </div>
   );

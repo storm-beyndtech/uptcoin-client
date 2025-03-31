@@ -4,10 +4,10 @@ import BalanceCard from '@/components/BalanceCard';
 import MobileNav from '@/components/MobileNav';
 import {
   AccountBalance,
-  AssetTransactions,
   PressRelease,
   UserProfile,
 } from '@/components/OverviewComps';
+import TradeTransactions from '@/components/TradeTransactions';
 import { contextData } from '@/context/AuthContext';
 import { useCrypto } from '@/context/CoinContext';
 import { Asset } from '@/lib/utils';
@@ -72,7 +72,7 @@ export default function UserOverview() {
 
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-2">
-            <AccountBalance totalBalance={totalBalance}/>
+            <AccountBalance totalBalance={totalBalance} />
           </div>
           <div className="col-span-1">
             <PressRelease />
@@ -81,7 +81,7 @@ export default function UserOverview() {
 
         <div className="grid mt-10">
           <h3 className="font-semibold">Assets Transaction</h3>
-          <AssetTransactions />
+          <TradeTransactions />
         </div>
       </div>
 
