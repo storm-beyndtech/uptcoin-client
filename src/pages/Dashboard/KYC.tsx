@@ -1,6 +1,6 @@
 import { contextData } from '@/context/AuthContext';
 import KYCStatus from '@/components/KYCStatus';
-import KYCForm from '@/components/KycForm';
+import KYCForm from '@/components/KYCForm';
 
 export default function KYC() {
   const { user } = contextData();
