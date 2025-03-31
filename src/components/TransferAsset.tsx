@@ -87,7 +87,12 @@ export default function TransferAsset() {
       {/* From & To Dropdowns */}
       <label className="label">
         <span>From</span>{' '}
-        <span>bal: {from === 'funding' ? coin.funding : coin.spot}</span>
+        <span>
+          bal:{' '}
+          {from === 'funding'
+            ? coin.funding.toFixed(coin.symbol === 'USDT' ? 2 : 6)
+            : coin.spot.toFixed(coin.symbol === 'USDT' ? 2 : 6)}
+        </span>
       </label>
       <input
         onChange={(e) => setFrom(e.target.value)}
@@ -98,7 +103,12 @@ export default function TransferAsset() {
 
       <label className="label">
         <span>To</span>{' '}
-        <span>bal: {to === 'spot' ? coin.spot : coin.funding}</span>
+        <span>
+          bal:{' '}
+          {to === 'spot'
+            ? coin.spot.toFixed(coin.symbol === 'USDT' ? 2 : 6)
+            : coin.funding.toFixed(coin.symbol === 'USDT' ? 2 : 6)}
+        </span>
       </label>
       <input
         onChange={(e) => setTo(e.target.value)}
