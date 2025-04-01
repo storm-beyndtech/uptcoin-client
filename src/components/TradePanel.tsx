@@ -17,7 +17,7 @@ interface AssetWithPrice extends Asset {
 
 const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
   const navigate = useNavigate();
-  const [orderType, setOrderType] = useState<'limit' | 'market'>('limit');
+  const [orderType, setOrderType] = useState<'limit' | 'market'>('market');
   const [limitPrice, setLimitPrice] = useState('');
   const [quantity, setQuantity] = useState('');
   const [amount, setAmount] = useState('');
@@ -28,7 +28,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
   const [success, setSuccess] = useState('');
 
   const { cryptoData } = useCrypto();
-  const { user } = contextData();
+  const { user, refreshUser } = contextData();
 
   useEffect(() => {
     if (!user || !cryptoData) return;
@@ -79,31 +79,26 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
   };
 
   const handlePercentageClick = (percent: number) => {
-    if (orderType === 'limit' && limitPrice) {
-      if (tradeType === 'buy') {
-        const calculatedQuantity =
-          (availableBalance * percent) / 100 / Number(limitPrice);
-        setQuantity(calculatedQuantity.toFixed(6));
-        setAmount(((availableBalance * percent) / 100).toFixed(2));
-      } else {
-        // For SELL: Use Asset balance → Amount is calculated based on price
-        const calculatedAmount =
-          availableBalance * (percent / 100) * Number(limitPrice);
-        setQuantity(((availableBalance * percent) / 100).toFixed(6));
-        setAmount(calculatedAmount.toFixed(2));
-      }
+    if (!cryptoData[market] || cryptoData[market].price === 0) return;
+
+    if (tradeType === 'buy') {
+      const calculatedQuantity =
+        (availableBalance * percent) / 100 / Number(cryptoData[market].price);
+      setQuantity(calculatedQuantity.toFixed(6));
+      setAmount(((availableBalance * percent) / 100).toFixed(2));
     } else {
-      if (tradeType === 'buy') {
-        setQuantity(((availableBalance * percent) / 100).toFixed(6));
-      } else {
-        setQuantity(((availableBalance * percent) / 100).toFixed(2));
-      }
+      // For SELL: Use Asset balance → Amount is calculated based on price
+      const calculatedAmount =
+        availableBalance * (percent / 100) * Number(cryptoData[market].price);
+      setQuantity(((availableBalance * percent) / 100).toFixed(6));
+      setAmount(calculatedAmount.toFixed(2));
     }
 
     setBalPercent(percent);
   };
 
   const handleSubmit = async () => {
+    if (!cryptoData[market] || cryptoData[market].price === 0) return;
     setIsSubmitting(true);
     setError('');
     setSuccess('');
@@ -144,6 +139,8 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
         setAmount('');
         setQuantity('');
         setSuccess('');
+        setError('');
+        refreshUser();
       }, 3000);
     }
   };
@@ -164,19 +161,20 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
         <div className="flex text-xs pb-2">
           <button
             className={`px-4 py-1 border-[1.5px] rounded border-customGreen ${
-              orderType === 'limit' ? 'text-customGreen' : 'border-opacity-0'
-            }`}
-            onClick={() => setOrderType('limit')}
-          >
-            Limit
-          </button>
-          <button
-            className={`px-4 py-1 border-[1.5px] rounded border-customGreen ${
               orderType === 'market' ? 'text-customGreen' : 'border-opacity-0'
             }`}
             onClick={() => setOrderType('market')}
           >
             Market
+          </button>
+
+          <button
+            className={`px-4 py-1 border-[1.5px] rounded border-customGreen ${
+              orderType === 'limit' ? 'text-customGreen' : 'border-opacity-0'
+            }`}
+            onClick={() => setOrderType('limit')}
+          >
+            Limit
           </button>
         </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronRight, ShieldAlert, ShieldCheck, Wallet } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const formatEmail = (email: string): string => {
   const [name, domain] = email.split('@');
@@ -108,12 +109,12 @@ const AccountBalance: React.FC<IBal> = ({totalBalance}) => {
       <p className="text-3xl font-bold mt-2">
         {totalBalance.toFixed(2)} <span className="text-gray-500 text-lg">USDT</span>
       </p>
-      <a href="#" className="text-green-500 flex items-center gap-1 mt-2">
+      <Link to="/dashboard/wallet" className="text-green-500 flex items-center gap-1 mt-2">
         <Wallet /> <span>My wallet </span>{' '}
         <span>
           <ChevronRight size={16} />
         </span>
-      </a>
+      </Link>
     </div>
   );
 };

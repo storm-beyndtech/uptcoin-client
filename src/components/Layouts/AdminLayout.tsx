@@ -1,44 +1,34 @@
-import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Navbar from '../Navbar';
-import Sidebar from './Sidebar';
-import { navItems } from '@/lib/dashboardUtils';
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { contextData } from "../../context/AuthContext";
+import PageLoader from "../PageLoader";
+import Header from "../Header";
+import AdminSidebar from "./AdminSidebar";
 
-const AdminLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+export default function AdminLayout() {
+	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const { fetching } = contextData();
 
-  useEffect(() => {
-    const chatCtn = document.getElementsByTagName('jdiv')[0] as HTMLElement;
-    if (chatCtn) chatCtn.style.display = 'none';
+  if (fetching) return <PageLoader />;
+  
+	return (
+    <div className="dark:bg-boxdark-2 dark:text-bodydark">
+      <div className="flex h-screen overflow-hidden">
+        <AdminSidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
 
-    return () => {
-      if (chatCtn) chatCtn.style.display = 'block';
-    };
-  }, []);
+        <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-  return (
-    <div className="max-ctn max-w-[1400px] bg-[#fafafa] max-lg:bg-bodydark1 py-20">
-      {/* Fixed Header */}
-      <Navbar />
-
-      {/* Layout container */}
-      <div className="grid grid-cols-9 gap-5 relative">
-        {/* Fixed Sidebar */}
-        <div className="col-span-2 max-lg:hidden">
-          <Sidebar
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-            navItems={navItems}
-          />
+          <main>
+            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+              <Outlet />
+            </div>
+          </main>
         </div>
-
-        {/* Scrollable Main content */}
-        <main className="col-span-9 lg:col-span-7 overflow-y-auto no-scrollbar">
-          <Outlet />
-        </main>
       </div>
     </div>
-  );
-};
-
-export default AdminLayout;
+	);
+}

@@ -4,7 +4,7 @@ import { sendRequest } from '@/lib/sendRequest'; // Function to send API request
 import { contextData } from '@/context/AuthContext'; // User context
 
 export default function WithdrawalPassword() {
-  const { user } = contextData();
+  const { user, refreshUser } = contextData();
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [password1, setPassword1] = useState<string>('');
   const [password2, setPassword2] = useState<string>('');
@@ -74,6 +74,7 @@ export default function WithdrawalPassword() {
       setTimeout(() => {
         setSuccess('');
         setError('');
+        refreshUser()
       }, 3000);
     }
   };

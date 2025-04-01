@@ -1,6 +1,7 @@
 import AddAddressModal from '@/components/AddAddressModal';
 import { Address } from '@/components/ManageAddress';
 import MobileNav from '@/components/MobileNav';
+import NavigateBack from '@/components/UI/NavigateBack';
 import WithdrawForm from '@/components/WithdrawForm';
 import { contextData } from '@/context/AuthContext';
 import { useCrypto } from '@/context/CoinContext';
@@ -44,7 +45,6 @@ export default function Withdraw() {
     };
   });
 
-
   // Handle adding/updating an address
   const handleAddOrUpdate = async (addressData: {
     address: string;
@@ -60,11 +60,15 @@ export default function Withdraw() {
     setSuccess(null);
 
     try {
-      const { message } = await sendRequest(`/auth/update-asset-address`, 'PUT', {
-        symbol: addressData.symbol,
-        address: addressData.address,
-        userId: user._id
-      });
+      const { message } = await sendRequest(
+        `/auth/update-asset-address`,
+        'PUT',
+        {
+          symbol: addressData.symbol,
+          address: addressData.address,
+          userId: user._id,
+        },
+      );
 
       setSuccess(message);
     } catch (error: any) {
@@ -77,14 +81,16 @@ export default function Withdraw() {
         setEditing(false);
         setError(null);
         setSuccess(null);
-        refreshUser()
-      }, 3000)
+        refreshUser();
+      }, 3000);
     }
   };
 
-
   return (
     <div className="max-lg:min-h-screen max-lg:bg-bodydark1 py-20 sm:py-5 px-2">
+      <div className="p-4 text-2xl lg:hidden text-white">
+        <NavigateBack />
+      </div>
       {addressModalOpen && (
         <AddAddressModal
           addresses={addresses}

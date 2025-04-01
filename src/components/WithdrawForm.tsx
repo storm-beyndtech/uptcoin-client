@@ -89,6 +89,7 @@ export default function WithdrawForm({
 
   // Handle submit withdrawal
   const handleSubmit = async (password: string) => {
+    setError('');
     if (amount < selectedAsset.minWithdraw) {
       setError(
         `Minimum withdrawal is ${selectedAsset.minWithdraw} ${selectedAsset.symbol}.`,
@@ -96,17 +97,19 @@ export default function WithdrawForm({
       return;
     }
 
-    setError('');
-    setIsSubmitting(true);
+    if (!password) return setError('Please enter withdrawal passowrd');
+    if (!selectedAsset.address)
+      return setError('Please setup your wallet address');
 
     try {
+      setIsSubmitting(true);
       const { message } = await sendRequest('/transaction/withdraw', 'POST', {
         userId: user._id,
         address: selectedAsset.address,
         network: selectedAsset.network,
         symbol: selectedAsset.symbol,
-        amount,
-        password,
+        amount: Number(amount),
+        withdrawalPassword: password,
       });
       setSuccess(message);
       setIsSubmitModalOpen(false);
@@ -124,10 +127,11 @@ export default function WithdrawForm({
 
   // Handle cancel withdrawal
   const handleCancelWithdrawal = async (id: string) => {
+    setError('');
     setIsSubmitting(true);
     try {
       const { message } = await sendRequest(
-        `/transaction/withdraw/${id}/cancel`,
+        `/transaction/cancel/withdrawal/${id}`,
         'DELETE',
       );
       setSuccess(message);
@@ -146,7 +150,7 @@ export default function WithdrawForm({
   if (loading) return <p>Loading withdrawals...</p>;
 
   return pendingWithdrawals.length > 0 ? (
-    <div className="mt-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded-lg">
+    <div className="mt-6 p-4 bg-yellow-100/20 max-lg:bg-bodydark2 border-l-4 border-yellow-500 text-yellow-700 rounded-lg">
       <div className="flex items-center gap-2">
         <OctagonAlert size={18} />
         <h3 className="text-md font-semibold">Pending Withdrawals</h3>
@@ -154,17 +158,17 @@ export default function WithdrawForm({
       {pendingWithdrawals.map((withdrawal) => (
         <div
           key={withdrawal._id}
-          className="mt-3 p-2 bg-white rounded-md shadow-sm flex justify-between"
+          className="mt-3 p-2 bg-white/20 max-lg:bg-bodydark1 rounded-md shadow-sm flex justify-between"
         >
           <span>
             {withdrawal.amount} {withdrawal.symbol} - {withdrawal.network}
           </span>
           <button
-            className="text-red-500 text-sm"
+            className="px-3 py-[2px] text-xs bg-red-500 text-white rounded-xl"
             onClick={() => handleCancelWithdrawal(withdrawal._id)}
             disabled={isSubmitting}
           >
-            Cancel
+            {isSubmitting ? "Cancelling..." : "Cancel"}
           </button>
         </div>
       ))}

@@ -98,24 +98,26 @@ const AssetList = ({ assets, setIsModalOpen }: AssetListProps) => {
                       : (asset.funding + asset.spot).toFixed(6)}
                   </td>
                   <td className="px-3 py-4">${asset.equivalent.toFixed(2)}</td>
-                  <td className="space-x-2 mx-auto">
-                    <Link to={`/dashboard/deposit/${asset.symbol}`}>
-                      <button className="bg-[#138ea1] font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
-                        Deposit
-                      </button>
-                    </Link>
+                  <td className="space-x-2 pr-1">
+                    <div className="mx-auto flex gap-1 flex-nowrap">
+                      <Link to={`/dashboard/deposit/${asset.symbol}`}>
+                        <button className="bg-green-500 font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
+                          deposit
+                        </button>
+                      </Link>
 
-                    <Link to={`/dashboard/withdraw/${asset.symbol}`}>
-                      <button className="bg-customGreen font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
-                        Withdraw
-                      </button>
-                    </Link>
+                      <Link to={`/dashboard/withdraw/${asset.symbol}`}>
+                        <button className="bg-gray-700 font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
+                          withdraw
+                        </button>
+                      </Link>
 
-                    <Link to={`/dashboard/transfer/${asset.symbol}`}>
-                      <button className="bg-blue-600 font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
-                        Transfer
-                      </button>
-                    </Link>
+                      <Link to={`/dashboard/transfer/${asset.symbol}`}>
+                        <button className="bg-blue-700 font-medium text-white px-3 py-1.5 rounded-sm hover:opacity-80">
+                          transfer
+                        </button>
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               );
@@ -136,8 +138,9 @@ const AssetList = ({ assets, setIsModalOpen }: AssetListProps) => {
         </div>
 
         {assets.map((asset, i) => (
-          <div
+          <Link
             key={i}
+            to={`/dashboard/asset/${asset.symbol}`}
             className="grid grid-cols-3 p-4 bg-bodydark2 rounded-lg 
             cursor-pointer text-white/50 text-xs"
           >
@@ -168,7 +171,7 @@ const AssetList = ({ assets, setIsModalOpen }: AssetListProps) => {
                 <span className="text-green-300/80">USDT</span>
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </>

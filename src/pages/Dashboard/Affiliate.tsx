@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Clipboard, Users, DollarSign, ChevronUp } from 'lucide-react';
+import { contextData } from '@/context/AuthContext';
 
 export default function Affiliate() {
+  const { user } = contextData();
   const [copied, setCopied] = useState(false);
-  const invitationCode = 'jxaw7lc';
+  const invitationCode = user.uid;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(invitationCode);

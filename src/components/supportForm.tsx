@@ -91,7 +91,7 @@ const SupportForm: React.FC = () => {
         {success && <Alert type="success" message={success} />}
         <button
           type="submit"
-          className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition"
+          className="text-sm px-6 py-2 bg-blue-600 text-white rounded"
           disabled={loading}
         >
           {loading ? 'Sending...' : 'Send Message'}

@@ -45,7 +45,11 @@ export default function DropdownUser() {
         </span>
 
         {/* Use Avatar Component */}
-        <Avatar firstName={user?.firstName || 'U'} height="30px" width="30px" />
+        <Avatar
+          firstName={user?.firstName || user?.email.slice(0)}
+          height="30px"
+          width="30px"
+        />
       </button>
 
       {/* Dropdown Menu */}

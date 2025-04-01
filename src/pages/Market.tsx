@@ -38,7 +38,7 @@ export default function Market() {
           {/* Market List */}
           <div className="col-span-2 max-lg:col-span-10 bg-[#1a1b1c] rounded-sm">
             <MarketList
-              markets={marketData}
+              markets={marketData.filter((coin) => coin.symbol !== "USDT")}
               selectedMarket={selectedMarket}
               setSelectedMarket={setSelectedMarket}
             />

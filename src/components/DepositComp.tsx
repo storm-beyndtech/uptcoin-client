@@ -4,6 +4,7 @@ import { Copy, OctagonAlert } from 'lucide-react';
 import { sendRequest } from '@/lib/sendRequest'; // Assuming you have this function for API requests.
 import Alert from './UI/Alert';
 import { contextData } from '@/context/AuthContext';
+import NavigateBack from './UI/NavigateBack';
 
 interface Coin {
   symbol: string;
@@ -134,7 +135,11 @@ export default function DepositComp({ coins }: DepositProps) {
   if (loading) return <p>Loading deposits...</p>;
 
   return (
-    <div className="flex gap-5 max-lg:flex-col py-10 px-4">
+    <div className="flex gap-5 max-lg:flex-col py-5 px-4">
+      <div className="text-2xl lg:hidden text-white">
+        <NavigateBack />
+      </div>
+
       <div className="p-6 max-lg:px-0 max-w-lg bg-white max-lg:bg-bodydark1 shadow-md rounded-lg">
         <h2 className="text-xl font-semibold max-lg:font-medium text-gray-800 max-lg:text-white/90 mb-4">
           {pendingDeposits.length > 0 ? 'Pending Deposit(s)' : 'Deposit'}
@@ -175,25 +180,25 @@ export default function DepositComp({ coins }: DepositProps) {
           <label className="text-gray-700 dark:text-gray-300 max-lg:text-white/30">
             Deposit address
           </label>
-          <div className="mt-2 p-4 lg:border rounded-lg flex items-center bg-gray-50 max-lg:bg-bodydark2">
+          <div className="mt-2 p-4 max-lg:py-7.5 lg:border rounded-lg flex items-center max-lg:flex-col max-lg:gap-5 bg-gray-50 max-lg:bg-bodydark2">
             <img
               src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
                 selectedCoin.address,
               )}`}
               alt="QR Code"
-              className="w-16 h-16 mr-4"
+              className="w-26 h-26 lg:w-16 lg:h-16 mr-4"
             />
-            <div className="flex-1">
+            <div className="flex-1 max-lg:w-full">
               <input
                 type="text"
                 readOnly
                 value={selectedCoin.address}
-                className="input max-lg:border-none"
+                className="input max-lg:border-none max-lg:w-full"
               />
             </div>
             <button
               onClick={() => handleCopy(selectedCoin.address)}
-              className="text-gray-600 dark:text-gray-400 ml-2"
+              className="text-gray-600 max-lg:text-gray-400 ml-2"
             >
               <Copy size={18} />
             </button>

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 type Order = {
   _id: string;
   symbol: string;
-  action: 'Buy' | 'Sell';
+  action: 'buy' | 'sell';
   orderType: 'market' | 'limit';
   limitPrice?: number;
   marketPrice?: number;
@@ -48,7 +48,7 @@ const OrderHistory: React.FC = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [user]);
 
   return (
     <div className="rounded-sm w-full text-sm">
@@ -76,7 +76,7 @@ const OrderHistory: React.FC = () => {
                   <td className="px-4 py-3">{order.symbol}</td>
                   <td
                     className={`px-4 py-2 font-medium ${
-                      order.action === 'Buy' ? 'text-green-500' : 'text-red-500'
+                      order.action === 'buy' ? 'text-green-500' : 'text-red-500'
                     }`}
                   >
                     {order.action}

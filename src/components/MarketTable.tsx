@@ -20,8 +20,10 @@ const MarketTable: React.FC = () => {
     'Action',
   ];
 
+  const coinDataWithoutUsdt = Object.values(cryptoData).filter((coin) => coin.symbol !== "USDT")
+
   // Filter crypto data based on search query
-  const filteredData = Object.values(cryptoData).filter(
+  const filteredData = coinDataWithoutUsdt.filter(
     (coin) =>
       coin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       coin.symbol.toLowerCase().includes(searchQuery.toLowerCase()),

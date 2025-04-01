@@ -4,14 +4,19 @@ import { contextData } from '@/context/AuthContext';
 import Alert from './UI/Alert';
 import { sendRequest } from '@/lib/sendRequest';
 import { Asset } from '@/types/types';
+import { useParams } from 'react-router-dom';
 
 export default function TransferAsset() {
-  const { user } = contextData();
+  const { user, refreshUser } = contextData();
+  const { symbol } = useParams();
+
+  const initialAsset =
+    user.assets.find((asset: any) => asset.symbol === symbol) || user.assets[0];
 
   const [from, setFrom] = useState('funding');
   const [to, setTo] = useState('spot');
 
-  const [coin, setCoin] = useState(user.assets[0]);
+  const [coin, setCoin] = useState(initialAsset);
   const [amount, setAmount] = useState(0);
   const [error, setError] = useState<null | string>(null);
   const [success, setSuccess] = useState<null | string>(null);
@@ -50,6 +55,7 @@ export default function TransferAsset() {
     } finally {
       setLoading(false);
       setTimeout(() => {
+        refreshUser()
         setSuccess(null);
       }, 2000);
     }
@@ -77,11 +83,13 @@ export default function TransferAsset() {
         onChange={(e) => setCoin(JSON.parse(e.target.value))}
         className="input mb-3"
       >
-        {user.assets.map((asset: Asset, i: number) => (
-          <option key={i} value={JSON.stringify(asset)}>
-            {`${asset.name} (${asset.symbol})`}
-          </option>
-        ))}
+        {(symbol ? [initialAsset] : user.assets).map(
+          (asset: Asset, i: number) => (
+            <option key={i} value={JSON.stringify(asset)}>
+              {`${asset.name} (${asset.symbol})`}
+            </option>
+          ),
+        )}
       </select>
 
       {/* From & To Dropdowns */}

@@ -47,6 +47,8 @@ import Withdraw from './pages/Dashboard/Withdraw';
 import Transfer from './pages/Dashboard/Transfer';
 import PrivateRoute from './components/PrivateRoute';
 import About from './pages/About';
+import AdminLayout from './components/Layouts/AdminLayout';
+import UserAssetDetails from './components/UserAssetDetails';
 
 function App() {
   const { fetching, user } = contextData();
@@ -78,6 +80,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/password-reset" element={<PasswordReset />} />
 
+        <Route path="/admin/" element={<AdminLayout />}></Route>
+
         {/*    --    --   --   --  */}
         {/* Dashboard routes */}
         {/*    --    --   --   --  */}
@@ -91,6 +95,7 @@ function App() {
         >
           <Route index element={<UserOverview />} />
           <Route path="/dashboard/wallet" element={<UserWallet />} />
+          <Route path="/dashboard/asset/:symbol" element={<UserAssetDetails />} />
           <Route path="/dashboard/deposit" element={<Deposit />} />
           <Route path="/dashboard/deposit/:symbol" element={<Deposit />} />
           <Route path="/dashboard/withdraw" element={<Withdraw />} />
@@ -98,7 +103,10 @@ function App() {
           <Route path="/dashboard/transfer" element={<Transfer />} />
           <Route path="/dashboard/transfer/:symbol" element={<Transfer />} />
           <Route path="/dashboard/conversion" element={<Conversion />} />
-          <Route path="/dashboard/conversion/:symbol" element={<Conversion />} />
+          <Route
+            path="/dashboard/conversion/:symbol"
+            element={<Conversion />}
+          />
           <Route path="/dashboard/wallet-address" element={<WalletAddress />} />
           <Route path="/dashboard/auth" element={<KYC />} />
           <Route

@@ -80,13 +80,10 @@ export default function TransactionsTable() {
                 Operation
               </th>
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
-                Event
+                Time
               </th>
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
                 Status
-              </th>
-              <th className="px-6 py-4 text-xs font-semibold text-gray-500 max-lg:text-gray-300 uppercase tracking-wider">
-                View
               </th>
             </tr>
           </thead>
@@ -130,11 +127,6 @@ export default function TransactionsTable() {
                   >
                     {txn.status}
                   </span>
-                </td>
-                <td className="px-6 py-4">
-                  <button className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200">
-                    View
-                  </button>
                 </td>
               </tr>
             ))}

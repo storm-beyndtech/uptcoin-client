@@ -28,7 +28,11 @@ const QuickMargin: React.FC = () => {
   const [selectedMarket, setSelectedMarket] = useState<string>('BTC');
   const [marginModal, setMarginModal] = useState<boolean>(false);
 
-  const marketData: MarketData[] = Object.values(cryptoData).map(
+  const coinDataWithoutUsdt = Object.values(cryptoData).filter(
+    (coin) => coin.symbol !== 'USDT',
+  );
+
+  const marketData: MarketData[] = coinDataWithoutUsdt.map(
     ({ symbol, price, change, low, high, volume }) => ({
       symbol,
       price,

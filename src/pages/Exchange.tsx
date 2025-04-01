@@ -42,7 +42,9 @@ const Exchange: React.FC = () => {
     if (symbol) setSelectedMarket(symbol as string);
   }, [symbol]);
 
-  const marketData: MarketData[] = Object.values(cryptoData).map(
+  const coinDataWithoutUsdt = Object.values(cryptoData).filter((coin) => coin.symbol !== "USDT")
+
+  const marketData: MarketData[] = coinDataWithoutUsdt.map(
     ({ symbol, price, change, low, high, volume }) => ({
       symbol,
       price,
@@ -76,7 +78,7 @@ const Exchange: React.FC = () => {
             <div className="w-full lg:hidden flex items-center justify-around flex-wrap px-2 py-3 gap-2 fixed bottom-17 z-99999 bg-bodydark1">
               <div className="flex gap-3">
                 <Link
-                  to="/dashboard/conversion"
+                  to={`/dashboard/conversion/${selectedMarket}`}
                   className="flex flex-col items-center text-white"
                 >
                   <div className="flex items-center justify-center">
@@ -90,7 +92,7 @@ const Exchange: React.FC = () => {
                 </Link>
 
                 <Link
-                  to="/dashboard/transfer"
+                  to={`/dashboard/transfer/${selectedMarket}`}
                   className="flex flex-col items-center text-white"
                 >
                   <div className="flex items-center justify-center">

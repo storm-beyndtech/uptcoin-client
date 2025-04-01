@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { ArrowLeftRight } from 'lucide-react';
+import { ArrowLeftRight, ArrowUp } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
 import { Asset } from '@/types/types';
 import { useCrypto } from '@/context/CoinContext';
 import Alert from './UI/Alert';
 import { sendRequest } from '@/lib/sendRequest';
+import { useParams } from 'react-router-dom';
 
 interface AssetWithPrice extends Asset {
   price: number;
@@ -13,6 +14,7 @@ interface AssetWithPrice extends Asset {
 export default function ConvertAsset() {
   const { cryptoData } = useCrypto();
   const { user, refreshUser } = contextData();
+  const { symbol } = useParams();
 
   // Get user's assets with real-time prices
   const assets = user.assets.map((asset: Asset) => {
@@ -30,7 +32,11 @@ export default function ConvertAsset() {
     (asset: AssetWithPrice) => asset.symbol === 'USDT',
   );
 
-  const [fromAsset, setFromAsset] = useState(parsedAssets[0]);
+  const initialCoin =
+    parsedAssets.find((asset: any) => asset.symbol === symbol) ||
+    parsedAssets[0];
+
+  const [fromAsset, setFromAsset] = useState(initialCoin);
   const [fromAssets, setFromAssets] = useState(parsedAssets);
   const [toAsset, setToAsset] = useState(usdtAsset[0]);
   const [toAssets, setToAssets] = useState(usdtAsset);
@@ -80,7 +86,7 @@ export default function ConvertAsset() {
 
   // Clear inputs
   const handleClear = () => {
-    setFromAsset(parsedAssets[0]);
+    setFromAsset(initialCoin);
     setFromAssets(parsedAssets);
     setToAsset(usdtAsset[0]);
     setToAssets(usdtAsset);
@@ -133,11 +139,21 @@ export default function ConvertAsset() {
       {/* Conversion Mode & Switch Button */}
       <div className="flex justify-between items-center mb-7">
         <span className="text-gray-500 max-lg:text-white font-semibold">
-          Conversion Mode
+          Convert
         </span>
         <button
+          onClick={() => {
+            setAmountToConvert(fromAsset.spot);
+            calculateConversion(fromAsset, toAsset, Number(fromAsset.spot));
+          }}
+          className="flex items-center gap-2 px-3 py-1.5 whitespace-nowrap text-xs border max-lg:border-white/10 rounded-lg text-gray-700 max-lg:text-white hover:bg-bodydark2/5"
+        >
+          <ArrowUp className="w-4 h-4" />
+          Max Bal
+        </button>
+        <button
           onClick={handleSwitch}
-          className="flex items-center gap-2 px-3 py-1.5 border max-lg:border-white/10 rounded-lg text-gray-700 max-lg:text-white hover:bg-bodydark2/5"
+          className="flex items-center gap-2 px-3 py-1.5 whitespace-nowrap text-xs border max-lg:border-white/10 rounded-lg text-gray-700 max-lg:text-white hover:bg-bodydark2/5"
         >
           <ArrowLeftRight className="w-4 h-4" />
           Switch
@@ -235,7 +251,7 @@ export default function ConvertAsset() {
         </button>
 
         <button
-          className="bg-gray-500 text-white py-2 px-5 text-sm rounded hover:bg-gray-600 transition"
+          className="bg-gray-600 text-white py-2 px-5 text-sm rounded hover:bg-gray-700 transition"
           onClick={handleClear}
         >
           Clear
