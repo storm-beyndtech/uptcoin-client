@@ -105,6 +105,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
 
     if (!user) navigate('/login');
 
+    //Validate Limit price
     if (
       orderType === 'limit' &&
       (!limitPrice || isNaN(Number(limitPrice)) || Number(limitPrice) <= 0)
@@ -113,8 +114,25 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
       setIsSubmitting(false);
       return;
     }
+
+    //Validate Amount
+    if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+      setError('Invalid Amount, Correct amount or wait price update');
+      setIsSubmitting(false);
+      return;
+    }
+
+    //Validate Quantity
     if (!quantity || isNaN(Number(quantity)) || Number(quantity) <= 0) {
       setError('Invalid quantity');
+      setIsSubmitting(false);
+      return;
+    }
+
+    //Check if user has asset
+    const isAsset = user.assets.find((asset: any) => asset.symbol === market);
+    if (!isAsset) {
+      setError('Please add asset first before trading');
       setIsSubmitting(false);
       return;
     }

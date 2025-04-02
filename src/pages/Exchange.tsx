@@ -13,6 +13,8 @@ import SEO from '@/components/SEO';
 import MobileNav from '@/components/MobileNav';
 import TradingChart from '@/components/TradingChart';
 import { contextData } from '@/context/AuthContext';
+import { sendRequest } from '@/lib/sendRequest';
+import BecomeATraderModal from '@/components/BecomeATraderModal';
 
 export interface MarketData {
   symbol: string;
@@ -33,16 +35,37 @@ const Exchange: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'trade' | 'chart'>('trade');
   const [tradeTab, setTradeTab] = useState<'buy' | 'sell'>('buy');
   const navigate = useNavigate();
+  const [becomeTraderModal, setBecomeTraderModal] = useState(false);
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
   useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const tradeData = await sendRequest(
+          `/transaction/trades/${user._id}`,
+          'GET',
+        );
+        if (tradeData.length >= 2) {
+          setBecomeTraderModal(true);
+        }
+      } catch (error: any) {
+        console.error('Error fetching orders:', error.message);
+      }
+    };
+
+    fetchOrders();
+  }, [user]);
+
+  useEffect(() => {
     if (symbol) setSelectedMarket(symbol as string);
   }, [symbol]);
 
-  const coinDataWithoutUsdt = Object.values(cryptoData).filter((coin) => coin.symbol !== "USDT")
+  const coinDataWithoutUsdt = Object.values(cryptoData).filter(
+    (coin) => coin.symbol !== 'USDT',
+  );
 
   const marketData: MarketData[] = coinDataWithoutUsdt.map(
     ({ symbol, price, change, low, high, volume }) => ({
@@ -257,6 +280,10 @@ const Exchange: React.FC = () => {
           )}
         </div>
       </section>
+
+      {becomeTraderModal && (
+        <BecomeATraderModal setIsModalOpen={setBecomeTraderModal} />
+      )}
     </>
   );
 };
