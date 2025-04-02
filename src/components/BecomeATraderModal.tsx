@@ -17,13 +17,28 @@ const BecomeATraderModal: React.FC<BecomeATraderModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   //Handle become a trader
-  const handleSubmit = async () => {
-    try {
-      setIsSubmitting(true);
-      const { message } = await sendRequest(`/transaction/trader`, 'PUT', {
+  const handleSubmit = async (e: 'yes' | 'no') => {
+    let traderData;
+    if (e === 'yes') {
+      traderData = {
         userId: user._id,
         tradingStatus: 'Trader',
-      });
+        isTradeSuspended: false,
+      };
+    } else {
+      traderData = {
+        userId: user._id,
+        isTradeSuspended: true,
+        tradingStatus: 'None',
+      };
+    }
+    try {
+      setIsSubmitting(true);
+      const { message } = await sendRequest(
+        `/transaction/trader`,
+        'PUT',
+        traderData,
+      );
       setSuccess(message);
     } catch (error: any) {
       setError(error.message);
@@ -59,16 +74,17 @@ const BecomeATraderModal: React.FC<BecomeATraderModalProps> = ({
         <div className="flex space-x-5 text-sm">
           <button
             className="px-5 py-1.5 bg-bodydark1 text-white rounded-sm"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => handleSubmit('no')}
+            disabled={isSubmitting}
           >
-            Cancel
+            No
           </button>
           <button
             className="px-5 py-1.5 bg-blue-600 text-white rounded-sm"
             disabled={isSubmitting}
-            onClick={() => handleSubmit()}
+            onClick={() => handleSubmit('yes')}
           >
-            {isSubmitting ? 'Approving...' : 'Yes'}
+            {isSubmitting ? 'Sending Request...' : 'Yes'}
           </button>
         </div>
       </div>

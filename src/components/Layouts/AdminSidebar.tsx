@@ -1,13 +1,21 @@
 import { useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../../assets/fav.svg';
-import { CiGrid42, CiLogout } from 'react-icons/ci';
-import { PiUsersFourLight } from 'react-icons/pi';
-import { HiOutlineKey } from 'react-icons/hi2';
-import { VscMenu } from 'react-icons/vsc';
 import { contextData } from '../../context/AuthContext';
 import DarkModeSwitcher from './DarkModeSwitcher';
 import SidebarDropdown from './SidebarDropdown';
+import {
+  Home,
+  ScrollText,
+  Users,
+  ChartCandlestick,
+  Globe,
+  MessageSquare,
+  Coins,
+  Gift,
+  LogOut,
+  Menu,
+} from 'lucide-react';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -51,7 +59,7 @@ export default function AdminSidebar({
   return (
     <aside
       ref={sidebar}
-      className={`text-xs absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-boxdark duration-300 ease-linear lg:static lg:translate-x-0 ${
+      className={`text-xs absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gray-950 duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
@@ -67,7 +75,7 @@ export default function AdminSidebar({
           aria-expanded={sidebarOpen}
           className="block lg:hidden"
         >
-          <VscMenu className="fill-current" />
+          <Menu className="text-gray-400" />
         </button>
       </div>
 
@@ -76,20 +84,32 @@ export default function AdminSidebar({
           <ul className="mb-10 flex flex-col gap-1.5">
             <li>
               <NavLink
+                to="/"
+                className={`text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black`}
+              >
+                <Globe strokeWidth={1.5} className="text-xl" />
+                Main Website
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
                 to="/admin"
                 className={`text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black ${
                   pathname === '/admin' && 'bg-black'
                 }`}
               >
-                <CiGrid42 className="text-xl" />
+                <Home strokeWidth={1.5} className="text-xl" />
                 Dashboard
               </NavLink>
             </li>
+          </ul>
 
+          <ul className="mb-10 flex flex-col gap-1.5">
             {/* Users Dropdown Menu */}
             <SidebarDropdown
               title="Users"
-              icon={<PiUsersFourLight className="text-xl" />}
+              icon={<Users strokeWidth={1.5} className="text-xl" />}
               links={[
                 { label: 'Add User', href: 'add-user' },
                 { label: 'Manage Users', href: 'manage-users' },
@@ -98,30 +118,73 @@ export default function AdminSidebar({
               ]}
             />
 
-            {/* Future Groups (Example) */}
-            {/* <SidebarDropdown title="Transactions" icon={<TransactionIcon />} links={[...]} /> */}
+            {/* Transactions drop down */}
+            <SidebarDropdown
+              title="Transactions"
+              icon={<ScrollText strokeWidth={1.5} className="text-xl" />}
+              links={[
+                { label: 'Deposit', href: 'manage-deposits' },
+                { label: 'Withdrawal', href: 'manage-withdrawals' },
+              ]}
+            />
+
+            {/* Trade drop down */}
+            <SidebarDropdown
+              title="Trade"
+              icon={<ChartCandlestick strokeWidth={1.5} className="text-xl" />}
+              links={[
+                { label: 'Manage Trader', href: 'manage-traders' },
+                { label: 'Trade History', href: 'trade-history' },
+              ]}
+            />
           </ul>
 
           <ul className="flex flex-col gap-1.5">
             <li>
               <NavLink
-                to="/admin/settings"
+                to="/admin/manage-assets"
                 className={`text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black ${
-                  pathname.includes('settings') && 'bg-black'
+                  pathname.includes('manage-assets') && 'bg-black'
                 }`}
               >
-                <HiOutlineKey className="text-xl" />
-                Settings
+                <Coins strokeWidth={1.5} className="text-xl" />
+                Manage Assets
               </NavLink>
             </li>
-            <NavLink
-              to="#"
+
+            <li>
+              <NavLink
+                to="/admin/affiliate"
+                className={`text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black ${
+                  pathname.includes('affiliate') && 'bg-black'
+                }`}
+              >
+                <Gift strokeWidth={1.5} className="text-xl" />
+                Affiliate
+              </NavLink>
+            </li>
+          </ul>
+
+          <ul className="flex flex-col gap-1.5">
+            <li>
+              <NavLink
+                to="/admin/mails"
+                className={`text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black ${
+                  pathname.includes('mails') && 'bg-black'
+                }`}
+              >
+                <MessageSquare strokeWidth={1.5} className="text-xl" />
+                Mails
+              </NavLink>
+            </li>
+
+            <li
               className="text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black"
               onClick={() => logout()}
             >
-              <CiLogout className="text-xl" />
+              <LogOut strokeWidth={1.5} className="text-xl" />
               Sign out
-            </NavLink>
+            </li>
           </ul>
         </nav>
       </div>

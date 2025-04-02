@@ -41,23 +41,30 @@ const Exchange: React.FC = () => {
     navigate(-1);
   };
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const tradeData = await sendRequest(
-          `/transaction/trades/${user._id}`,
-          'GET',
-        );
-        if (tradeData.length >= 2) {
-          setBecomeTraderModal(true);
-        }
-      } catch (error: any) {
-        console.error('Error fetching orders:', error.message);
+  const fetchOrders = async () => {
+    let action;
+    try {
+      const tradeData = await sendRequest(
+        `/transaction/trades/${user._id}`,
+        'GET',
+      );
+      console.log(tradeData, user.tradingStatus);
+      if (
+        tradeData.length >= 2 &&
+        user.tradingStatus === 'None' &&
+        !user.isTradeSuspended
+      ) {
+        action = false;
+        setBecomeTraderModal(true);
+      } else {
+        action = true;
       }
-    };
-
-    fetchOrders();
-  }, [user]);
+    } catch (error: any) {
+      console.error('Error fetching orders:', error.message);
+      action = true;
+    }
+    return action;
+  };
 
   useEffect(() => {
     if (symbol) setSelectedMarket(symbol as string);
@@ -130,11 +137,23 @@ const Exchange: React.FC = () => {
               </div>
 
               <div className="flex gap-3">
-                <button className="w-full whitespace-nowrap bg-green-600 px-4 py-2 rounded text-white text-sm font-medium">
+                <button
+                  className="w-full whitespace-nowrap bg-green-600 px-4 py-2 rounded text-white text-sm font-medium"
+                  onClick={() => {
+                    setActiveTab('trade');
+                    setTradeTab('buy');
+                  }}
+                >
                   Buy {selectedMarket}
                 </button>
 
-                <button className="w-full whitespace-nowrap bg-red-600 px-4 py-2 rounded text-white text-sm font-medium">
+                <button
+                  className="w-full whitespace-nowrap bg-red-600 px-4 py-2 rounded text-white text-sm font-medium"
+                  onClick={() => {
+                    setActiveTab('trade');
+                    setTradeTab('sell');
+                  }}
+                >
                   Sell {selectedMarket}
                 </button>
               </div>
@@ -188,8 +207,16 @@ const Exchange: React.FC = () => {
               {/* <Chart symbol={selectedMarket} /> */}
               <TradingChart symbol={selectedMarket} />
               <div className="flex max-lg:flex-wrap gap-4">
-                <TradePanel market={selectedMarket} tradeType="buy" />
-                <TradePanel market={selectedMarket} tradeType="sell" />
+                <TradePanel
+                  market={selectedMarket}
+                  tradeType="buy"
+                  validateTrader={fetchOrders}
+                />
+                <TradePanel
+                  market={selectedMarket}
+                  tradeType="sell"
+                  validateTrader={fetchOrders}
+                />
               </div>
             </div>
 
@@ -234,9 +261,17 @@ const Exchange: React.FC = () => {
 
                   <div className="flex max-lg:flex-wrap gap-4">
                     {tradeTab === 'buy' ? (
-                      <TradePanel market={selectedMarket} tradeType="buy" />
+                      <TradePanel
+                        market={selectedMarket}
+                        tradeType="buy"
+                        validateTrader={fetchOrders}
+                      />
                     ) : (
-                      <TradePanel market={selectedMarket} tradeType="sell" />
+                      <TradePanel
+                        market={selectedMarket}
+                        tradeType="sell"
+                        validateTrader={fetchOrders}
+                      />
                     )}
                   </div>
                 </div>

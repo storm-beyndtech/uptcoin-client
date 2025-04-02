@@ -9,16 +9,22 @@ import { useNavigate } from 'react-router-dom';
 interface TradePanelProps {
   market: string;
   tradeType: string;
+  validateTrader: any;
 }
 
 interface AssetWithPrice extends Asset {
   price: number;
 }
 
-const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
+const TradePanel: React.FC<TradePanelProps> = ({
+  market,
+  tradeType,
+  validateTrader,
+}) => {
   const navigate = useNavigate();
   const [orderType, setOrderType] = useState<'limit' | 'market'>('market');
   const [limitPrice, setLimitPrice] = useState('');
+  const [marketPrice, setMarketPrice] = useState('');
   const [quantity, setQuantity] = useState('');
   const [amount, setAmount] = useState('');
   const [availableBalance, setAvailableBalance] = useState(0);
@@ -45,16 +51,17 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
     }
   }, [user, cryptoData, market, tradeType]);
 
-  //update limitPrice
+  //update market price
   useEffect(() => {
     const coinInfo = Object.values(cryptoData).find(
       (coin) => coin.symbol === market,
     );
     const currentPrice = coinInfo ? Number(coinInfo.price) : 0;
 
-    setLimitPrice(currentPrice.toFixed(2));
-  }, [market]);
+    setMarketPrice(currentPrice.toFixed(2));
+  }, [market, cryptoData]);
 
+  //Handle limit price change
   const handleLimitPriceChange = (value: string) => {
     setLimitPrice(value);
     if (quantity) {
@@ -62,18 +69,26 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
     }
   };
 
+  //Handle quantity change
   const handleQuantityChange = (value: string) => {
     setQuantity(value);
-    if (limitPrice) {
+    if (orderType === 'limit' && limitPrice) {
       setAmount((Number(limitPrice) * Number(value)).toFixed(2));
+    }
+    if (orderType === 'market' && marketPrice) {
+      setAmount((Number(marketPrice) * Number(value)).toFixed(2));
     }
     setBalPercent(0);
   };
 
+  //handle amount change
   const handleAmountChange = (value: string) => {
     setAmount(value);
-    if (limitPrice) {
+    if (orderType === 'limit' && limitPrice) {
       setQuantity((Number(value) / Number(limitPrice)).toFixed(6));
+    }
+    if (orderType === 'market' && marketPrice) {
+      setQuantity((Number(value) / Number(marketPrice)).toFixed(6));
     }
     setBalPercent(0);
   };
@@ -98,10 +113,18 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
   };
 
   const handleSubmit = async () => {
-    if (!cryptoData[market] || cryptoData[market].price === 0) return;
     setIsSubmitting(true);
     setError('');
     setSuccess('');
+
+    const validateTraderStatus = await validateTrader();
+
+    console.log(validateTraderStatus)
+
+    if (!validateTraderStatus) {
+      setIsSubmitting(false);
+      return;
+    }
 
     if (!user) navigate('/login');
 
@@ -117,7 +140,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ market, tradeType }) => {
 
     //Validate Amount
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
-      setError('Invalid Amount, Correct amount or wait price update');
+      setError('Invalid Amount');
       setIsSubmitting(false);
       return;
     }

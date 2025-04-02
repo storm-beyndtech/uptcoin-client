@@ -24,8 +24,10 @@ const MarketList: React.FC<MarketListProps> = ({
   const navigate = useNavigate();
 
   const handleClick = (symbol: string) => {
-    if (!setMarginModal) {
-      if (window.innerWidth < 1024) navigate(`/exchange/${symbol}`);
+    if (window.innerWidth < 1024) {
+      navigate(`/exchange/${symbol}`);
+    } else {
+      navigate(`/exchange/${symbol}`, { replace: true });
     }
 
     if (setMarginModal && window.innerWidth < 1024) setMarginModal(true);

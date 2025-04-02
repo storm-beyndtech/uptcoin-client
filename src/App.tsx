@@ -49,6 +49,7 @@ import PrivateRoute from './components/PrivateRoute';
 import About from './pages/About';
 import AdminLayout from './components/Layouts/AdminLayout';
 import UserAssetDetails from './components/UserAssetDetails';
+import Admin from './pages/Admin/Admin';
 
 function App() {
   const { fetching, user } = contextData();
@@ -80,7 +81,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/password-reset" element={<PasswordReset />} />
 
-        <Route path="/admin/" element={<AdminLayout />}></Route>
+        <Route path="/admin/" element={<AdminLayout />}>
+          <Route path="/admin/" element={<Admin />} />
+        </Route>
 
         {/*    --    --   --   --  */}
         {/* Dashboard routes */}
@@ -95,7 +98,10 @@ function App() {
         >
           <Route index element={<UserOverview />} />
           <Route path="/dashboard/wallet" element={<UserWallet />} />
-          <Route path="/dashboard/asset/:symbol" element={<UserAssetDetails />} />
+          <Route
+            path="/dashboard/asset/:symbol"
+            element={<UserAssetDetails />}
+          />
           <Route path="/dashboard/deposit" element={<Deposit />} />
           <Route path="/dashboard/deposit/:symbol" element={<Deposit />} />
           <Route path="/dashboard/withdraw" element={<Withdraw />} />
