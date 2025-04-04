@@ -1,9 +1,43 @@
-import { Bell, Search, Settings, User } from 'lucide-react';
+import { contextData } from '@/context/AuthContext';
+import {
+  Bell,
+  Search,
+  User,
+  ShieldCheck,
+  LogOut,
+  LayoutDashboard,
+} from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] =
+    useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const { logout } = contextData();
+
+  const toggleUserDropdown = () => {
+    setShowUserDropdown(!showUserDropdown);
+    setShowNotificationDropdown(false);
+    setShowProfileDropdown(false);
+  };
+
+  const toggleNotificationDropdown = () => {
+    setShowNotificationDropdown(!showNotificationDropdown);
+    setShowUserDropdown(false);
+    setShowProfileDropdown(false);
+  };
+
+  const toggleProfileDropdown = () => {
+    setShowProfileDropdown(!showProfileDropdown);
+    setShowUserDropdown(false);
+    setShowNotificationDropdown(false);
+  };
+
   return (
     <header className="bg-white dark:bg-bodydark1/40 shadow-sm z-10">
       <div className="flex items-center gap-2 justify-between h-16 px-6">
@@ -64,26 +98,97 @@ const Header = (props: {
 
         {/* Right side buttons */}
         <div className="flex items-center space-x-4">
-          {/* Notifications */}
-          <button className="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none">
-            <Bell size={20} />
-            <span className="absolute top-1 right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">
-              3
-            </span>
-          </button>
+          {/* Notifications with Dropdown */}
+          <div className="relative">
+            <button
+              className="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none"
+              onClick={toggleNotificationDropdown}
+            >
+              <Bell size={20} />
+              <span className="absolute top-1 right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">
+                3
+              </span>
+            </button>
 
-          {/* Settings */}
-          <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none">
-            <Settings size={20} />
-          </button>
+            {showNotificationDropdown && (
+              <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-bodydark1/90 customBlur rounded-md shadow-lg overflow-hidden z-20 border border-gray-200 dark:border-gray-700">
+                <div className="py-2">
+                  <h3 className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700">
+                    Notifications
+                  </h3>
+                  <Link
+                    to="/admin/manage-deposits"
+                    className="block px-4 py-2 text-sm text-green-600 dark:text-green-400 font-medium border-gray-200 dark:border-gray-700"
+                  >
+                    View all deposits
+                  </Link>
+                  <Link
+                    to="/admin/manage-withdrawals"
+                    className="block px-4 py-2 text-sm text-blue-600 dark:text-blue-400 font-medium border-gray-200 dark:border-gray-700"
+                  >
+                    View all withdrawals
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
 
-          {/* User Profile */}
-          <button className="flex items-center space-x-2 text-gray-700 dark:text-gray-200 focus:outline-none">
-            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-              <User size={16} />
-            </div>
-            <span className="hidden md:inline-block">Admin</span>
-          </button>
+          {/* User Management */}
+          <div className="relative">
+            <button
+              className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none"
+              onClick={toggleUserDropdown}
+            >
+              <ShieldCheck size={20} />
+            </button>
+
+            {showUserDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-bodydark1/90 customBlur rounded-md shadow-lg overflow-hidden z-20 border border-gray-200 dark:border-gray-700">
+                <div className="py-1">
+                  <Link
+                    to="/admin/manage-users"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Manage Users
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* User Profile with Dropdown */}
+          <div className="relative">
+            <button
+              className="flex items-center space-x-2 text-gray-700 dark:text-gray-200 focus:outline-none"
+              onClick={toggleProfileDropdown}
+            >
+              <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                <User size={16} />
+              </div>
+              <span className="hidden md:inline-block">Admin</span>
+            </button>
+
+            {showProfileDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-bodydark1/90 customBlur rounded-md shadow-lg overflow-hidden z-20 border border-gray-200 dark:border-gray-700">
+                <div className="py-1">
+                  <Link
+                    to="/admin"
+                    className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <LayoutDashboard size={16} className="mr-2" />
+                    Dashboard
+                  </Link>
+                  <div
+                    onClick={() => logout()}
+                    className="flex cursor-pointer items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <LogOut size={16} className="mr-2" />
+                    Logout
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

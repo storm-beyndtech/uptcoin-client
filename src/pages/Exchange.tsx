@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import Chart from '@/components/Chart';
 import MarketLabel from '@/components/MarketLabel';
 import MarketList from '@/components/MarketList';
 import Navbar from '@/components/Navbar';
@@ -48,7 +47,6 @@ const Exchange: React.FC = () => {
         `/transaction/trades/${user._id}`,
         'GET',
       );
-      console.log(tradeData, user.tradingStatus);
       if (
         tradeData.length >= 2 &&
         user.tradingStatus === 'None' &&

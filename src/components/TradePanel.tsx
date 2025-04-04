@@ -126,12 +126,21 @@ const TradePanel: React.FC<TradePanelProps> = ({
 
     console.log(validateTraderStatus);
 
+    if (user.kycStatus !== 'approved') {
+      setError('Complete kyc before trading');
+      setIsSubmitting(false);
+      setTimeout(() => {
+        navigate('/dashboard/auth');
+      }, 3000);
+      return;
+    }
+
     if (!validateTraderStatus) {
       setIsSubmitting(false);
       return;
     }
 
-    if (!user) navigate('/login');
+    if (!user) return navigate('/login');
 
     //Validate Limit price
     if (

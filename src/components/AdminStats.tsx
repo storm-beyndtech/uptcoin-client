@@ -10,62 +10,77 @@ interface Stat {
 }
 
 export default function AdminStats() {
-  const [stats, setStats] = useState<Stat[]>([]);
   const { cryptoData } = useCrypto();
 
-  const fetchStats = async () => {
-    try {
-      // Fetch users and trades in parallel
-      const [usersRes, tradesRes] = await Promise.all([
-        sendRequest('/auth/users', 'GET'),
-        sendRequest('/transaction/trades', 'GET'),
-      ]);
+  const [stats, setStats] = useState<Stat[]>([
+    {
+      title: 'Total Users',
+      value: 0,
+      icon: <Users className="text-xl text-black dark:text-gray-500" />,
+    },
+    {
+      title: 'Total Trades',
+      value: 0,
+      icon: (
+        <ChartNoAxesCombined className="text-xl text-black dark:text-gray-500" />
+      ),
+    },
+    {
+      title: 'Total Coins',
+      value: 0,
+      icon: <Coins className="text-xl text-black dark:text-gray-500" />,
+    },
+    {
+      title: 'Total Users Assets',
+      value: 0,
+      icon: <Wallet className="text-xl text-black dark:text-gray-500" />,
+    },
+  ]);
 
-      const users = usersRes || [];
-      const trades = tradesRes || [];
-
-      // Filter users excluding admins
-      const filteredUsers = users.filter((user: any) => user.role !== 'admin');
-
-      // Sum all users' asset lengths
-      const totalAssets = filteredUsers.reduce(
-        (sum: number, user: any) => sum + (user.assets?.length || 0),
-        0,
-      );
-
-      // Create stats array
-      setStats([
-        {
-          title: 'Total Users',
-          value: filteredUsers.length,
-          icon: <Users className="text-xl text-black dark:text-gray-500" />,
-        },
-        {
-          title: 'Total Trades',
-          value: trades.length,
-          icon: (
-            <ChartNoAxesCombined className="text-xl text-black dark:text-gray-500" />
-          ),
-        },
-        {
-          title: 'Total Coins',
-          value: Object.keys(cryptoData).length,
-          icon: <Coins className="text-xl text-black dark:text-gray-500" />,
-        },
-        {
-          title: 'Total Users Assets',
-          value: totalAssets,
-          icon: <Wallet className="text-xl text-black dark:text-gray-500" />,
-        },
-      ]);
-    } catch (error) {
-      console.error('Error fetching admin stats:', error);
-    }
-  };
-
+  // First useEffect: fetch and update everything except cryptoData
   useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [usersRes, tradesRes] = await Promise.all([
+          sendRequest('/auth/users', 'GET'),
+          sendRequest('/transaction/trades', 'GET'),
+        ]);
+
+        const users = usersRes || [];
+        const trades = tradesRes || [];
+
+        const filteredUsers = users.filter(
+          (user: any) => user.role !== 'admin',
+        );
+        const totalAssets = filteredUsers.reduce(
+          (sum: number, user: any) => sum + (user.assets?.length || 0),
+          0,
+        );
+
+        setStats((prev) => [
+          { ...prev[0], value: filteredUsers.length },
+          { ...prev[1], value: trades.length },
+          { ...prev[2], value: Object.keys(cryptoData).length }, // still use latest cryptoData
+          { ...prev[3], value: totalAssets },
+        ]);
+      } catch (error) {
+        console.error('Error fetching admin stats:', error);
+      }
+    };
+
     fetchStats();
-  }, []);
+  }, []); // Only run once on mount
+
+  // Second useEffect: update only the coin count when cryptoData updates
+  useEffect(() => {
+    setStats((prev) =>
+      prev.map((stat) =>
+        stat.title === 'Total Coins'
+          ? { ...stat, value: Object.keys(cryptoData).length }
+          : stat,
+      ),
+    );
+  }, [cryptoData]);
 
   return (
     <div className="col-span-12 rounded-xl border border-stroke bg-white py-7.5 dark:border-blue-500 dark:bg-black/20">
