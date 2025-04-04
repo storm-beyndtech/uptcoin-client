@@ -61,6 +61,11 @@ const TradePanel: React.FC<TradePanelProps> = ({
     setMarketPrice(currentPrice.toFixed(2));
   }, [market, cryptoData]);
 
+  useEffect(() => {
+    setAmount('');
+    setQuantity('');
+  }, [market]);
+
   //Handle limit price change
   const handleLimitPriceChange = (value: string) => {
     setLimitPrice(value);
@@ -119,7 +124,7 @@ const TradePanel: React.FC<TradePanelProps> = ({
 
     const validateTraderStatus = await validateTrader();
 
-    console.log(validateTraderStatus)
+    console.log(validateTraderStatus);
 
     if (!validateTraderStatus) {
       setIsSubmitting(false);

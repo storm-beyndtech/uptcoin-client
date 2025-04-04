@@ -62,17 +62,17 @@ h2 {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #1e1e1e; /* Dark background */
+  background: #1e1e1e3d; /* Dark background */
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #2c2c2c; /* Grey thumb */
+  background: #1e1e1e3d; /* Grey thumb */
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #545454; /* Lighter on hover */
+  background: #1e1e1e3d; /* Lighter on hover */
 }
 
 @keyframes toNfro {

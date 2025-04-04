@@ -68,7 +68,7 @@ const Exchange: React.FC = () => {
 
   useEffect(() => {
     if (symbol) setSelectedMarket(symbol as string);
-  }, [symbol]);
+  }, [symbol, selectedMarket]);
 
   const coinDataWithoutUsdt = Object.values(cryptoData).filter(
     (coin) => coin.symbol !== 'USDT',

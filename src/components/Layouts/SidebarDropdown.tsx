@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { RxChevronDown } from "react-icons/rx";
+import { useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { RxChevronDown } from 'react-icons/rx';
 
 interface SidebarDropdownProps {
   title: string;
@@ -8,7 +8,11 @@ interface SidebarDropdownProps {
   links: { label: string; href: string }[];
 }
 
-export default function SidebarDropdown({ title, icon, links }: SidebarDropdownProps) {
+export default function SidebarDropdown({
+  title,
+  icon,
+  links,
+}: SidebarDropdownProps) {
   const location = useLocation();
   const { pathname } = location;
   const [open, setOpen] = useState(false);
@@ -17,13 +21,15 @@ export default function SidebarDropdown({ title, icon, links }: SidebarDropdownP
     <div>
       <button
         className={`text-xs group relative flex w-full items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black ${
-          links.some(link => pathname.includes(link.href)) ? "bg-black" : ""
+          links.some((link) => pathname.includes(link.href)) ? 'bg-black' : ''
         }`}
         onClick={() => setOpen(!open)}
       >
         {icon}
         {title}
-        <RxChevronDown className={`ml-auto transform ${open ? "rotate-180" : ""}`} />
+        <RxChevronDown
+          className={`ml-auto transform ${open ? 'rotate-180' : ''}`}
+        />
       </button>
 
       {open && (
@@ -34,8 +40,8 @@ export default function SidebarDropdown({ title, icon, links }: SidebarDropdownP
                 <NavLink
                   to={`/admin/${link.href}`}
                   className={({ isActive }) =>
-                    "group relative flex items-center gap-2.5 rounded-md px-7.5 text-desc duration-300 ease-in-out hover:text-white " +
-                    (isActive && "!text-white")
+                    'group relative flex items-center gap-2.5 rounded-md px-7.5 text-white/30 duration-300 ease-in-out hover:text-white ' +
+                    (isActive && '!text-white')
                   }
                 >
                   {link.label}

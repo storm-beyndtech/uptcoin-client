@@ -5,7 +5,7 @@ const Header = (props: {
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-sm z-10">
+    <header className="bg-white dark:bg-bodydark1/40 shadow-sm z-10">
       <div className="flex items-center gap-2 justify-between h-16 px-6">
         <button
           aria-controls="sidebar"
@@ -57,7 +57,7 @@ const Header = (props: {
             <input
               type="text"
               placeholder="Search..."
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-bodydark2 rounded-md bg-gray-50 dark:bg-bodydark2/30 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>

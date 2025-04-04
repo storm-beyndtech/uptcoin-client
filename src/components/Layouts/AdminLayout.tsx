@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { contextData } from '../../context/AuthContext';
 import PageLoader from '../PageLoader';
 import AdminSidebar from './AdminSidebar';
@@ -7,12 +7,19 @@ import Header from './Header';
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { fetching } = contextData();
+  const { user, fetching } = contextData();
+  const navigate = useNavigate();
 
-  if (fetching) return <PageLoader />;
+  useEffect(() => {
+    if (!fetching && user?.role !== 'admin') {
+      navigate('/dashboard');
+    }
+  }, [fetching, user, navigate]);
+
+  if (fetching || user?.role !== 'admin') return <PageLoader />;
 
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
+    <div className="dark:bg-black dark:text-bodydark">
       <div className="flex h-screen overflow-hidden">
         <AdminSidebar
           sidebarOpen={sidebarOpen}

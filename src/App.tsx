@@ -7,23 +7,6 @@ import Register from './pages/Auth/Register';
 import PasswordReset from './pages/Auth/PasswordReset';
 import PageLoader from './components/PageLoader';
 import { contextData } from './context/AuthContext';
-// import UpdateProfile from './components/UpdateProfile';
-// import routes from './routes';
-// import Dashboard from './pages/Dashboard/Dashboard';
-// import DefaultLayout from './components/Layouts/DefaultLayout';
-// import Admin from './pages/Admin/Admin';
-// import AdminLayout from './components/Layouts/AdminLayout';
-// import ActiveUsers from './pages/Admin/ActiveUsers';
-// import ManageTrades from './pages/Admin/ManageTrades';
-// import BannedUsers from './pages/Admin/BannedUsers';
-// import ApprovedDeposits from './pages/Admin/ApprovedDeposits';
-// import PendingDeposits from './pages/Admin/PendingDeposits';
-// import RejectedDeposits from './pages/Admin/RejectedDeposits';
-// import ApprovedWithdrawals from './pages/Admin/ApprovedWithdrawals';
-// import PendingWithdrawals from './pages/Admin/PendingWithdrawals';
-// import RejectedWithdrawals from './pages/Admin/RejectedWithdrawals';
-// import Settings from './pages/Admin/Settings';
-// import Kyc from './pages/Admin/Kyc';
 import Support from './pages/Support';
 import Market from './pages/Market';
 import Exchange from './pages/Exchange';
@@ -50,6 +33,19 @@ import About from './pages/About';
 import AdminLayout from './components/Layouts/AdminLayout';
 import UserAssetDetails from './components/UserAssetDetails';
 import Admin from './pages/Admin/Admin';
+import AddUser from './pages/Admin/AddUser';
+import ManageUsers from './pages/Admin/ManageUsers';
+import ManageSingleUser from './pages/Admin/ManageSingleUser';
+import UsersAccount from './pages/Admin/UsersAccount';
+import UserAssets from './pages/Admin/UserAssets';
+import UserAccountLimit from './pages/Admin/UserAccountLimit';
+import ManageDeposits from './pages/Admin/ManageDeposits';
+import ManageWithdrawals from './pages/Admin/ManageWithdrawals';
+import ManageTraders from './pages/Admin/ManageTraders';
+import TradeHistory from './pages/Admin/TradeHistory';
+import AssetManagement from './pages/Admin/AssetManagement';
+import AffiliateManagement from './pages/Admin/AffiliateManagement';
+import AdminMails from './pages/Admin/AdminMails';
 
 function App() {
   const { fetching, user } = contextData();
@@ -81,8 +77,38 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/password-reset" element={<PasswordReset />} />
 
-        <Route path="/admin/" element={<AdminLayout />}>
+        {/*    --    --   --   --  */}
+        {/* Admin routes */}
+        {/*    --    --   --   --  */}
+
+        <Route
+          path="/admin/"
+          element={
+            <PrivateRoute>
+              <AdminLayout />
+            </PrivateRoute>
+          }
+        >
           <Route path="/admin/" element={<Admin />} />
+          <Route path="/admin/add-user" element={<AddUser />} />
+          <Route path="/admin/manage-users" element={<ManageUsers />} />
+          <Route path="/admin/manage-user/:id" element={<ManageSingleUser />} />
+          <Route path="/admin/users-account" element={<UsersAccount />} />
+          <Route path="/admin/user-assets/:id" element={<UserAssets />} />
+          <Route
+            path="/admin/users-account-limit"
+            element={<UserAccountLimit />}
+          />
+          <Route path="/admin/manage-deposits" element={<ManageDeposits />} />
+          <Route
+            path="/admin/manage-withdrawals"
+            element={<ManageWithdrawals />}
+          />
+          <Route path="/admin/manage-traders" element={<ManageTraders />} />
+          <Route path="/admin/trade-history" element={<TradeHistory />} />
+          <Route path="/admin/manage-assets" element={<AssetManagement />} />
+          <Route path="/admin/affiliate" element={<AffiliateManagement />} />
+          <Route path="/admin/mails" element={<AdminMails />} />
         </Route>
 
         {/*    --    --   --   --  */}

@@ -59,7 +59,7 @@ export default function AdminSidebar({
   return (
     <aside
       ref={sidebar}
-      className={`text-xs absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gray-950 duration-300 ease-linear lg:static lg:translate-x-0 ${
+      className={`text-xs absolute left-0 top-0 z-999999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-bodydark1 lg:dark:bg-bodydark1/40 duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
@@ -179,7 +179,7 @@ export default function AdminSidebar({
             </li>
 
             <li
-              className="text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black"
+              className="cursor-pointer text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black"
               onClick={() => logout()}
             >
               <LogOut strokeWidth={1.5} className="text-xl" />

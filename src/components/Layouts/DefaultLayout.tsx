@@ -1,11 +1,23 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { navItems } from '../../lib/dashboardUtils';
 import Sidebar from './Sidebar';
 import Navbar from '../Navbar';
+import { contextData } from '../../context/AuthContext';
+import PageLoader from '../PageLoader';
 
 export default function DefaultLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, fetching } = contextData();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!fetching && user?.role === 'admin') {
+      navigate('/admin');
+    }
+  }, [fetching, user, navigate]);
+
+  if (fetching || user?.role === 'admin') return <PageLoader />;
 
   return (
     <div className="max-ctn max-w-[1400px] min-h-screen bg-[#fafafa] max-lg:bg-bodydark1 py-20">

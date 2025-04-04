@@ -6,10 +6,12 @@ export interface Asset {
   name: string;
   address: string;
   network: string;
+  status: string;
 }
 
 export interface User {
   _id: string;
+  uid: string;
   firstName?: string; // Optional fields
   lastName?: string;
   dateOfBirth?: string;
@@ -29,10 +31,14 @@ export interface User {
   tradingStatus: string;
   tradingLevel: string;
   tradingLimit: string;
+  isTradeSuspended: boolean,
+	minDeposit: number,
+	maxDeposit: number,
+	minWithdrawal: number,
+	maxWithdrawal: number,
 
-  assets: Asset[]; // Array of Asset objects
+  assets: Asset[];
 
-  disabled: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  accountStatus: 'pending' | 'suspended' | 'deactivated'
+  createdAt: string;
 }
