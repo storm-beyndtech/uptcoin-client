@@ -197,7 +197,9 @@ const ManageWithdrawals = () => {
         'PUT',
       );
 
-      setFilteredWithdrawals((prev) => [...prev, withdrawal]);
+      setFilteredWithdrawals((prev) =>
+        prev.map((item) => (item._id === withdrawal._id ? withdrawal : item)),
+      );
       setSuccess(message);
 
       // Close modal after a delay

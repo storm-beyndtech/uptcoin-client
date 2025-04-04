@@ -10,7 +10,7 @@ import MobileLinks from '@/components/MobileLinks';
 import MobileNav from '@/components/MobileNav';
 import Navbar from '@/components/Navbar';
 import { useCrypto } from '@/context/CoinContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MarketData } from './Exchange';
 import HotPairs, { TradingPair } from '@/components/HotPairs';
 import SEO from '@/components/SEO';
@@ -23,6 +23,20 @@ import CustomSec from '@/components/CustomSec';
 export default function Home() {
   const { cryptoData } = useCrypto();
   const [selectedMarket, setSelectedMarket] = useState<string>('BTC');
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      div[data-testid="widgetButtonFrame"] {
+        bottom: 70px !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   const coinDataWithoutUsdt = Object.values(cryptoData).filter(
     (coin) => coin.symbol !== 'USDT',

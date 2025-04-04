@@ -41,7 +41,7 @@ export default function WithdrawForm({
     withdrawAssets[0];
   const [selectedAsset, setSelectedAsset] =
     useState<WithdrawAsset>(initialAsset);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
   const [pendingWithdrawals, setPendingWithdrawals] = useState<
     PendingWithdrawal[]
   >([]);
@@ -90,7 +90,7 @@ export default function WithdrawForm({
   // Handle submit withdrawal
   const handleSubmit = async (password: string) => {
     setError('');
-    if (amount < selectedAsset.minWithdraw) {
+    if (Number(amount) < selectedAsset.minWithdraw) {
       setError(
         `Minimum withdrawal is ${selectedAsset.minWithdraw} ${selectedAsset.symbol}.`,
       );
@@ -119,7 +119,7 @@ export default function WithdrawForm({
       setIsSubmitting(false);
       setTimeout(() => {
         fetchPendingWithdrawals();
-        setAmount(0);
+        setAmount('');
         setSuccess('');
       }, 3000);
     }
@@ -168,7 +168,7 @@ export default function WithdrawForm({
             onClick={() => handleCancelWithdrawal(withdrawal._id)}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Cancelling..." : "Cancel"}
+            {isSubmitting ? 'Cancelling...' : 'Cancel'}
           </button>
         </div>
       ))}
@@ -243,8 +243,8 @@ export default function WithdrawForm({
           <input
             type="number"
             min={selectedAsset.minWithdraw}
-            value={amount === 0 ? '' : amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
             placeholder={`${selectedAsset.minWithdraw}`}
             className="input !text-sm"
           />

@@ -31,6 +31,8 @@ export default function TransferAsset() {
     setError(null);
     if (Number(amount) <= 0) return setError('Enter a valid amount');
 
+    console.log("Amount:" + amount, "Funding:" + coin.funding, "Spot" + coin.spot)
+
     if (from === 'funding') {
       if (Number(coin.funding) < Number(amount))
         return setError(`Insufficient ${coin.symbol} funding balance`);
@@ -70,7 +72,7 @@ export default function TransferAsset() {
         </span>
         <button
           onClick={() => {
-            setAmount(Number(from === "funding" ? coin.funding.toFixed(6) : coin.spot.toFixed(6)))
+            setAmount(Number(from === "funding" ? coin.funding : coin.spot))
           }}
           className="flex items-center gap-2 px-3 py-1.5 whitespace-nowrap text-xs border max-lg:border-white/10 rounded-lg text-gray-700 max-lg:text-white hover:bg-bodydark2/5"
         >

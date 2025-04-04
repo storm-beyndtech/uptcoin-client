@@ -87,7 +87,7 @@ export default function Withdraw() {
   };
 
   return (
-    <div className="max-lg:min-h-screen max-lg:bg-bodydark1 py-20 sm:py-5 px-2">
+    <div className="max-lg:min-h-screen max-lg:bg-bodydark1 pt-5 py-10 sm:py-5 px-2">
       <div className="p-4 text-2xl lg:hidden text-white">
         <NavigateBack />
       </div>
