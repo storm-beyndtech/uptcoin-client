@@ -44,7 +44,7 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
         user.accountStatus.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setFilteredUsers(results);
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
   }, [searchTerm, allUsers]);
 
   // Handle sorting

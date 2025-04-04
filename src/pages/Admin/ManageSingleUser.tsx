@@ -13,7 +13,7 @@ import {
 import { User } from '@/types/types';
 import { sendRequest } from '@/lib/sendRequest';
 import Alert from '@/components/UI/Alert';
-import KYCAdminModal from '@/components/KycAdminModal';
+import KYCAdminModal from '@/components/KYCAdminModal';
 
 const ManageSingleUser = () => {
   const { id } = useParams<{ id: string }>();
