@@ -5,6 +5,8 @@ import {
   BarChart3,
   Clock,
   ExternalLink,
+  ArrowUpDown,
+  Coins,
 } from 'lucide-react';
 import { Asset, formatNumber } from '@/lib/utils';
 import { useCrypto } from '@/context/CoinContext';
@@ -271,21 +273,49 @@ const UserAssetDetails = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="p-4 grid grid-cols-2 gap-4 bg-bodydark2">
-        <Link
-          to={`/dashboard/deposit/${symbol}`}
-          className="bg-green-500/5 text-white py-2 px-4 rounded-lg border border-green-500/50 font-medium flex items-center justify-center gap-2"
-        >
-          <ArrowDownLeft size={18} />
-          Deposit
-        </Link>
-        <Link
-          to={`/dashboard/withdraw/${symbol}`}
-          className="bg-red-500/5 text-white py-2 px-4 rounded-lg border border-red-500/50 font-medium flex items-center justify-center gap-2"
-        >
-          <ArrowUpRight size={18} />
-          Withdraw
-        </Link>
+      <div className="p-4 flex items-center flex-wrap gap-3 bg-bodydark2">
+        <div className="flex gap-4">
+          <Link
+            to={`/dashboard/conversion/${symbol}`}
+            className="flex flex-col items-center text-white"
+          >
+            <div className="flex items-center justify-center">
+              <Coins size={14} className="text-green-300" strokeWidth={1} />
+            </div>
+            <p className="text-[10px] mt-2">Convert</p>
+          </Link>
+
+          <Link
+            to={`/dashboard/transfer/${symbol}`}
+            className="flex flex-col items-center text-white"
+          >
+            <div className="flex items-center justify-center">
+              <ArrowUpDown
+                size={14}
+                className="text-green-300"
+                strokeWidth={1}
+              />
+            </div>
+            <p className="text-[10px] mt-2">Transfer</p>
+          </Link>
+        </div>
+
+        <div className="flex gap-2">
+          <Link
+            to={`/dashboard/deposit/${symbol}`}
+            className="bg-green-500/5 text-white text-sm py-2 px-4 rounded-lg border border-green-500/50 font-medium flex items-center justify-center gap-2"
+          >
+            <ArrowDownLeft size={18} />
+            Deposit
+          </Link>
+          <Link
+            to={`/dashboard/withdraw/${symbol}`}
+            className="bg-red-500/5 text-white text-sm py-2 px-4 rounded-lg border border-red-500/50 font-medium flex items-center justify-center gap-2"
+          >
+            <ArrowUpRight size={18} />
+            Withdraw
+          </Link>
+        </div>
       </div>
     </div>
   );

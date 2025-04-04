@@ -176,7 +176,7 @@ export default function WithdrawForm({
   ) : (
     <>
       <div className="max-w-md p-6 px-4 bg-white max-lg:bg-bodydark1 rounded-lg space-y-7">
-        <h2 className="text-xl font-medium max-md:text-white/90">
+        <h2 className="text-xl font-medium max-lg:text-white/90">
           Withdraw Funds
         </h2>
 

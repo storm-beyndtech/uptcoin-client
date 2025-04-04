@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeftRight } from 'lucide-react';
+import { ArrowLeftRight, ArrowUp } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
 import Alert from './UI/Alert';
 import { sendRequest } from '@/lib/sendRequest';
@@ -55,7 +55,7 @@ export default function TransferAsset() {
     } finally {
       setLoading(false);
       setTimeout(() => {
-        refreshUser()
+        refreshUser();
         setSuccess(null);
       }, 2000);
     }
@@ -66,11 +66,20 @@ export default function TransferAsset() {
       {/* Transfer Mode & Switch Button */}
       <div className="flex justify-between items-center mb-4">
         <span className="text-gray-500 max-lg:text-white font-semibold">
-          Transfer Mode
+          Transfer
         </span>
         <button
+          onClick={() => {
+            setAmount(Number(from === "funding" ? coin.funding.toFixed(6) : coin.spot.toFixed(6)))
+          }}
+          className="flex items-center gap-2 px-3 py-1.5 whitespace-nowrap text-xs border max-lg:border-white/10 rounded-lg text-gray-700 max-lg:text-white hover:bg-bodydark2/5"
+        >
+          <ArrowUp className="w-4 h-4" />
+          Max Bal
+        </button>
+        <button
           onClick={handleSwitch}
-          className="flex items-center gap-2 px-3 py-1.5 border rounded-lg text-gray-700 max-lg:text-white lg:hover:bg-gray-100"
+          className="flex items-center gap-2 px-3 py-1.5 whitespace-nowrap text-xs border max-lg:border-white/10 rounded-lg text-gray-700 max-lg:text-white lg:hover:bg-gray-100"
         >
           <ArrowLeftRight className="w-4 h-4" />
           Switch
@@ -102,12 +111,7 @@ export default function TransferAsset() {
             : coin.spot.toFixed(coin.symbol === 'USDT' ? 2 : 6)}
         </span>
       </label>
-      <input
-        onChange={(e) => setFrom(e.target.value)}
-        className="input mb-3"
-        value={from}
-        disabled
-      />
+      <input className="input mb-3" value={from} disabled />
 
       <label className="label">
         <span>To</span>{' '}
@@ -118,12 +122,7 @@ export default function TransferAsset() {
             : coin.funding.toFixed(coin.symbol === 'USDT' ? 2 : 6)}
         </span>
       </label>
-      <input
-        onChange={(e) => setTo(e.target.value)}
-        className="input mb-3"
-        value={to}
-        disabled
-      />
+      <input className="input mb-3" value={to} disabled />
 
       {/* Amount Input */}
       <label className="label">Amount</label>

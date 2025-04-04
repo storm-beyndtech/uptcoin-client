@@ -5,7 +5,7 @@ import Alert from './UI/Alert';
 
 interface AddAddressModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-  onAdd: (addressData: { symbol: string; address: string }) => void;
+  onAdd: (addressData: { symbol: string; address: string, network: string }) => void;
   addresses: Address[];
   address: Address;
   editing: boolean;
@@ -34,6 +34,10 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
     editing ? address.address : '',
   );
 
+  const [newNetwork, setNewNetwork] = useState<string>(
+    editing ? address.network : '',
+  );
+
   const handleAddressChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = addresses.find((addr) => addr.symbol === e.target.value);
     if (selected) setSelectedAddress(selected);
@@ -42,12 +46,13 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
   const handleSubmit = () => {
     onAdd({
       symbol: selectedAddress.symbol,
+      network: newNetwork,
       address: newAddress,
     });
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 customBlur px-2">
+    <div className="fixed inset-0 z-[1000000] flex items-center justify-center bg-black bg-opacity-50 customBlur px-2">
       <div className="bg-white max-lg:bg-bodydark2 p-6 max-lg:px-4 rounded-lg w-96">
         <div className="relative mb-4 max-lg:text-white/90">
           <h2 className="text-lg font-semibold">
@@ -101,10 +106,10 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
         </label>
         <input
           type="text"
-          value={selectedAddress?.network || ''}
+          value={newNetwork}
+          onChange={(e) => setNewNetwork(e.target.value)}
           className="input mb-4"
           placeholder="Fixed Withdrawal Network"
-          disabled
         />
 
         {/* Coin Address */}

@@ -21,9 +21,11 @@ export default function Alert({
     case 'simple':
       return (
         showAlert && (
-          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-blue-800 rounded-md bg-blue-50 max-lg:bg-bodydark2">
+          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-blue-800 rounded-md bg-blue-50/10">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
-            <div className="ms-3 text-xs font-semibold font-inter">{message}</div>
+            <div className="ms-3 text-xs font-semibold font-inter">
+              {message}
+            </div>
             {showToggle && (
               <button
                 type="button"
@@ -42,9 +44,11 @@ export default function Alert({
     case 'danger':
       return (
         showAlert && (
-          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-red-700 rounded-md bg-red-500/10 max-lg:bg-bodydark2">
+          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-red-700 rounded-md bg-red-500/10">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
-            <div className="ms-3 text-xs font-semibold font-inter">{message}</div>
+            <div className="ms-3 text-xs font-semibold font-inter">
+              {message}
+            </div>
             {showToggle && (
               <button
                 type="button"
@@ -64,9 +68,11 @@ export default function Alert({
     case 'success':
       return (
         showAlert && (
-          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-green-600 rounded-md bg-green-500/10 dark:text-green-400">
+          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-green-600 rounded-md bg-green-500/10">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
-            <div className="ms-3 text-xs font-semibold font-inter">{message}</div>
+            <div className="ms-3 text-xs font-semibold font-inter">
+              {message}
+            </div>
             {showToggle && (
               <button
                 type="button"
@@ -86,9 +92,11 @@ export default function Alert({
     case 'warning':
       return (
         showAlert && (
-          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-yellow-500 rounded-md bg-yellow-100/20 max-lg:bg-bodydark2">
+          <div className="flex items-center max-sm:px-1 p-4 py-2 my-3 text-yellow-500 rounded-md bg-yellow-100/10">
             <TbInfoSquareRoundedFilled className="w-5 h-5 flex-shrink-0" />
-            <div className="ms-3 text-xs font-semibold font-inter">{message}</div>
+            <div className="ms-3 text-xs font-semibold font-inter">
+              {message}
+            </div>
             {showToggle && (
               <button
                 type="button"

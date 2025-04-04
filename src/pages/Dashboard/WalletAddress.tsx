@@ -43,6 +43,7 @@ export default function WalletAddress() {
   // Handle adding/updating an address
   const handleAddOrUpdate = async (addressData: {
     address: string;
+    network: string;
     symbol: string;
   }) => {
     if (!addressData.address)
@@ -50,16 +51,26 @@ export default function WalletAddress() {
     if (addressData.address.length < 10)
       return setError('Enter a valid address.');
 
+    if (!addressData.network)
+      return setError('Withdrawal network is required.');
+    if (addressData.network.length < 3)
+      return setError('Enter a valid network.');
+
     setLoading(true);
     setError(null);
     setSuccess(null);
 
     try {
-      const { message } = await sendRequest(`/auth/update-asset-address`, 'PUT', {
-        symbol: addressData.symbol,
-        address: addressData.address,
-        userId: user._id
-      });
+      const { message } = await sendRequest(
+        `/auth/update-asset-address`,
+        'PUT',
+        {
+          symbol: addressData.symbol,
+          address: addressData.address,
+          network: addressData.network,
+          userId: user._id,
+        },
+      );
 
       setSuccess(message);
     } catch (error: any) {
@@ -72,8 +83,8 @@ export default function WalletAddress() {
         setEditing(false);
         setError(null);
         setSuccess(null);
-        refreshUser()
-      }, 3000)
+        refreshUser();
+      }, 3000);
     }
   };
 
