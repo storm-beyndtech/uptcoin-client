@@ -14,6 +14,13 @@ export default function AdminLayout() {
     if (!fetching && user?.role !== 'admin') {
       navigate('/dashboard');
     }
+
+    const chatCtn = document.getElementById('smartsupp-widget-container');
+    if (chatCtn) chatCtn.style.display = 'none';
+
+    return () => {
+      if (chatCtn) chatCtn.style.display = 'block';
+    };
   }, [fetching, user, navigate]);
 
   if (fetching || user?.role !== 'admin') return <PageLoader />;

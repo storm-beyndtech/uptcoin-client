@@ -46,9 +46,11 @@ import TradeHistory from './pages/Admin/TradeHistory';
 import AssetManagement from './pages/Admin/AssetManagement';
 import AffiliateManagement from './pages/Admin/AffiliateManagement';
 import AdminMails from './pages/Admin/AdminMails';
+import useResponsiveChatVisibility from './hooks/useResponsiveChatVisibility';
 
 function App() {
   const { fetching, user } = contextData();
+  useResponsiveChatVisibility();
 
   console.log(user);
 

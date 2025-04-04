@@ -15,6 +15,30 @@ export default function DefaultLayout() {
     if (!fetching && user?.role === 'admin') {
       navigate('/admin');
     }
+
+    const chatCtn = document.getElementById('smartsupp-widget-container');
+
+    const handleVisibility = () => {
+      if (chatCtn) {
+        if (window.innerWidth < 1024) {
+          chatCtn.style.display = 'none';
+        } else {
+          chatCtn.style.display = 'block';
+        }
+      }
+    };
+
+    // Run on mount
+    handleVisibility();
+
+    // Listen for resize events
+    window.addEventListener('resize', handleVisibility);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleVisibility);
+      if (chatCtn) chatCtn.style.display = 'block';
+    };
   }, [fetching, user, navigate]);
 
   if (fetching || user?.role === 'admin') return <PageLoader />;

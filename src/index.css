@@ -229,3 +229,11 @@ h2 {
     color: gray;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  #smartsupp-widget-container {
+    position: fixed !important;
+    bottom: 50px !important;
+    right: 10px !important;
+  }
+}
