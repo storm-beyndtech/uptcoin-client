@@ -159,7 +159,7 @@ const TradePanel: React.FC<TradePanelProps> = ({
 
     //Validate Trade Limit Amount
     if (user.tradingStatus === 'Trader') {
-      if (user.tradingLimit === 'In Process') {
+      if (user.tradingLimit === 'In Process' || user.tradingLimit === 'None') {
         if (Number(amount) < 2000) {
           setError('Min Trade Amount Muse Be Above $2000 ');
           setIsSubmitting(false);
@@ -174,7 +174,7 @@ const TradePanel: React.FC<TradePanelProps> = ({
           return;
         }
       }
-      
+
       if (user.tradingLimit === 'Institutional') {
         if (Number(amount) < 30000) {
           setError('Min Trade Amount Muse Be Above $30000 ');
