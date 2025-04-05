@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeftRight, ArrowUp } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
 import Alert from './UI/Alert';
@@ -27,11 +27,23 @@ export default function TransferAsset() {
     setTo(from);
   };
 
+  useEffect(() => {
+    const initialAsset =
+      user.assets.find((asset: any) => asset.symbol === symbol) ||
+      user.assets[0];
+
+    setCoin(initialAsset);
+  }, [user]);
+
   const handleTransfer = async () => {
     setError(null);
     if (Number(amount) <= 0) return setError('Enter a valid amount');
 
-    console.log("Amount:" + amount, "Funding:" + coin.funding, "Spot" + coin.spot)
+    console.log(
+      'Amount:' + amount,
+      'Funding:' + coin.funding,
+      'Spot' + coin.spot,
+    );
 
     if (from === 'funding') {
       if (Number(coin.funding) < Number(amount))
@@ -72,7 +84,7 @@ export default function TransferAsset() {
         </span>
         <button
           onClick={() => {
-            setAmount(Number(from === "funding" ? coin.funding : coin.spot))
+            setAmount(Number(from === 'funding' ? coin.funding : coin.spot));
           }}
           className="flex items-center gap-2 px-3 py-1.5 whitespace-nowrap text-xs border max-lg:border-white/10 rounded-lg text-gray-700 max-lg:text-white hover:bg-bodydark2/5"
         >

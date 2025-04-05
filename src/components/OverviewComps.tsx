@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChevronRight, ShieldAlert, ShieldCheck, Wallet } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -25,7 +25,6 @@ const VerificationBadge = ({ verified }: { verified: boolean }) => {
     </div>
   );
 };
-
 const UserProfile = ({
   email,
   verified,
@@ -41,75 +40,101 @@ const UserProfile = ({
   tradingLevel: string;
   tradingLimit: string;
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   return (
-    <div className="flex flex-col bg-white max-lg:bg-bodydark1 max-lg:my-5 p-4 rounded-lg shadow-sm space-y-4 flex-shrink-0">
-      {/* Top Section - User Info */}
-      <div className="flex items-center lg:space-x-4">
-        {/* Abbreviation */}
-        <div className="w-14 h-14 text-xl flex items-center justify-center bg-gray-200 text-black font-bold rounded-full max-lg:hidden">
+    <div className="relative w-full lg:w-fit">
+      {/* Profile Trigger - Visible in Nav */}
+      <button
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="flex items-center space-x-2 p-2 rounded-lg hover:bg-bodydark2/50 transition-colors lg:bg-gray-100 lg:hover:bg-gray-200"
+      >
+        <div className="w-8 h-8 text-sm flex items-center justify-center bg-gray-200 text-black font-bold rounded-full">
           {getAbbreviation(email)}
         </div>
+        <span className="max-lg:text-white/90 lg:text-black text-sm font-medium">
+          {formatEmail(email)}
+        </span>
+      </button>
 
-        {/* User Info */}
-        <div className="grid lg:gap-1 gap-3">
-          <p className="text-sm font-medium max-lg:text-white/60">
-            {formatEmail(email)}
-          </p>
-          <div className="flex items-center space-x-2 text-xs text-gray-500 max-lg:text-white/90">
-            <span>UID: {uid}</span>
-            <VerificationBadge verified={verified} />
+      {/* Dropdown Content */}
+      {isDropdownOpen && (
+        <div className="absolute top-full left-1 mt-2 w-64 z-50 bg-bodydark1 lg:bg-white rounded-lg shadow-lg overflow-hidden border border-bodydark2/50 lg:border-gray-200">
+          {/* User Info Section */}
+          <div className="p-4 border-b border-bodydark2/50 lg:border-gray-200">
+            <div className="flex items-center space-x-2 text-xs text-white/70 lg:text-gray-500">
+              <span>UID: {uid}</span>
+              <VerificationBadge verified={verified} />
+            </div>
+          </div>
+
+          {/* Trading Information */}
+          <div className="p-4 space-y-3">
+            <h4 className="text-sm font-medium text-white/80 lg:text-gray-700 mb-2">
+              Trading Details
+            </h4>
+
+            {/* Status */}
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-white/50 lg:text-gray-500">
+                Trading Status
+              </span>
+              <span className="text-xs font-medium text-white/90 lg:text-black">
+                {tradingStatus}
+              </span>
+            </div>
+
+            {/* Level */}
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-white/50 lg:text-gray-500">
+                Trading Level
+              </span>
+              <span className="text-xs font-medium text-white/90 lg:text-black">
+                {tradingLevel}
+              </span>
+            </div>
+
+            {/* Limit */}
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-white/50 lg:text-gray-500">
+                Trading Limit
+              </span>
+              <span className="text-xs font-medium text-white/90 lg:text-black">
+                {tradingLimit}
+              </span>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="p-3 bg-bodydark2/30 lg:bg-gray-50">
+            <Link
+              to="/dashboard/wallet"
+              className="w-full py-2 text-xs font-medium text-white/90 lg:text-black hover:text-primary transition-colors"
+            >
+              Manage Account
+            </Link>
           </div>
         </div>
-      </div>
-
-      {/* Trading Information */}
-      <div className="grid grid-cols-3 gap-4 text-xs">
-        {/* Trading Status */}
-        <div className="flex flex-col">
-          <span className="text-gray-500 max-lg:text-white/40">
-            Trading Status
-          </span>
-          <span className="font-medium max-lg:text-white/90">
-            {tradingStatus}
-          </span>
-        </div>
-
-        {/* Trading Level */}
-        <div className="flex flex-col">
-          <span className="text-gray-500 max-lg:text-white/40">
-            Trading Level
-          </span>
-          <span className="font-medium max-lg:text-white/90">
-            {tradingLevel}
-          </span>
-        </div>
-
-        {/* Trading Limit */}
-        <div className="flex flex-col">
-          <span className="text-gray-500 max-lg:text-white/40">
-            Trading Limit
-          </span>
-          <span className="font-medium max-lg:text-white/90">
-            {tradingLimit}
-          </span>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
 
 // AccountBalance Component
-interface IBal{
-  totalBalance: number
+interface IBal {
+  totalBalance: number;
 }
-const AccountBalance: React.FC<IBal> = ({totalBalance}) => {
+const AccountBalance: React.FC<IBal> = ({ totalBalance }) => {
   return (
     <div className="p-4 border rounded-lg shadow-sm bg-white">
       <h3 className="font-semibold">Account balance</h3>
       <p className="text-3xl font-bold mt-2">
-        {totalBalance.toFixed(2)} <span className="text-gray-500 text-lg">USDT</span>
+        {totalBalance.toFixed(2)}{' '}
+        <span className="text-gray-500 text-lg">USDT</span>
       </p>
-      <Link to="/dashboard/wallet" className="text-green-500 flex items-center gap-1 mt-2">
+      <Link
+        to="/dashboard/wallet"
+        className="text-green-500 flex items-center gap-1 mt-2"
+      >
         <Wallet /> <span>My wallet </span>{' '}
         <span>
           <ChevronRight size={16} />
@@ -132,6 +157,5 @@ const PressRelease: React.FC = () => {
     </div>
   );
 };
-
 
 export { UserProfile, AccountBalance, PressRelease };

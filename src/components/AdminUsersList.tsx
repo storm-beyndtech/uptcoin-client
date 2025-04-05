@@ -15,7 +15,7 @@ export interface IUser {
   uid: string;
   email: string;
   createdAt: string;
-  accountStatus: 'active' | 'suspended' | 'deactivated';
+  kycStatus: 'approved' | 'pending' | 'rejected';
 }
 
 const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
@@ -41,7 +41,7 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
       (user) =>
         user.uid.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.accountStatus.toLowerCase().includes(searchTerm.toLowerCase()),
+        user.kycStatus.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setFilteredUsers(results);
     setCurrentPage(1);
@@ -123,20 +123,21 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
     // After API call to delete, you might want to refresh the data
   };
 
+
   // Get status styles
   const getStatusStyles = (status: string) => {
     switch (status.toLowerCase()) {
-      case 'active':
+      case 'approved':
         return {
           bg: 'border border-green-400/50',
           text: 'text-green-500',
         };
-      case 'suspended':
+      case 'pending':
         return {
           bg: 'border border-yellow-400/50',
           text: 'text-yellow-500',
         };
-      case 'deactivated':
+      case 'rejected':
         return {
           bg: 'border border-red-400/50',
           text: 'text-red-500',
@@ -220,11 +221,11 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
               </th>
               <th
                 className="px-4 py-3 text-left text-sm font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
-                onClick={() => handleSort('accountStatus')}
+                onClick={() => handleSort('kycStatus')}
               >
                 <div className="flex items-center">
-                  Status
-                  {sortField === 'accountStatus' &&
+                  Kyc Status
+                  {sortField === 'kycStatus' &&
                     (sortDirection === 'asc' ? (
                       <ChevronUp size={16} />
                     ) : (
@@ -240,7 +241,7 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
           <tbody>
             {currentUsers.length > 0 ? (
               currentUsers.map((user) => {
-                const statusStyle = getStatusStyles(user.accountStatus);
+                const statusStyle = getStatusStyles(user.kycStatus);
                 return (
                   <tr
                     key={user._id}
@@ -264,7 +265,7 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusStyle.bg} ${statusStyle.text}`}
                       >
-                        {user.accountStatus}
+                        {user.kycStatus}
                       </span>
                     </td>
                     <td className="px-4 py-4">
@@ -313,6 +314,7 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
           {Math.min(indexOfLastItem, filteredUsers.length)} of{' '}
           {filteredUsers.length} users
         </div>
+
         <div className="flex gap-2">
           <button
             className="px-3 py-1 border border-gray-300 dark:border-gray-500 rounded-md hover:opacity-80 text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"

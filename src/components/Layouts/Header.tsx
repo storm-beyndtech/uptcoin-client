@@ -1,4 +1,5 @@
 import { contextData } from '@/context/AuthContext';
+import { sendRequest } from '@/lib/sendRequest';
 import {
   Bell,
   Search,
@@ -7,7 +8,7 @@ import {
   LogOut,
   LayoutDashboard,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = (props: {
@@ -18,7 +19,24 @@ const Header = (props: {
   const [showNotificationDropdown, setShowNotificationDropdown] =
     useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [pendingKycUsers, setPendingKycUsers] = useState([]);
   const { logout } = contextData();
+
+  // Fetch all users
+  const fetchUsers = async () => {
+    try {
+      const usersData = await sendRequest('/auth/users', 'GET');
+      setPendingKycUsers(
+        usersData.filter((user: any) => user.kycStatus === 'pending'),
+      );
+    } catch (error: any) {
+      console.error('Error fetching users:', error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, [location.pathname]);
 
   const toggleUserDropdown = () => {
     setShowUserDropdown(!showUserDropdown);
@@ -105,9 +123,6 @@ const Header = (props: {
               onClick={toggleNotificationDropdown}
             >
               <Bell size={20} />
-              <span className="absolute top-1 right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">
-                3
-              </span>
             </button>
 
             {showNotificationDropdown && (
@@ -116,18 +131,21 @@ const Header = (props: {
                   <h3 className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700">
                     Notifications
                   </h3>
-                  <Link
-                    to="/admin/manage-deposits"
-                    className="block px-4 py-2 text-sm text-green-600 dark:text-green-400 font-medium border-gray-200 dark:border-gray-700"
-                  >
-                    View all deposits
-                  </Link>
-                  <Link
-                    to="/admin/manage-withdrawals"
-                    className="block px-4 py-2 text-sm text-blue-600 dark:text-blue-400 font-medium border-gray-200 dark:border-gray-700"
-                  >
-                    View all withdrawals
-                  </Link>
+
+                  <div className="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2">
+                    <Link
+                      to="/admin/manage-deposits"
+                      className="block px-4 py-2 text-sm text-green-600 dark:text-green-400 font-medium"
+                    >
+                      View all deposits
+                    </Link>
+                    <Link
+                      to="/admin/manage-withdrawals"
+                      className="block px-4 py-2 text-sm text-blue-600 dark:text-blue-400 font-medium"
+                    >
+                      View all withdrawals
+                    </Link>
+                  </div>
                 </div>
               </div>
             )}
@@ -136,18 +154,52 @@ const Header = (props: {
           {/* User Management */}
           <div className="relative">
             <button
-              className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none"
+              className="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none"
               onClick={toggleUserDropdown}
             >
               <ShieldCheck size={20} />
+              {pendingKycUsers.length > 0 && (
+                <span className="absolute top-1 right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">
+                  {pendingKycUsers.length}
+                </span>
+              )}
             </button>
 
             {showUserDropdown && (
               <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-bodydark1/90 customBlur rounded-md shadow-lg overflow-hidden z-20 border border-gray-200 dark:border-gray-700">
                 <div className="py-1">
+                  <div className="max-h-64 overflow-y-auto">
+                    {pendingKycUsers.length > 0 ? (
+                      <>
+                        <h4 className="px-4 py-2 text-xs font-medium text-orange-600 dark:text-orange-400">
+                          Pending KYC Requests ({pendingKycUsers.length})
+                        </h4>
+                        {pendingKycUsers.map((user: any) => (
+                          <Link
+                            key={user.uid}
+                            to={`/admin/manage-user/${user._id}`}
+                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border-t border-gray-100 dark:border-gray-800"
+                          >
+                            <span className="font-medium">ID: {user.uid}</span>
+                            <div className="text-xs mt-2">
+                              Status:{' '}
+                              <span className="text-[10px] text-orange-500 border border-orange-400 rounded-full px-2 py-[2px] ml-3">
+                                {user.kycStatus}
+                              </span>
+                            </div>
+                          </Link>
+                        ))}
+                      </>
+                    ) : (
+                      <p className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
+                        No pending KYC requests
+                      </p>
+                    )}
+                  </div>
+
                   <Link
                     to="/admin/manage-users"
-                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="block px-4 py-2 text-sm text-blue-600 dark:text-blue-400 font-medium"
                   >
                     Manage Users
                   </Link>

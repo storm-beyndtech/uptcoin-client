@@ -6,13 +6,13 @@ import Alert from './UI/Alert';
 import { contextData } from '@/context/AuthContext';
 import CompleteTransactionModal from './CompleteTransactionModal';
 import Btn from './UI/Btn';
+import { useCrypto } from '@/context/CoinContext';
 
 interface WithdrawAsset {
   symbol: string;
   name: string;
   network: string;
   address: string;
-  minWithdraw: number;
   funding: number;
 }
 
@@ -34,6 +34,7 @@ export default function WithdrawForm({
   setIsAddressModalOpen,
 }: WithdrawFormProps) {
   const { symbol } = useParams();
+  const { cryptoData } = useCrypto();
   const { user } = contextData();
 
   const initialAsset =
@@ -41,7 +42,9 @@ export default function WithdrawForm({
     withdrawAssets[0];
   const [selectedAsset, setSelectedAsset] =
     useState<WithdrawAsset>(initialAsset);
+
   const [amount, setAmount] = useState('');
+  const [address, setAddress] = useState(initialAsset.address);
   const [pendingWithdrawals, setPendingWithdrawals] = useState<
     PendingWithdrawal[]
   >([]);
@@ -50,6 +53,24 @@ export default function WithdrawForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState('');
   const [submitModalOpen, setIsSubmitModalOpen] = useState(false);
+  const [effectiveMin, setEffectiveMin] = useState(0);
+  const [withdrawalFee, setWithdrawalFee] = useState(0);
+
+  useEffect(() => {
+    const coinData = cryptoData[initialAsset.symbol];
+
+    if (!coinData?.price) return;
+    setWithdrawalFee(coinData.withdrawalFee);
+
+    const coinMin = coinData.minWithdraw || 0;
+    const userMinInUSD = user.minWithdrawal || 0;
+
+    // Convert user USD min withdrawal to coin equivalent
+    const userMinInCoin = (userMinInUSD / coinData.price).toFixed(6);
+
+    // Get the effective minimum (stricter)
+    setEffectiveMin(Math.max(coinMin, Number(userMinInCoin)));
+  }, [cryptoData.length]);
 
   useEffect(() => {
     if (symbol) {
@@ -90,10 +111,15 @@ export default function WithdrawForm({
   // Handle submit withdrawal
   const handleSubmit = async (password: string) => {
     setError('');
-    if (Number(amount) < selectedAsset.minWithdraw) {
+    if (Number(amount) < effectiveMin) {
       setError(
-        `Minimum withdrawal is ${selectedAsset.minWithdraw} ${selectedAsset.symbol}.`,
+        `Minimum withdrawal is ${effectiveMin} ${selectedAsset.symbol}.`,
       );
+      return;
+    }
+
+    if (selectedAsset.funding < Number(amount)) {
+      setError(`insufficient  ${selectedAsset.symbol} Balance.`);
       return;
     }
 
@@ -105,7 +131,7 @@ export default function WithdrawForm({
       setIsSubmitting(true);
       const { message } = await sendRequest('/transaction/withdraw', 'POST', {
         userId: user._id,
-        address: selectedAsset.address,
+        address: address,
         network: selectedAsset.network,
         symbol: selectedAsset.symbol,
         amount: Number(amount),
@@ -227,8 +253,8 @@ export default function WithdrawForm({
           </div>
           <input
             type="text"
-            value={selectedAsset.address}
-            disabled
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
             className="input !text-sm"
           />
         </div>
@@ -236,16 +262,22 @@ export default function WithdrawForm({
         <div>
           <div className="flex justify-between text-sm font-medium mb-2 text-gray-500 max-lg:text-white/30">
             <label>Amount ({selectedAsset.symbol})</label>
+            <button
+              onClick={() => setAmount(selectedAsset.funding.toString())}
+              className="bg-transparent px-3 py-[1px] border border-blue-500 rounded-lg text-blue-500"
+            >
+              Max
+            </button>
             <p className="text-blue-500">
-              Balance: {selectedAsset.funding} {selectedAsset.symbol}
+              Bal: {selectedAsset.funding} {selectedAsset.symbol}
             </p>
           </div>
           <input
             type="number"
-            min={selectedAsset.minWithdraw}
+            min={effectiveMin}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            placeholder={`${selectedAsset.minWithdraw}`}
+            placeholder={`${effectiveMin}`}
             className="input !text-sm"
           />
         </div>
@@ -256,7 +288,7 @@ export default function WithdrawForm({
         {!error && !success && (
           <Alert
             type="warning"
-            message={`Minimum withdrawal amount is ${selectedAsset.minWithdraw} ${selectedAsset.symbol}.`}
+            message={`Minimum withdrawal amount is ${effectiveMin} ${selectedAsset.symbol}. Withdrawal Fee is ${withdrawalFee} ${selectedAsset.symbol}`}
           />
         )}
 

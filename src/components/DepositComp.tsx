@@ -5,6 +5,7 @@ import { sendRequest } from '@/lib/sendRequest'; // Assuming you have this funct
 import Alert from './UI/Alert';
 import { contextData } from '@/context/AuthContext';
 import NavigateBack from './UI/NavigateBack';
+import { useCrypto } from '@/context/CoinContext';
 
 interface Coin {
   symbol: string;
@@ -28,6 +29,7 @@ interface DepositProps {
 
 export default function DepositComp({ coins }: DepositProps) {
   const { symbol } = useParams();
+    const { cryptoData } = useCrypto();
   const { user } = contextData();
 
   const initialCoin = coins.find((coin) => coin.symbol === symbol) || coins[0];
@@ -38,6 +40,22 @@ export default function DepositComp({ coins }: DepositProps) {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState('');
+  const [effectiveMin, setEffectiveMin] = useState(0);
+
+  useEffect(() => {
+    const coinData = cryptoData[initialCoin.symbol];
+
+    if (!coinData?.price) return;
+
+    const coinMin = coinData.minDeposit || 0;
+    const userMinInUSD = user.minDeposit || 0;
+
+    // Convert user USD min withdrawal to coin equivalent
+    const userMinInCoin = (userMinInUSD / coinData.price).toFixed(6);
+
+    // Get the effective minimum (stricter)
+    setEffectiveMin(Math.max(coinMin, Number(userMinInCoin)));
+  }, [cryptoData.length]);
 
   useEffect(() => {
     if (symbol) {
@@ -277,14 +295,14 @@ export default function DepositComp({ coins }: DepositProps) {
           <OctagonAlert /> Notice{' '}
         </h2>
         <p>
-          Minimum recharge quantity is{' '}
-          {`${selectedCoin.minDeposit} ${selectedCoin.symbol}`}. Recharge less
+          Minimum deposit quantity is{' '}
+          {`${effectiveMin} ${selectedCoin.symbol}`}. Recharge less
           than the quantity will not be credited and no refund will be
           performed.
         </p>
         <p>
-          The recharge address will not change frequently neither will it be
-          static. There's no limit to your recharge but each recharge has to be
+          The deposit address will not change frequently neither will it be
+          static. There's no limit to your deposit but each deposit has to be
           confirmed by network confirmation; If there is any change, we will
           notify you through our announcement channel or via your email address
           with us.

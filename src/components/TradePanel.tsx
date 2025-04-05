@@ -124,8 +124,6 @@ const TradePanel: React.FC<TradePanelProps> = ({
 
     const validateTraderStatus = await validateTrader();
 
-    console.log(validateTraderStatus);
-
     if (user.kycStatus !== 'approved') {
       setError('Complete kyc before trading');
       setIsSubmitting(false);
@@ -157,6 +155,33 @@ const TradePanel: React.FC<TradePanelProps> = ({
       setError('Invalid Amount');
       setIsSubmitting(false);
       return;
+    }
+
+    //Validate Trade Limit Amount
+    if (user.tradingStatus === 'Trader') {
+      if (user.tradingLimit === 'In Process') {
+        if (Number(amount) < 2000) {
+          setError('Min Trade Amount Muse Be Above $2000 ');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      if (user.tradingLimit === 'Individual') {
+        if (Number(amount) < 10000) {
+          setError('Min Trade Amount Muse Be Above $10000 ');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+      
+      if (user.tradingLimit === 'Institutional') {
+        if (Number(amount) < 30000) {
+          setError('Min Trade Amount Muse Be Above $30000 ');
+          setIsSubmitting(false);
+          return;
+        }
+      }
     }
 
     //Validate Quantity

@@ -7,6 +7,7 @@ import DropdownUser from './UI/DropdownUser';
 import { contextData } from '@/context/AuthContext';
 import { navItems } from '@/lib/dashboardUtils';
 import { FaCaretDown } from 'react-icons/fa';
+import { UserProfile } from './OverviewComps';
 
 export default function Navbar() {
   const { user, logout } = contextData();
@@ -23,10 +24,10 @@ export default function Navbar() {
       ],
     },
     { title: 'Exchange', link: '/exchange' },
+    { title: 'Wallet', link: '/wallet' },
     { title: 'Quick Margin', link: '/margin' },
     { title: 'Market', link: '/market' },
     { title: 'Support', link: '/support' },
-    { title: 'Press', link: '/press' },
   ];
 
   return (
@@ -105,7 +106,6 @@ export default function Navbar() {
           className={`fixed top-0 right-0 z-999999 w-[95%] h-screen overflow-y-scroll bg-bodydark1/95 customBlur pt-14 pl-5 transform transition-transform ${
             mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
-          onClick={() => setMobileMenuOpen(false)}
         >
           <button
             className="text-white absolute top-5 right-5"
@@ -115,8 +115,19 @@ export default function Navbar() {
           </button>
 
           <div className="space-y-8 mb-30 pl-3">
+            {user && (
+              <UserProfile
+                email={user.email}
+                verified={user.kycStatus === 'approved' ? true : false}
+                uid={user?.uid}
+                tradingStatus={user.tradingStatus}
+                tradingLevel={user.tradingLevel}
+                tradingLimit={user.tradingLimit}
+              />
+            )}
             {navItems.map(({ icon: Icon, label, to }, i) => (
               <Link
+                onClick={() => setMobileMenuOpen(false)}
                 key={i}
                 to={to}
                 className="flex items-center gap-3 text-lg text-white/70 hover:text-green-600 space-x-2"
