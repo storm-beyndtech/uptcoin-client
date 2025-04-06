@@ -269,7 +269,11 @@ export default function WithdrawForm({
               Max
             </button>
             <p className="text-blue-500">
-              Bal: {selectedAsset.funding} {selectedAsset.symbol}
+              Bal:{' '}
+              {selectedAsset.funding.toFixed(
+                selectedAsset.symbol === 'USDT' ? 2 : 6,
+              )}{' '}
+              {selectedAsset.symbol}
             </p>
           </div>
           <input
