@@ -30,6 +30,13 @@ export default function Home() {
       div[data-testid="widgetButtonFrame"] {
         bottom: 70px !important;
       }
+
+      div[data-testid="widgetMessengerFrame"] {
+        bottom: 70px !important;
+        width: 90% !important;
+        height: 80vh !important;
+        max-width: 400px;
+      }
     `;
     document.head.appendChild(style);
 
