@@ -9,16 +9,30 @@ export default function Deposit() {
   const { user } = contextData();
 
   //user Assets
-  const assets = user.assets.map((asset: Asset) => {
-    const coinInfo = Object.values(cryptoData).find(
-      (coin) => coin.symbol === asset.symbol,
-    );
-    return {
-      ...asset,
-      price: coinInfo ? Number(coinInfo.price) : 0,
-      ...coinInfo,
-    };
-  }).filter((asset: Asset)=> asset.symbol !== "USDT");
+  const assets = symbols
+    .filter((symbolAsset) => {
+      return user.assets.some(
+        (userAsset: Asset) =>
+          userAsset.symbol === symbolAsset.symbol &&
+          symbolAsset.symbol !== 'USDT',
+      );
+    })
+    .map((symbolAsset) => {
+      const userAsset = user.assets.find(
+        (a: Asset) => a.symbol === symbolAsset.symbol,
+      );
+      const coinInfo = Object.values(cryptoData).find(
+        (coin) => coin.symbol === symbolAsset.symbol,
+      );
+
+      return {
+        ...userAsset, // user's quantity or balance
+        ...symbolAsset, // from symbols
+        price: coinInfo ? Number(coinInfo.price) : 0,
+      };
+    });
+
+  console.log(user.assets);
 
   //get usdt asset
   const usdtAsset = symbols.find((asset) => asset.symbol === 'USDT');
