@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Search,
   ChevronDown,
@@ -26,6 +26,9 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
   const [itemsPerPage] = useState(6);
   const [sortField, setSortField] = useState<keyof IUser | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  
+  // Add this ref to track user-initiated page changes
+  const userChangedPage = useRef(false);
 
   const navigate = useNavigate();
 
@@ -35,7 +38,7 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Function to handle search
+  // Function to handle search - only resets page for search term changes
   useEffect(() => {
     const results = allUsers.filter(
       (user) =>
@@ -43,33 +46,65 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.kycStatus.toLowerCase().includes(searchTerm.toLowerCase()),
     );
+    
     setFilteredUsers(results);
-    setCurrentPage(1);
+    
+    // Only reset to page 1 when search term changes, not when allUsers changes
+    if (searchTerm) {
+      setCurrentPage(1);
+      userChangedPage.current = false;
+    }
   }, [searchTerm, allUsers]);
+
+  // Separate effect to apply sorting whenever sort criteria change
+  useEffect(() => {
+    if (sortField) {
+      const sortedUsers = [...filteredUsers].sort((a, b) => {
+        if (a[sortField] < b[sortField]) return sortDirection === 'asc' ? -1 : 1;
+        if (a[sortField] > b[sortField]) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+      });
+      
+      setFilteredUsers(sortedUsers);
+    }
+  }, [sortField, sortDirection]);
+  
+  // Add this effect to check if we need to adjust current page
+  useEffect(() => {
+    // If the current page would be out of bounds now, adjust it
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+      userChangedPage.current = false;
+    }
+  }, [filteredUsers, totalPages]);
 
   // Handle sorting
   const handleSort = (field: keyof IUser) => {
+    // Calculate the new sort direction
+    let newDirection: 'asc' | 'desc';
+
     if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      // Toggle direction if same field is clicked again
+      newDirection = sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
-      setSortField(field);
-      setSortDirection('asc');
+      // Default to ascending for new field
+      newDirection = 'asc';
     }
 
-    // Sort the users
-    const sortedUsers = [...filteredUsers].sort((a, b) => {
-      if (a[field] < b[field]) return sortDirection === 'asc' ? -1 : 1;
-      if (a[field] > b[field]) return sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
-
-    setFilteredUsers(sortedUsers);
+    // Update sort state (actual sorting happens in the useEffect)
+    setSortField(field);
+    setSortDirection(newDirection);
+    
+    // Reset to page 1 when sorting changes
+    setCurrentPage(1);
+    userChangedPage.current = false;
   };
 
   // Handle page change
   const paginate = (pageNumber: number) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
+      userChangedPage.current = true; // Mark that user explicitly changed the page
     }
   };
 
@@ -122,7 +157,6 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
     console.log(`Deleting user with ID: ${userId}`);
     // After API call to delete, you might want to refresh the data
   };
-
 
   // Get status styles
   const getStatusStyles = (status: string) => {
@@ -310,7 +344,7 @@ const AdminUsersList = ({ allUsers }: { allUsers: IUser[] }) => {
       {/* Pagination */}
       <div className="flex items-center justify-between flex-wrap gap-2 mt-6">
         <div className="text-sm text-gray-400">
-          Showing {indexOfFirstItem + 1} to{' '}
+          Showing {filteredUsers.length > 0 ? indexOfFirstItem + 1 : 0} to{' '}
           {Math.min(indexOfLastItem, filteredUsers.length)} of{' '}
           {filteredUsers.length} users
         </div>
