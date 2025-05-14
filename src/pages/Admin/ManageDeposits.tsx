@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Search,
   ChevronDown,
@@ -42,6 +42,9 @@ const ManageDeposits = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  // Add this ref to track user-initiated page changes
+  const userChangedPage = useRef(false);
+
   //Fetch all users
   const fetchDeposits = async () => {
     try {
@@ -74,32 +77,50 @@ const ManageDeposits = () => {
         deposit.status.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setFilteredDeposits(results);
-    setCurrentPage(1); // Reset to first page on new search
+
+    // Only reset to page 1 when search term changes, not when allUsers changes
+    if (searchTerm) {
+      setCurrentPage(1);
+      userChangedPage.current = false;
+    }
   }, [searchTerm, deposits]);
+
+  // Add this effect to check if we need to adjust current page
+  useEffect(() => {
+    // If the current page would be out of bounds now, adjust it
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+      userChangedPage.current = false;
+    }
+  }, [filteredDeposits, totalPages]);
 
   // Handle sorting
   const handleSort = (field: keyof Deposit) => {
+    // Calculate the new sort direction
+    let newDirection: 'asc' | 'desc';
+
     if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      // Toggle direction if same field is clicked again
+      newDirection = sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
-      setSortField(field);
-      setSortDirection('asc');
+      // Default to ascending for new field
+      newDirection = 'asc';
     }
 
-    // Sort the deposits
-    const sortedDeposits = [...filteredDeposits].sort((a, b) => {
-      if (a[field] < b[field]) return sortDirection === 'asc' ? -1 : 1;
-      if (a[field] > b[field]) return sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
+    // Update sort state (actual sorting happens in the useEffect)
+    setSortField(field);
+    setSortDirection(newDirection);
 
-    setFilteredDeposits(sortedDeposits);
+    // Reset to page 1 when sorting changes
+    setCurrentPage(1);
+    userChangedPage.current = false;
   };
 
   // Handle page change
   const paginate = (pageNumber: number) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
+      userChangedPage.current = true; // Mark that user explicitly changed the page
     }
   };
 
