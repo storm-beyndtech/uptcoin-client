@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Search, ChevronDown, ChevronUp, Check, X, User } from 'lucide-react';
 import { sendRequest } from '@/lib/sendRequest';
 
@@ -22,6 +22,9 @@ const AffiliateManagement = () => {
   const [itemsPerPage] = useState(6);
   const [sortField, setSortField] = useState<keyof IAffiliateUser | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+
+  // Add this ref to track user-initiated page changes
+  const userChangedPage = useRef(false);
 
   // Fetch all affiliates
   const fetchAffiliates = async () => {
@@ -58,41 +61,50 @@ const AffiliateManagement = () => {
         affiliate.status.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setFilteredAffiliates(results);
-    setCurrentPage(1);
+
+    // Only reset to page 1 when search term changes, not when allUsers changes
+    if (searchTerm) {
+      setCurrentPage(1);
+      userChangedPage.current = false;
+    }
   }, [searchTerm, affiliates]);
+
+  // Add this effect to check if we need to adjust current page
+  useEffect(() => {
+    // If the current page would be out of bounds now, adjust it
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+      userChangedPage.current = false;
+    }
+  }, [filteredAffiliates, totalPages]);
 
   // Handle sorting
   const handleSort = (field: keyof IAffiliateUser) => {
+    // Calculate the new sort direction
+    let newDirection: 'asc' | 'desc';
+
     if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      // Toggle direction if same field is clicked again
+      newDirection = sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
-      setSortField(field);
-      setSortDirection('asc');
+      // Default to ascending for new field
+      newDirection = 'asc';
     }
 
-    // Sort the affiliates
-    const sortedAffiliates = [...filteredAffiliates].sort((a, b) => {
-      if (field === 'firstName') {
-        // Special case for full name sorting
-        const fullNameA = `${a.firstName} ${a.lastName}`.toLowerCase();
-        const fullNameB = `${b.firstName} ${b.lastName}`.toLowerCase();
-        if (fullNameA < fullNameB) return sortDirection === 'asc' ? -1 : 1;
-        if (fullNameA > fullNameB) return sortDirection === 'asc' ? 1 : -1;
-        return 0;
-      }
+    // Update sort state (actual sorting happens in the useEffect)
+    setSortField(field);
+    setSortDirection(newDirection);
 
-      if (a[field] < b[field]) return sortDirection === 'asc' ? -1 : 1;
-      if (a[field] > b[field]) return sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
-
-    setFilteredAffiliates(sortedAffiliates);
+    // Reset to page 1 when sorting changes
+    setCurrentPage(1);
+    userChangedPage.current = false;
   };
 
   // Handle page change
   const paginate = (pageNumber: number) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
+      userChangedPage.current = true; // Mark that user explicitly changed the page
     }
   };
 
