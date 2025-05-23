@@ -122,7 +122,7 @@ export default function WithdrawForm({
       return;
     }
 
-    if (!selectedAsset.address)
+    if (!address || address.length < 5)
       return setError('Please setup your wallet address');
 
     try {
