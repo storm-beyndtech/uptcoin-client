@@ -4,7 +4,7 @@ import { Edit2, OctagonAlert } from 'lucide-react';
 import { sendRequest } from '@/lib/sendRequest';
 import Alert from './UI/Alert';
 import { contextData } from '@/context/AuthContext';
-import CompleteTransactionModal from './CompleteTransactionModal';
+// import CompleteTransactionModal from './CompleteTransactionModal';
 import Btn from './UI/Btn';
 import { useCrypto } from '@/context/CoinContext';
 
@@ -52,7 +52,6 @@ export default function WithdrawForm({
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState('');
-  const [submitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [effectiveMin, setEffectiveMin] = useState(0);
   const [withdrawalFee, setWithdrawalFee] = useState(0);
 
@@ -109,7 +108,7 @@ export default function WithdrawForm({
   };
 
   // Handle submit withdrawal
-  const handleSubmit = async (password: string) => {
+  const handleSubmit = async () => {
     setError('');
     if (Number(amount) < effectiveMin) {
       setError(
@@ -123,7 +122,6 @@ export default function WithdrawForm({
       return;
     }
 
-    if (!password) return setError('Please enter withdrawal passowrd');
     if (!selectedAsset.address)
       return setError('Please setup your wallet address');
 
@@ -135,10 +133,8 @@ export default function WithdrawForm({
         network: selectedAsset.network,
         symbol: selectedAsset.symbol,
         amount: Number(amount),
-        withdrawalPassword: password,
       });
       setSuccess(message);
-      setIsSubmitModalOpen(false);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -300,11 +296,11 @@ export default function WithdrawForm({
           label={isSubmitting ? 'Processing...' : 'Submit'}
           type="primary"
           className="w-full"
-          onClick={() => setIsSubmitModalOpen(true)}
+          onClick={() => handleSubmit()}
         />
       </div>
 
-      {submitModalOpen && (
+      {/* {submitModalOpen && (
         <CompleteTransactionModal
           setIsModalOpen={setIsSubmitModalOpen}
           onSubmit={handleSubmit}
@@ -313,7 +309,7 @@ export default function WithdrawForm({
           error={error && error}
           success={success && success}
         />
-      )}
+      )} */}
     </>
   );
 }

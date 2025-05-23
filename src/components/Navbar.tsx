@@ -24,7 +24,7 @@ export default function Navbar() {
       ],
     },
     { title: 'Exchange', link: '/exchange' },
-    { title: 'Wallet', link: '/wallet' },
+    { title: 'Wallet', link: '/dashboard' },
     { title: 'Quick Margin', link: '/margin' },
     { title: 'Market', link: '/market' },
     { title: 'Support', link: '/support' },
