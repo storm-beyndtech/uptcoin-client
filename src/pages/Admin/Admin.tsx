@@ -14,11 +14,14 @@ export default function Admin() {
         sendRequest('/transaction/withdrawals', 'GET'),
       ]);
 
-      console.log(depositData, withdrawalData);
+      const deposits =
+        depositData?.map((item: any) => ({ ...item, event: 'deposit' })) || [];
+      const withdrawals =
+        withdrawalData?.map((item: any) => ({
+          ...item,
+          event: 'withdrawal',
+        })) || [];
 
-      const deposits = depositData?.map((item:any) => ({ ...item, event: "deposit" })) || [];
-      const withdrawals = withdrawalData?.map((item:any) => ({ ...item, event: "withdrawal" })) || [];
-      
       setTransactions([...deposits, ...withdrawals]);
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -32,7 +35,6 @@ export default function Admin() {
   return (
     <>
       <AdminStats />
-
       <AdminLatestTransactions allTransactions={transactions} />
     </>
   );
