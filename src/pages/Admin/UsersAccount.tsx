@@ -25,7 +25,7 @@ const UsersAccount = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [users]);
+  }, []);
 
   // Calculate pagination variables
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
